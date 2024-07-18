@@ -1,7 +1,7 @@
 // I need that yoo make all aplication
 
 import { Module } from '@nestjs/common';
-import { ChatController } from './controllers/chat.controllers';
+import { ChatController } from './controllers/chats.controllers';
 import { ChatService } from './services/chat.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatEntity } from './entities/chat.entity';

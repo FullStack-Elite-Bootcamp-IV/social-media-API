@@ -1,6 +1,10 @@
 import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 
-export class FavouritesDto  {
+export class FavouritesDto {
+
+@IsString()
+@IsNotEmpty()
+id: string;
 
 @IsString()
 @IsNotEmpty()

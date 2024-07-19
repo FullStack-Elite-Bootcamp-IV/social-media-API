@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm'; 
+import { DeepPartial, DeleteResult, Repository } from 'typeorm'; 
 import { FavouritesEntity } from '../entities/favourites.entity';
 import { FavouritesDto } from '../dto/create-favourite.dto';
 
@@ -14,19 +14,33 @@ export class FavouritesService {
         // IN this service i need a function to add a post in favourite
     // the name is addFavourite and the parameter is FavouritesDto
 
-    async addFavourites(favourite: FavouritesDto):Promise<FavouritesEntity> {
-        return;
-    }
+    public async addFavourite(addFavourite: FavouritesDto): Promise<FavouritesEntity> {
+        try {
+         //const xd = await this.favouritesRepository.create(addFavourite)
+         //return this.favouritesRepository.save(xd)
+        } catch (error) {
+          throw new Error(error);
+        }
+      }
+    
 
     // second delete a Favourite post
-    // the name is deleteFavourite and the parameter is FavouritesDto
+    // the name is deleteFavourite and the parameter is id
 
-    async deleteFavourite(favourite: FavouritesDto):Promise<FavouritesEntity>{
-        return;
+    public async deleteFavourite(idFavourite: FavouritesDto['id']):Promise<DeleteResult | undefined>{
+        try{
+            const result = await this.favouritesRepository.delete(idFavourite);
+      if (result.affected === 0) {
+        throw new Error('Favourite not found');
+      }
+      return result
+        }catch(error){
+            throw new Error(error);
+        }
     }
 
     // third get a favourites Post
-    // the name is getFavourites and the parameter is FavouritesDto
+    // the name is getFavourites 
 
     async getFavourites () {
     }

@@ -16,6 +16,8 @@ export class NotificationsService {
   async createNotification(createNotificationDto: CreateNotificationDto): Promise<NotificationEntity> {
     const {emisorUser, receptorUser, title, description, action, status, notificationDate} = createNotificationDto
     const notification = this.notificationRepository.create();
+    await this.notificationRepository.save(notification);
+    return notification;
     
    }
 

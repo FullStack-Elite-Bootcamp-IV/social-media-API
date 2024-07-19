@@ -15,15 +15,6 @@ export class FavouritesService {
     // the name is addFavourite and the parameter is FavouritesDto
 
 
-//createPost(createPostDto: CreatePostDto): Promise<PostEntity> {
-   // try {
-      //const post = this.postRepository.create(createPostDto)
-    //  return this.postRepository.save(post)
-   // } catch (error) {
-    //  console.log(error)
-  //  }
-//  }
-
     public async addFavourite(FavouritesDto: FavouritesDto): Promise<FavouritesEntity> {
         try {
          const favourite = this.favouritesRepository.create(FavouritesDto)
@@ -37,9 +28,9 @@ export class FavouritesService {
     // second delete a Favourite post
     // the name is deleteFavourite and the parameter is id
 
-    public async deleteFavourite(idFavourite: FavouritesDto['id']):Promise<DeleteResult | undefined>{
+    public async deleteFavourite(id: FavouritesDto):Promise<DeleteResult | undefined>{
         try{
-            const result = await this.favouritesRepository.delete(idFavourite);
+            const result = await this.favouritesRepository.delete(id);
       if (result.affected === 0) {
         throw new Error('Favourite not found');
       }

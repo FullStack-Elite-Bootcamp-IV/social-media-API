@@ -1,22 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { FavouritesService } from '../service/favourite.service';
+import { FavouritesDto } from '../dto/create-favourite.dto';
 
 @Controller('favourites')
 export class FavouritesController {
     constructor(private readonly FavouritesService: FavouritesService) {}
 
+    
     @Post('/add')
-    AddFavourites(){
-
+    public async AddFavourites(@Body() body: FavouritesDto){
+        return await this.FavouritesService.addFavourite(body);
     }
 
     @Delete('/delete')
-    DeletFavourites(){
-
+    public async DeleteFavourites(@Param('id') id: any){
+        return await this.FavouritesService.deleteFavourite(id);
     }
 
     @Get('/get')
-    GeFavourites(){
+    public async GeFavourites(@Param('userId') userId: string){
+        return await this.FavouritesService.getFavourites(userId);
         
     }
 

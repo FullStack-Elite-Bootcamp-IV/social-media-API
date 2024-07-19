@@ -40,11 +40,15 @@ export class UserService {
 
 /*   async logoutUser(userDto: UserDto) {
   } */
+ async getUsers () {
+   try {
+     return await this.userRepository.find()
+   } catch (error) {
+     console.log(error)
+   }
+ }
 
-    // get user 
-    // the name is getUser and the parameter is UserDto
-
-  async getUser(userId:string) {
+  async getUserById (userId: string) {
     try {
       return await this.userRepository.findOne({ where: { id: userId } })
     } catch (error) {
@@ -52,33 +56,36 @@ export class UserService {
     }
   }
 
-  async getUsers (): Promise<UserEntity[]> {
+  async getUserByUserName (userName: string) {
     try {
-      return await this.userRepository.find()
+      return await this.userRepository.findOne({ where: { username: userName } })
     } catch (error) {
       console.log(error)
     }
   }
 
-    // modify user
-    // the name is modifyUser and the parameter is UserDto
-
-  async modifyUser(userDto: UserDto) {
+  async modifyProfile(userDto: UserDto) {
     try {
-      const user 
+      const user = this.userRepository.create(userDto)
+      return await this.userRepository.save(user)
     } catch (error) {
       console.log(error)
     }
   }
 
-    // delete user
-    // the name is deleteUser and the parameter is UserDto
-
-  async deleteUser(userDto: UserDto) {
+  async deleteUser(id: string) {
+    try {
+      return await this.userRepository.delete(id)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-    // modify the state of a darkMode 
-
-  async modifyDarkMode(userDto: UserDto) {
+  async setDarkMode(userDto: UserDto) {
+    try {
+      
+    } catch (error) {
+      console.log(error)
+    }
   }
 };

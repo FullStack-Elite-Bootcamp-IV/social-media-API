@@ -1,22 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ChatsService } from '../services/chats.services';
+// src/modules/chat/controllers/chat.controller.ts
+import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { ChatService } from '../services/chat.service';
+import { CreateChatDto } from '../dto/create-chat.dto';
+import { ChatEntity } from '../entities/chat.entity';
 
-@Controller('chats')
-export class chatsController {
-    constructor(private readonly ChatsService: ChatsService) {}
+@Controller('chat')
+export class ChatController {
+  constructor(private readonly chatService: ChatService) {}
 
-    @Post('/create')
-    CreateChat(){
+  // @Post()
+  // createChat(@Body() createChatDto: CreateChatDto): Promise<ChatEntity> { ... }
 
-    }
+  // @Get(':id')
+  // findChatById(@Param('id') chatId: string): Promise<ChatEntity> { ... }
 
-    @Delete('/delete')
-    DeleteChat(){
+  // @Delete(':id')
+  // deleteChat(@Param('id') chatId: string): Promise<void> { ... }
 
-    }
-
-    @Get('/chat')
-    GetChat(){
-        
-    }
+  // @Get('user/:userId')
+  // findChatsByUser(@Param('userId') userId: string): Promise<ChatEntity[]> { ... }
 }

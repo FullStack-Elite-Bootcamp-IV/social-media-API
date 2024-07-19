@@ -5,10 +5,12 @@ import { NotificationEntity } from '../entities/notification.entity';
 
 @Controller('notifications')
 export class NotificationsController {
-  constructor(private readonly notificationsService: NotificationsService) {}
+  constructor(private notificationsService: NotificationsService) {}
 
-  // @Post()
-  // createNotification(@Body() createNotificationDto: CreateNotificationDto): Promise<NotificationEntity> { ... }
+  @Post()
+  createNotification(@Body() createNotificationDto: CreateNotificationDto): Promise<NotificationEntity> {
+    return this.notificationsService.createNotification();
+   }
 
   // @Delete(':id')
   // deleteNotification(@Param('id') notificationId: string): Promise<void> { ... }

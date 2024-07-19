@@ -3,6 +3,9 @@
 import { IsNotEmpty, IsString, IsDate, IsBoolean, IsNumber } from "class-validator";
 
 export class CreateNotificationDto {
+  @IsNotEmpty()
+  @IsString()
+  id?: string;
 
   @IsNotEmpty()
   @IsString()
@@ -28,6 +31,6 @@ export class CreateNotificationDto {
   description: string; // TXT
   
   @IsNotEmpty()
-  @IsString()
+  @IsDate()
   notificationDate: Date; // TIMESTAMP
 }

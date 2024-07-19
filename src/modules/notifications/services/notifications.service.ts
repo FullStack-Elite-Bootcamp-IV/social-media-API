@@ -9,11 +9,15 @@ import { NotificationEntity } from '../entities/notification.entity';
 export class NotificationsService {
   constructor(
     @InjectRepository(NotificationEntity)
-    private readonly notificationRepository: Repository<NotificationEntity>
+    private notificationRepository: Repository<NotificationEntity>
   ) {}
 
   // Function to create a new notification
-  // createNotification(createNotificationDto: CreateNotificationDto): Promise<NotificationEntity> { ... }
+  async createNotification(createNotificationDto: CreateNotificationDto): Promise<NotificationEntity> {
+    const {emisorUser, receptorUser, title, description, action, status, notificationDate} = createNotificationDto
+    const notification = this.notificationRepository.create();
+    
+   }
 
   // Function to delete a notification by ID
   // deleteNotification(notificationId: string): Promise<void> { ... }

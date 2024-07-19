@@ -7,10 +7,11 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from "@nestjs/websockets";
+import { Socket } from "dgram";
 
 import { Server } from "socket.io";
-
-@WebSocketGateway()
+const chatsUser = [12, 9, 8]
+@WebSocketGateway(5002, {namespace: '/chat', cors: true} )
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -23,23 +24,30 @@ export class ChatGateway
   }
 
   handleConnection(client: any, ...args: any[]) {
-    const { sockets } = this.io.sockets;
-
     this.logger.log(`Client id: ${client.id} connected`);
-    this.logger.debug(`Number of connected clients: ${sockets.size}`);
   }
 
   handleDisconnect(client: any) {
     this.logger.log(`Cliend id:${client.id} disconnected`);
   }
 
-  @SubscribeMessage("ping")
+  @SubscribeMessage("message")
   handleMessage(client: any, data: any) {
-    this.logger.log(`Message received from client id: ${client.id}`);
-    this.logger.debug(`Payload: ${data}`);
-    return {
-      event: "pong",
-      data,
-    };
+    const token = client.handshake.auth.token
+    const chatId = +client.handshake.auth.chatId
+
+    if (chatsUser.includes(chatId)) {
+      console.log("bbb")
+      this.logger.log(`Message received from client id: ${client.id}`);
+      this.logger.debug(`Payload: ${data}`);
+      client.emit("recieveMessage", { chatId, data})
+
+    }
+  }
+
+  @SubscribeMessage("recieveMessage")
+  handleRecieve(client: any, data: any) {
+    console.log("aaaa")
   }
 }
+

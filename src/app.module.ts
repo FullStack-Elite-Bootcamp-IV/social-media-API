@@ -8,6 +8,7 @@ import { FavouritesModule } from './modules/favourites/favourites.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import { FollowersModule } from './modules/followers/followers.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { ChatModule } from './modules/chats/chats.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
     MessagesModule,
     FollowersModule,
     NotificationsModule,
+    ChatModule
   ],
 })
 export class AppModule {}

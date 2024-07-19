@@ -1,6 +1,6 @@
-/* // src/modules/chat/controllers/chat.controller.ts
+
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
-import { ChatService } from '../services/chats.service';
+import { ChatService } from '../services/chats.services';
 import { CreateChatDto } from '../dto/create-chat.dto';
 import { ChatEntity } from '../entities/chat.entity';
 
@@ -20,4 +20,3 @@ export class ChatController {
   // @Get('user/:userId')
   // findChatsByUser(@Param('userId') userId: string): Promise<ChatEntity[]> { ... }
 }
- */

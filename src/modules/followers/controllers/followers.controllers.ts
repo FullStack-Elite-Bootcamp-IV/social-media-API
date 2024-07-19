@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
+/* import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import { FollowersService } from '../services/followers.service';
 import { CreateFollowerDto } from '../dto/create-follower.dto';
 import { FollowerEntity } from '../entities/follower.entity';
@@ -23,3 +23,4 @@ export class FollowersController {
   // findFollowersByUser(@Param('userId') userId: string): Promise<FollowerEntity[]> { ... }
 
 }
+ */

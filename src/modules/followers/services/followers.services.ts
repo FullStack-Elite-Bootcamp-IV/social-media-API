@@ -1,11 +1,11 @@
-// src/modules/followers/services/followers.service.ts
+/* // src/modules/followers/services/followers.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateFollowerDto } from '../dto/create-follower.dto';
 import { FollowersEntity } from '../entities/followers.entity';
 
-@Injectable()
+/* @Injectable()
 export class FollowersService {
   constructor(
     @InjectRepository(FollowersEntity)

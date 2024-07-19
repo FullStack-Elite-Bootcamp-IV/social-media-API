@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Param, Delete } from '@nestjs/common';
+/* import { Controller, Get, Post, Patch, Param, Delete } from '@nestjs/common';
 import { CommentsService } from '../services/comments.service';
 
 @Controller('comments')
@@ -24,4 +24,4 @@ export class CommentsController {
     EditComments(){
         
     }
-}
+} */

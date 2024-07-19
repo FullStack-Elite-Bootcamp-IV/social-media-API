@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsDate } from 'class-validator';
+import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 export class CreateLikeDto {
   @IsString()
   @IsNotEmpty()

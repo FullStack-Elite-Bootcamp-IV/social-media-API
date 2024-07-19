@@ -17,7 +17,7 @@ export class MessagesService {
 
 
   // TO DO: Realizar validaciones
-  
+
   // Function to create a new message
   createMessage(createMessageDto: DeepPartial<CreateMessageDto>) { 
     const message = this.messageRepository.create(createMessageDto)
@@ -25,16 +25,13 @@ export class MessagesService {
  }
 
   // Function to find all messages
-  findAllMessages(chatId : string): Promise<MessageEntity[]> { 
+  findAllMessagesByChat(chatId : string): Promise<MessageEntity[]> { 
     return this.messageRepository.find({ where: [ { chatId: chatId } ] } )
    }
 
   // Function to delete a message by ID
-  // deleteMessage(messageId: string): Promise<void> { ... }
+  deleteMessage(messageId: string) { 
+    this.messageRepository.delete(messageId)
+  }
 
-  // Function to find messages by chat ID
-  // findMessagesByChat(chatId: string): Promise<MessageEntity[]> { ... }
-
-  // Function to find messages by user ID
-  // findMessagesByUser(userId: string): Promise<MessageEntity[]> { ... }
 }

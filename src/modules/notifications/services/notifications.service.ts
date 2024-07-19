@@ -16,8 +16,7 @@ export class NotificationsService {
   // Function to create a new notification
   async createNotification(createNotificationDto: CreateNotificationDto): Promise<NotificationEntity> {
     try{
-      const {emisorUser, receptorUser} = createNotificationDto
-      if(!emisorUser || !receptorUser){
+      if(!createNotificationDto){
         throw new Error('Emisor user or receptor user are not valid');
       }
       const notification = this.notificationRepository.create(createNotificationDto);

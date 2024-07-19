@@ -3,7 +3,7 @@ import { UserEntity } from '../../users/entities/user.entity';
 import { PostEntity } from '../../posts/entities/post.entity'; 
 
 @Entity('comments')
-export class commentsEntity {
+export class CommentsEntity {
   @PrimaryColumn({ type: 'varchar', length: 100 })
   id: string;
 

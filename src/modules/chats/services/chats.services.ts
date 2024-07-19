@@ -27,16 +27,33 @@ export class ChatService {
 
   // Function to delete a chat by ID
   deleteChat(chatId: string): void { 
-    this.chatRepository.delete(chatId)
+    try{
+    const chat = this.chatRepository.delete(chatId)
+    if(!chat){
+      throw new Error('Chat not found');
+    }
+    return;
+  } catch (error) {
+    throw new Error('Chat not found');
+  }
    }
 
   // Function to find all chats by a specific user
   findChatsByUser(userId: string): Promise<ChatEntity[]> {
-    return this.chatRepository.find({
+    try{
+    const chats = this.chatRepository.find({
       where: [
         { user1Id: userId },
         { user2Id: userId },
       ],
     });
+   if(!chats){
+    throw new Error('Chat not found');
+   }
+    return chats;
+  } catch (error) {
+    throw new Error('Chat not found');
   }
+  }
+
 }

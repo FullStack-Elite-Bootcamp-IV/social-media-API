@@ -14,7 +14,7 @@ export class NotificationsService {
 
   // Function to create a new notification
   async createNotification(createNotificationDto: CreateNotificationDto): Promise<NotificationEntity> {
-    const {emisorUser, receptorUser, title, description, action, status, notificationDate} = createNotificationDto
+    createNotificationDto;
     const notification = this.notificationRepository.create();
     await this.notificationRepository.save(notification);
     return notification;
@@ -22,7 +22,7 @@ export class NotificationsService {
    }
 
   // Function to delete a notification by ID
-  // deleteNotification(notificationId: string): Promise<void> { ... }
+  async deleteNotification(notificationId: string): Promise<void> { await this.notificationRepository.delete(notificationId) }
 
   // Function to find notifications by user ID
   // findNotificationsByUser(userId: string): Promise<NotificationEntity[]> { ... }

@@ -16,10 +16,7 @@ export class LikesService {
   
   // Function to find all likes
   // findAllLikes(): Promise<LikeEntity[]> { ... }
-
-  // Function to update a like by ID
-  // updateLike(likeId: string, updateLikeDto: CreateLikeDto): Promise<LikeEntity> { ... }
-
+  
   // Function to delete a like by ID
   // deleteLike(likeId: string): Promise<void> { ... }
 

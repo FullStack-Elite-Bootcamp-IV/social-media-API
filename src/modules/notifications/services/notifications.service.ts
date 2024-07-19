@@ -15,12 +15,6 @@ export class NotificationsService {
   // Function to create a new notification
   // createNotification(createNotificationDto: CreateNotificationDto): Promise<NotificationEntity> { ... }
 
-  // Function to find all notifications
-  // findAllNotifications(): Promise<NotificationEntity[]> { ... }
-
-  // Function to update a notification by ID
-  // updateNotification(notificationId: string, updateNotificationDto: CreateNotificationDto): Promise<NotificationEntity> { ... }
-
   // Function to delete a notification by ID
   // deleteNotification(notificationId: string): Promise<void> { ... }
 

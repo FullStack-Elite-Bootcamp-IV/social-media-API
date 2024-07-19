@@ -10,12 +10,16 @@ export class FollowersController {
   // @Post()
   // createFollower(@Body() createFollowerDto: CreateFollowerDto): Promise<FollowerEntity> { ... }
 
+  // @Get(':id')
+  // findFollowerById(@Param('id') followerId: string): Promise<FollowerEntity> { ... }
+
+  // @Get()
+  // findAllFollowers(): Promise<FollowerEntity[]> { ... }
+
   // @Delete(':id') // is as unfollow 
   // deleteFollower(@Param('id') followerId: string): Promise<void> { ... }
 
-  // @Get('user/:userId')
+  // @Get('followers/:userId')
   // findFollowersByUser(@Param('userId') userId: string): Promise<FollowerEntity[]> { ... }
 
-  // @Get('followees/:userId')
-  // findFolloweesByUser(@Param('userId') userId: string): Promise<FollowerEntity[]> { ... }
 }

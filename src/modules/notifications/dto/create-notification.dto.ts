@@ -17,7 +17,7 @@ export class CreateNotificationDto {
   
   @IsNotEmpty()
   @IsNumber()
-  action: Enumerator;
+  action: number;
   
   @IsNotEmpty()
   @IsString()
@@ -26,4 +26,6 @@ export class CreateNotificationDto {
   @IsNotEmpty()
   @IsString()
   description: string;
+
+
 }

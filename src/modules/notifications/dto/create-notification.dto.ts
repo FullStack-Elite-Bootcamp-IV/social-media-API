@@ -1,19 +1,21 @@
 // create a notification dto
 
 import { IsNotEmpty, IsString, IsDate, IsBoolean, IsNumber, IsUUID } from "class-validator";
+import { UserEntity } from "src/modules/users/entities/user.entity";
+import { NotificationEntity } from "../entities/notification.entity";
 
 export class CreateNotificationDto {
   @IsNotEmpty()
   @IsUUID()
-  id?: string;
+  id?: NotificationEntity;
 
   @IsNotEmpty()
   @IsString()
-  emisorUser: string; // FK
+  emisorUser: UserEntity; // FK
 
   @IsNotEmpty()
   @IsString()
-  receptorUser: string; // FK
+  receptorUser: UserEntity; // FK
   
   @IsBoolean()
   status: boolean;
@@ -28,7 +30,7 @@ export class CreateNotificationDto {
   
   @IsNotEmpty()
   @IsString()
-  description: string; // TXT
+  description: string;
   
   @IsNotEmpty()
   @IsDate()

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateNotificationDto } from '../dto/create-notification.dto';
@@ -20,7 +20,7 @@ export class NotificationsService {
       createNotificationDto;
     try {
       if (!emisorUser || !receptorUser) {
-        throw new Error('Emisor or receptor user invalid');
+        throw new HttpException('Forbidden',HttpStatus.FORBIDDEN);
       }
       const notification = this.notificationRepository.create({
         emisorUser,
@@ -41,7 +41,7 @@ export class NotificationsService {
   async deleteNotification(notificationId: string): Promise<void> {
     try {
       if (!notificationId) {
-        throw new Error('Notification inexistent');
+        throw new HttpException('Not found',HttpStatus.NOT_FOUND);
       }
       await this.notificationRepository.delete(notificationId);
     } catch (err) {
@@ -53,11 +53,11 @@ export class NotificationsService {
   async findNotificationsByUser(userId: UserEntity): Promise<void> {
     try {
       if (!userId) {
-        throw new Error('User not found');
+        throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
       }
       await this.notificationRepository.findOneByOrFail(userId);
     } catch (err) {
-      throw new Error(err);
+      throw new HttpException('Bad Request',HttpStatus.BAD_REQUEST);
     }
   }
 }

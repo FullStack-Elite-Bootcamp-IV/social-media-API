@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateMessageDto } from '../dto/create-message.dto';
 import { MessageEntity } from '../entities/message.entity';
-import { ChatEntity } from 'src/modules/chats/entities/chat.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { FindOneOptions } from 'typeorm';
 import { DeepPartial } from 'typeorm';
@@ -15,8 +14,6 @@ export class MessagesService {
     private readonly messageRepository: Repository<MessageEntity>,
   ) {}
 
-  // TO DO: Realizar validaciones
-  //throw new HttpException('Not found', HttpStatus.NOT_FOUND);
   // Function to create a new message
   createMessage(createMessageDto: DeepPartial<CreateMessageDto>) {
     try {
@@ -30,25 +27,38 @@ export class MessagesService {
     }
   }
 
-  // Function to find all messages
-  findAllMessagesByChat(chatId: string): Promise<MessageEntity[]> {
+  // Function to find messages by user
+  async findMessagesByUser(userId: string): Promise<void> {
+    try {
+      if (!userId) {
+        throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+      }
+      await this.messageRepository.find({ where: [{ id: userId }] });
+    } catch (err) {
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  // Function to find messages by user
+  async findMessagesByChat(chatId: string): Promise<void> {
+    // check the promise with the messagesEntity
     try {
       if (!chatId) {
         throw new HttpException('Not found', HttpStatus.NOT_FOUND);
       }
-      return this.messageRepository.find({ where: [{ chatId: chatId }] });
+      await this.messageRepository.find({ where: [{ chatId: chatId }] });
     } catch (err) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
   }
 
   // Function to delete a message by ID
-  deleteMessage(messageId: string) {
+  async deleteMessage(messageId: string): Promise<void> {
     try {
       if (!messageId) {
         throw new HttpException('Not found', HttpStatus.NOT_FOUND);
       }
-      this.messageRepository.delete(messageId);
+      await this.messageRepository.delete(messageId);
     } catch (err) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }

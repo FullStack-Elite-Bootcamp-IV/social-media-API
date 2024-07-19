@@ -21,15 +21,10 @@ export class FollowersService {
   // Function to find all followers
   // findAllFollowers(): Promise<FollowerEntity[]> { ... }
 
-  // Function to update a follower by ID
-  // updateFollower(followerId: string, updateFollowerDto: CreateFollowerDto): Promise<FollowerEntity> { ... }
-
   // Function to delete a follower by ID
   // deleteFollower(followerId: string): Promise<void> { ... }
 
   // Function to find followers by user ID
   // findFollowersByUser(userId: string): Promise<FollowerEntity[]> { ... }
-
-  // Function to find followees by user ID
-  // findFolloweesByUser(userId: string): Promise<FollowerEntity[]> { ... }
+. }
 }

@@ -4,6 +4,7 @@ import { ChatEntity } from '../../chats/entities/chat.entity';
 
 @Entity('messages')
 export class MessageEntity {
+  
   @PrimaryGeneratedColumn('uuid')
   id: string;
   
@@ -18,9 +19,10 @@ export class MessageEntity {
   
   @ManyToOne(() => UserEntity, user => user.id)
   @JoinColumn({ name: 'user' })
-  user: UserEntity;
+  user: string;
   
-  @ManyToOne(() => ChatEntity, chat => chat.id)  
+  @ManyToOne(() => ChatEntity, chat => chat.id) 
   @JoinColumn({ name: 'chatId' })
-  chatId: ChatEntity;
+  chatId: string;
 }
+

@@ -4,25 +4,34 @@ import {
   IsDate,
   IsNotEmpty
 } from 'class-validator';
+import { ChatEntity } from 'src/modules/chats/entities/chat.entity';
+import { UserEntity } from 'src/modules/users/entities/user.entity';
 
 export class CreateMessageDto {
 
-    @IsString()
-    @IsNotEmpty()
-    senderId: string;
+  @IsString()
+  @IsNotEmpty()
+  id: string;
 
-    @IsString()
-    @IsNotEmpty()
-    chatId: string;
+  @IsString()
+  @IsNotEmpty()
+  messageContent: string;
 
-    @IsString()
-    @IsNotEmpty()
-    content: string;
+  @IsString()
+  media: string;
 
-    @IsString()
-    media?: string;
+  @IsDate()
+  creationTime: Date;
 
-    @IsDate()
-    creationTime: Date;
-  }
+  @IsString()
+  @IsNotEmpty()
+  user: string;
+
+  @IsString()
+  @IsNotEmpty()
+  chatId: string;
+
+
+ 
+}
   

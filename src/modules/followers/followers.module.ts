@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FollowersService } from './services/followers.service';
+import { FollowersService } from './services/followers.services';
 import { FollowersController } from './controllers/followers.controllers';
 import { FollowersEntity } from './entities/followers.entity';
 

@@ -2,8 +2,6 @@
 
 import { IsNotEmpty, IsString, IsDate, IsBoolean, IsNumber, IsUUID } from "class-validator";
 import { UserEntity } from "src/modules/users/entities/user.entity";
-import { NotificationEntity } from "../entities/notification.entity";
-
 export class CreateNotificationDto {
 
   @IsNotEmpty()

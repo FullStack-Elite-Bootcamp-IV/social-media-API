@@ -1,9 +1,9 @@
-// // here we must create the user controller
-// import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-// import { UsersService } from '../services/user.service';
-// import { CreateUserDto } from '../dto/create-user.dto';
-// import { UpdateUserDto } from '../dto/update-user.dto';
-// import path from 'path';
+/* // here we must create the user controller
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { UsersService } from '../services/user.service';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import path from 'path';
 
 // @Controller('users')
 // export class UsersController {
@@ -33,7 +33,7 @@
 //     modifyUser() {
 //     }
 
-//     @Delete('/delete')
-//     deleteUser() {
-//     }
-// }
+    @Delete('/delete')
+    deleteUser() {
+    }
+} */

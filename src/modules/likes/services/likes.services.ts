@@ -8,15 +8,17 @@ import { LikeEntity } from '../entities/like.entity';
 export class LikesService {
   constructor(
     @InjectRepository(LikeEntity)
-    private readonly likeRepository: Repository<LikeEntity>
+    private readonly likeRepository: Repository<LikeEntity>,
   ) {}
 
   // Function to create a new like
-  // createLike(createLikeDto: CreateLikeDto): Promise<LikeEntity> { ... }
-  
+  createLike(createLikeDto: CreateLikeDto): Promise<LikeEntity> {
+    return this.likeRepository.save(createLikeDto);
+  }
+
   // Function to find all likes
   // findAllLikes(): Promise<LikeEntity[]> { ... }
-  
+
   // Function to delete a like by ID
   // deleteLike(likeId: string): Promise<void> { ... }
 

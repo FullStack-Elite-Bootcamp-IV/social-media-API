@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { FavouritesService } from '../services/favourite.service';
 
-@Controller('chats')
+@Controller('favourites')
 export class chatsController {
     constructor(private readonly FavouritesService: FavouritesService) {}
 
@@ -15,7 +15,7 @@ export class chatsController {
 
     }
 
-    @Get('Favourites')
+    @Get('/get')
     GeFavourites(){
         
     }

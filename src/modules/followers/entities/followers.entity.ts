@@ -1,8 +1,19 @@
-// here define the followers entity
-import { Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';// if need more entity you can add here
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
 
-@Entity('followers')
-export class FollowerEntity {
-    // here define the followers entity
+@Entity('Followers')
+export class FollowersEntity {
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
+
+    @ManyToOne(() => UserEntity, user => user.id, { nullable: false })
+    @JoinColumn({ name: 'followerId' })
+    follower: UserEntity;
+
+    @ManyToOne(() => UserEntity, user => user.id, { nullable: false })
+    @JoinColumn({ name: 'followingId' })
+    following: UserEntity;
+
+    @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    followDate: Date;
 }

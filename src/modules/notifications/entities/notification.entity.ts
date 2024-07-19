@@ -6,7 +6,7 @@ import { UserEntity } from '../../users/entities/user.entity';
 export class NotificationEntity {
     // here define the notification entity
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    id: string; 
 
     @Column({type: 'varchar', length:100, nullable: false})
     emisorUser: string;

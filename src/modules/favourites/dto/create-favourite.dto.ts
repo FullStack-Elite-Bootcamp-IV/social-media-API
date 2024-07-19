@@ -1,7 +1,22 @@
+import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { PostEntity } from 'src/modules/posts/entities/post.entity';
+import { UserEntity } from 'src/modules/users/entities/user.entity';
 
-import { PartialType } from '@nestjs/mapped-types';
-import { FavouritesEntity } from '../entities/favourites.entity';
+export class FavouritesDto {
 
-export class FavouritesDto extends PartialType(FavouritesEntity) {
+@IsString()
+@IsNotEmpty()
+id?: string;
 
+@IsString()
+@IsNotEmpty()
+userId: string;
+
+@IsString()
+@IsNotEmpty()
+postId: string;
+
+@IsDate()
+@IsNotEmpty()
+creationDate?: Date;
 }

@@ -1,4 +1,4 @@
-// src/modules/auth/services/auth.service.ts
+/* // src/modules/auth/services/auth.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -32,3 +32,4 @@ export class AuthService {
   // Function to refresh a JWT token
   // refreshJwtToken(user: UserEntity): Promise<{ accessToken: string }> { ... }
 }
+ */

@@ -2,30 +2,37 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';// if need more entity you can add here
 import { UserEntity } from '../../users/entities/user.entity';
 
+export enum NotificationAction {
+    MESSAGES = 'messages',
+    LIKES = 'likes',
+    COMMENTS = 'comments',
+    FOLLOWS = 'follows',
+  }
+
 @Entity('notifications')
 export class NotificationEntity {
-    // here define the notification entity
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  // here define the notification entity
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({type: 'varchar', length:100, nullable: false})
-    emisorUser: string;
-    
-    @ManyToOne(()=>UserEntity, (user) => user.id)
-    receptorUser:UserEntity;
+  @Column({ type: 'varchar', length: 100, nullable: false })
+  emisorUser: UserEntity['id'];
 
-    @Column({type: 'boolean', default: false})
-    status: boolean;
+  @ManyToOne(() => UserEntity, (user) => user.id)
+  receptorUser: UserEntity['id'];
 
-    @Column({type: 'enum' , enum: ['messages', 'likes', 'comments','follows'], nullable: false})
-    action: Enumerator;
+  @Column({ type: 'boolean', default: false })
+  status: boolean;
 
-    @Column({type: 'varchar', length: 100, nullable: false})
-    title: string;
+  @Column({ type: 'enum', enum: NotificationAction, nullable: false })
+  action: NotificationAction;
 
-    @Column({type: 'varchar', length:100, nullable: false})
-    description: string; 
-    
-    @Column({type: 'timestamp', default: ()=> 'CURRENT_TIMESTAMP'})
-    notificationDate: Date;
+  @Column({ type: 'varchar', length: 100, nullable: false })
+  title: string;
+
+  @Column({ type: 'varchar', length: 100, nullable: false })
+  description: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  notificationDate: Date;
 }

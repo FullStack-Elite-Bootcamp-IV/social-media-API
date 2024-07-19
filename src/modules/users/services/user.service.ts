@@ -40,6 +40,7 @@ export class UserService {
 
 /*   async logoutUser(userDto: UserDto) {
   } */
+ 
  async getUsers () {
    try {
      return await this.userRepository.find()

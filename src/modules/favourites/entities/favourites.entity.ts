@@ -5,7 +5,7 @@ import { PostEntity } from '../../posts/entities/post.entity';
 @Entity('Favourites')
 export class FavouritesEntity {
 
-  @Column({ type: 'timestamp'})
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
   creationDate: Date;
 
   @ManyToOne(() => UserEntity, (user) => user.id)

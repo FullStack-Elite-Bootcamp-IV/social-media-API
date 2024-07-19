@@ -34,13 +34,7 @@
     "@nestjs/swagger": "^7.4.0",
     "@nestjs/typeorm": "^10.0.2",
     "@nestjs/websockets": "^10.3.10",
-<<<<<<< HEAD
     "class-validator": "^0.14.1",
-=======
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.1",
-    "joi": "^17.13.3",
->>>>>>> 88daf491a78cce57aeff935aa3fca8382fbcc686
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.12.0",

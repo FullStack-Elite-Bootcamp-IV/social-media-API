@@ -28,9 +28,9 @@ export class FavouritesService {
     // second delete a Favourite post
     // the name is deleteFavourite and the parameter is id
 
-    public async deleteFavourite(idFavourite: FavouritesDto):Promise<DeleteResult | undefined>{
+    public async deleteFavourite(id: FavouritesDto):Promise<DeleteResult | undefined>{
         try{
-            const result = await this.favouritesRepository.delete(idFavourite);
+            const result = await this.favouritesRepository.delete(id);
       if (result.affected === 0) {
         throw new Error('Favourite not found');
       }

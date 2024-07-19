@@ -52,10 +52,10 @@ export class UserEntity {
   darkMode: boolean;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  creationDate: Date;
+  creationDate?: Date;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  updateDate: Date;
+  updateDate?: Date;
 
   @Column({ type: 'timestamp', nullable: true })
   lastLoginDate?: Date;

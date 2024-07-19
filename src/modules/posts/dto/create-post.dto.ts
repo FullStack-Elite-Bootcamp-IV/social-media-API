@@ -13,6 +13,7 @@ export class CreatePostDto {
   @IsString()
   userId: UserEntity;
 
+  @IsNotEmpty()
   @IsString()
   title?: string;
 

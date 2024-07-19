@@ -1,6 +1,16 @@
 // here you must to create a follower dto
+import { IsNotEmpty, IsString, IsDate } from 'class-validator';
 export class CreateFollowerDto {
-    // followerId: string;
-    // followingId: string;
-  }
+  @IsString()
+  @IsNotEmpty()
+  followerId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  followingId: string;
+
+  @IsDate()
+  @IsNotEmpty()
+  followDate: Date;
+}
   

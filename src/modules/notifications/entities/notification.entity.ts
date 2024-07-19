@@ -8,16 +8,24 @@ export class NotificationEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({type: 'varchar', length: 20})
-    type : string;
-
-    @Column({type: 'timestamp', default: ()=> 'CURRENT_TIMESTAMP'})
-    notificationDate: Date;
-
-    @Column({type: 'varchar', length:100, unique: true})
+    @Column({type: 'varchar', length:100, nullable: false})
     emisorUser: string;
-
+    
     @ManyToOne(()=>UserEntity, (user) => user.id)
     receptorUser:UserEntity;
 
+    @Column({type: 'boolean', default: false})
+    status: boolean;
+
+    @Column({type: 'enum' , enum: ['messages', 'likes', 'comments','follows'], nullable: false})
+    action: Enumerator;
+
+    @Column({type: 'varchar', length: 100, nullable: false})
+    title: string;
+
+    @Column({type: 'varchar', length:100, nullable: false})
+    description: string; 
+    
+    @Column({type: 'timestamp', default: ()=> 'CURRENT_TIMESTAMP'})
+    notificationDate: Date;
 }

@@ -1,6 +1,28 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CommentsEntity } from '../entities/comment.entity';
+import {
+  IsString,
+  IsNotEmpty,
+} from 'class-validator';
 
-export class CommentsDto extends PartialType(CommentsEntity) {
+ // here you must to create a post dto
 
+
+export class CreateCommentDTO  {
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  postId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  content: string;
+
+}
+
+export class DeleteCommentDTO{
+  @IsNotEmpty()
+  @IsString()
+  Id:string;
 }

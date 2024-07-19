@@ -14,9 +14,6 @@ export class PostsController {
   // @Get(':id')
   // findPostById(@Param('id') postId: string): Promise<PostEntity> { ... }
 
-  // @Get()
-  // findAllPosts(): Promise<PostEntity[]> { ... }
-
   // @Put(':id')
   // updatePost(@Param('id') postId: string, @Body() updatePostDto: CreatePostDto): Promise<PostEntity> { ... }
 

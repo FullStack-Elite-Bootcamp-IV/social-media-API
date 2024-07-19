@@ -13,9 +13,6 @@ export class MessagesController {
   // @Get()
   // findAllMessages(): Promise<MessageEntity[]> { ... }
 
-  // @Put(':id')
-  // updateMessage(@Param('id') messageId: string, @Body() updateMessageDto: CreateMessageDto): Promise<MessageEntity> { ... }
-
   // @Delete(':id')
   // deleteMessage(@Param('id') messageId: string): Promise<void> { ... }
 

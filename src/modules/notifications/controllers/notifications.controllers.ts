@@ -10,12 +10,6 @@ export class NotificationsController {
   // @Post()
   // createNotification(@Body() createNotificationDto: CreateNotificationDto): Promise<NotificationEntity> { ... }
 
-  // @Get()
-  // findAllNotifications(): Promise<NotificationEntity[]> { ... }
-
-  // @Put(':id')
-  // updateNotification(@Param('id') notificationId: string, @Body() updateNotificationDto: CreateNotificationDto): Promise<NotificationEntity> { ... }
-
   // @Delete(':id')
   // deleteNotification(@Param('id') notificationId: string): Promise<void> { ... }
 

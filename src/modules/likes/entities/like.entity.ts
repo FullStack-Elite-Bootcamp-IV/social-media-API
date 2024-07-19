@@ -8,10 +8,10 @@ export class LikeEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({type: 'varchar', length: 100})
+    @Column({type: 'varchar'})
     postId : string;
 
-    @Column({type: 'varchar', length: 100})
+    @Column({type: 'varchar'})
     userId : string;
 
     @Column({type: 'timestamp', default: ()=> 'CURRENT_TIMESTAMP'})

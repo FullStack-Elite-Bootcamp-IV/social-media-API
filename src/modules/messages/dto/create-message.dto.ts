@@ -1,9 +1,28 @@
-// here define the create message dto
-// this only is a dates to create a message, you must to add the senderId and receiverId for example
+// here you must to create a post dto
+import {
+  IsString,
+  IsDate,
+  IsNotEmpty
+} from 'class-validator';
 
 export class CreateMessageDto {
-    // senderId: string;
-    // receiverId: string;
-    // content: string;
+
+    @IsString()
+    @IsNotEmpty()
+    senderId: string;
+
+    @IsString()
+    @IsNotEmpty()
+    chatId: string;
+
+    @IsString()
+    @IsNotEmpty()
+    content: string;
+
+    @IsString()
+    media: string;
+
+    @IsDate()
+    creationTime: Date;
   }
   

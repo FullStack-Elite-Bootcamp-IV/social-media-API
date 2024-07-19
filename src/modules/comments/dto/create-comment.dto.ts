@@ -6,7 +6,7 @@ import {
  // here you must to create a post dto
 
 
-export class createCommentDTO {
+export class CreateCommentDTO  {
   @IsNotEmpty()
   @IsString()
   userId: string;
@@ -19,4 +19,10 @@ export class createCommentDTO {
   @IsString()
   content: string;
 
+}
+
+export class DeleteCommentDTO{
+  @IsNotEmpty()
+  @IsString()
+  Id:string;
 }

@@ -15,14 +15,32 @@ export class ChatService {
 
   // Function to create a new chat
    createChat(createChatDto: CreateChatDto): Promise<ChatEntity> { 
+    try{
+      if(!createChatDto){
+        throw new Error('Chat not created, please complete the form')
+      }
       const chat = this.chatRepository.create(createChatDto)
-
+      if(!chat) throw new Error('Chat not created')
       return this.chatRepository.save(chat)
+    }
+    catch(error){
+      throw error
+    }
   }
 
   // Function to find a chat by ID
   findChatById(chatId: string): Promise<ChatEntity> { 
-    return this.chatRepository.findOneBy({ id: chatId });
+    try{
+      if(!chatId) throw new Error('Chat not found');
+
+      const chat = this.chatRepository.findOneBy({ id: chatId });
+  
+      if(!chat) throw new Error('Chat not found');
+      return chat;
+    }
+    catch(error){
+      throw error
+    }
   }
 
   // Function to delete a chat by ID

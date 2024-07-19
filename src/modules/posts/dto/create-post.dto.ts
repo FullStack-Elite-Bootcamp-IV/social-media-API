@@ -22,7 +22,6 @@ export class CreatePostDto {
   @IsString()
   description: string;
 
-  @IsNotEmpty()
   @IsString()
   media: string;
 

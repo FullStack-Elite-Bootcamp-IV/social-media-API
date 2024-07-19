@@ -35,8 +35,8 @@ export class ChatService {
     return this.chatRepository.find({
       where: [
         { user1Id: userId },
-        { user2Id: userId }
-      ]
+        { user2Id: userId },
+      ],
     });
   }
 }

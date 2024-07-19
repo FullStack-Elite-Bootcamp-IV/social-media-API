@@ -20,7 +20,7 @@ export class NotificationsService {
       createNotificationDto;
     try {
       if (!emisorUser || !receptorUser) {
-        throw new HttpException('Forbidden',HttpStatus.FORBIDDEN);
+        throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
       }
       const notification = this.notificationRepository.create({
         emisorUser,
@@ -33,7 +33,7 @@ export class NotificationsService {
       await this.notificationRepository.save(notification);
       return notification;
     } catch (err) {
-      throw new Error(err);
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -41,11 +41,11 @@ export class NotificationsService {
   async deleteNotification(notificationId: string): Promise<void> {
     try {
       if (!notificationId) {
-        throw new HttpException('Not found',HttpStatus.NOT_FOUND);
+        throw new HttpException('Not found', HttpStatus.NOT_FOUND);
       }
       await this.notificationRepository.delete(notificationId);
     } catch (err) {
-      throw new Error(err);
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -53,11 +53,11 @@ export class NotificationsService {
   async findNotificationsByUser(userId: UserEntity): Promise<void> {
     try {
       if (!userId) {
-        throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+        throw new HttpException('Not found', HttpStatus.NOT_FOUND);
       }
       await this.notificationRepository.findOneByOrFail(userId);
     } catch (err) {
-      throw new HttpException('Bad Request',HttpStatus.BAD_REQUEST);
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
   }
 }

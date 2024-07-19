@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Param,
-  Body,
-} from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import { NotificationsService } from '../services/notifications.service';
 import { CreateNotificationDto } from '../dto/create-notification.dto';
 import { NotificationEntity } from '../entities/notification.entity';

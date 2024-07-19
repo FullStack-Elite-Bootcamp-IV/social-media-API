@@ -1,4 +1,4 @@
-/* import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import { FollowersService } from '../services/followers.service';
 import { CreateFollowerDto } from '../dto/create-follower.dto';
 import { FollowersEntity } from '../entities/followers.entity';
@@ -48,4 +48,3 @@ export class FollowersController {
     }
   }
 }
- */

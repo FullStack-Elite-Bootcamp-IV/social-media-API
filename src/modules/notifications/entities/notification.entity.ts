@@ -16,10 +16,11 @@ export class NotificationEntity {
     id: string; 
 
     @Column({type: 'varchar', length:100, nullable: false})
-    emisorUser: string;
+    emisorUser: UserEntity;
     
     @ManyToOne(()=>UserEntity, (user) => user.id)
     receptorUser:UserEntity;
+
 
     @Column({type: 'boolean', default: false})
     status: boolean;

@@ -20,11 +20,11 @@ export class commentsEntity {f
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date; 
 
-  @ManyToOne(() => UserEntity, user => user.comments)
+  @ManyToOne(() => UserEntity, user => user.id)
   @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   user: UserEntity;
 
-  @ManyToOne(() => PostEntity, post => post.comments)
+  @ManyToOne(() => PostEntity, post => post.id)
   @JoinColumn({ name: 'postId', referencedColumnName: 'id' })
   post: PostEntity;
 }

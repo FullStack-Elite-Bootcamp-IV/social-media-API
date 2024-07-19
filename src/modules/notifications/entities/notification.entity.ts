@@ -1,7 +1,6 @@
 // src/modules/notifications/entities/notification.entity.ts
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';// if need more entity you can add here
 import { UserEntity } from '../../users/entities/user.entity';
-import { Timestamp } from 'rxjs';
 
 @Entity('notifications')
 export class NotificationEntity {
@@ -18,7 +17,7 @@ export class NotificationEntity {
     @Column({type: 'varchar', length:100, unique: true})
     emisorUser: string;
 
-    @ManyToOne(()=>UserEntity, (user) => user.notifications);
+    @ManyToOne(()=>UserEntity, (user) => user.id)
     receptorUser:UserEntity;
 
 }

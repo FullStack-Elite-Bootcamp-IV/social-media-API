@@ -1,9 +1,7 @@
 import {
   Entity,
-  PrimaryColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
+  PrimaryGeneratedColumn
 } from 'typeorm';
 
 @Entity('User')

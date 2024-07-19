@@ -21,8 +21,3 @@ export class CreateCommentDTO  {
 
 }
 
-export class DeleteCommentDTO{
-  @IsNotEmpty()
-  @IsString()
-  Id:string;
-}

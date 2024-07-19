@@ -1,13 +1,13 @@
-import { Entity, PrimaryColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
 import { PostEntity } from '../../posts/entities/post.entity'; 
 
 @Entity('comments')
 export class CommentsEntity {
-  @PrimaryColumn({ type: 'varchar', length: 100 })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar'})
+  @Column({ type: 'varchar' })
   userId: string;
 
   @Column({ type: 'varchar' })
@@ -17,11 +17,11 @@ export class CommentsEntity {
   content: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date; 
+  createdAt: Date;
 
-  @ManyToOne(() => UserEntity, user => user.id)
+  @ManyToOne(() => UserEntity, (user) => user.id)
   user: UserEntity[];
 
-  @ManyToOne(() => PostEntity, post => post.id)
+  @ManyToOne(() => PostEntity, (post) => post.id)
   post: PostEntity[];
 }

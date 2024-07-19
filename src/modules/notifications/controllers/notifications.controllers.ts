@@ -7,6 +7,7 @@ import { UserEntity } from 'src/modules/users/entities/user.entity';
 export class NotificationsController {
   constructor(private notificationsService: NotificationsService) {}
 
+  // create a notification
   @Post()
   createNotification(
     @Body() createNotificationDto: CreateNotificationDto,
@@ -14,13 +15,16 @@ export class NotificationsController {
     return this.notificationsService.createNotification(createNotificationDto);
   }
 
+  //delete a notification by the notification id
   @Delete(':id')
   deleteNotification(@Param('id') notificationId: string): Promise<void> {
     return this.notificationsService.deleteNotification(notificationId);
   }
-
+  // find a notification by the user id
   @Get('user/:userId')
-  findNotificationsByUser(@Param('userId') userId: UserEntity): Promise<void> {
-    return this.notificationsService.findNotificationsByUser(userId);
+  async findNotificationsByUser(
+    @Param('userId') userId: UserEntity,
+  ): Promise<void> {
+    await this.notificationsService.findNotificationsByUser(userId);
   }
 }

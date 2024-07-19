@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, DeleteResult, Repository } from 'typeorm'; 
+import { DeleteResult, Repository } from 'typeorm'; 
 import { FavouritesEntity } from '../entities/favourites.entity';
 import { FavouritesDto } from '../dto/create-favourite.dto';
 

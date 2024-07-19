@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateFollowerDto } from '../dto/create-follower.dto';
 import { FollowersEntity } from '../entities/followers.entity';
+import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 
 @Injectable()
 export class FollowersService {
@@ -16,7 +17,7 @@ export class FollowersService {
   async createFollower(createFollowerDto: CreateFollowerDto): Promise<FollowersEntity> { 
     try{
       if(!createFollowerDto) {
-        throw new Error('please provide all fields');
+        throw new HttpErrorByCode[400]('please provide all fields');
       };
       const follower =  this.followerRepository.create(createFollowerDto);
       if(!follower) {
@@ -34,7 +35,7 @@ export class FollowersService {
   async findFollowingsById(followerId: FollowersEntity['follower']): Promise<String[]> {
     try{
       if(!followerId) {
-        throw new Error('please provide all fields');
+        throw new HttpErrorByCode[400]('please provide all fields');
       };
       const followings = await this.followerRepository.find({ where: { follower: followerId } });
     
@@ -55,7 +56,7 @@ export class FollowersService {
   async findFollowersByUser(followingID: FollowersEntity['following']): Promise<String[]> { 
     try{
       if(!followingID) {
-        throw new Error('please provide all fields');
+        throw new HttpErrorByCode[400]('please provide all fields');
       };
       const followers = await this.followerRepository.find({ where: { following: followingID } });
       if(!followers) {
@@ -75,7 +76,7 @@ export class FollowersService {
   async deleteFollower(followerId: string): Promise<string> { 
     try{
       if(!followerId) {
-        throw new Error('please provide all fields');
+        throw new HttpErrorByCode[400]('please provide all fields');
       };
       const follower = await this.followerRepository.findOneBy({id: followerId});
       if(!follower) {

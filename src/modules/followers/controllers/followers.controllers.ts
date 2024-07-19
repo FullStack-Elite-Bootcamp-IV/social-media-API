@@ -9,42 +9,24 @@ export class FollowersController {
 
    @Post()
   createFollower(@Body() createFollowerDto: CreateFollowerDto): Promise<FollowersEntity> {
-   try{
     return this.followersService.createFollower(createFollowerDto);
-   }
-   catch(err){
-    throw new Error(err);
-   }
   }
 
   // here we can to find a users that i am following
   @Get('followings/:followerId')
    findFollowingsById(@Param('followerId') followerId: string): Promise<String[]> { 
-      try{
-        return this.followersService.findFollowingsById(followerId);
-      }
-      catch(err){
-        throw new Error(err);
-      }
+      return this.followersService.findFollowingsById(followerId);
     }
  
   // here we can find all followers that follow me 
    @Get('followers/:followingId')
   findFollowersByUser(@Param('followingId') followingId: string): Promise<String[]> { 
-    try {
       return this.followersService.findFollowersByUser(followingId);
-    } catch (err) {
-      throw new Error(err);
-    }
   }
 
 
   @Delete(':followerId') // is like unfollow 
   deleteFollower(@Param('followerId') followerId: string): Promise<String> {
-    try {
       return this.followersService.deleteFollower(followerId);
-    } catch (err) {
-      throw new Error(err);
-    }
   }
 }

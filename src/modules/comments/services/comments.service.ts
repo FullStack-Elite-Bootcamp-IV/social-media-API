@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm'; 
 import { CommentsEntity } from '../entities/comment.entity';
-import { CreateCommentDTO, DeleteCommentDTO } from '../dto/create-comment.dto';
+import { CreateCommentDTO } from '../dto/create-comment.dto';
 
 @Injectable()
 export class CommentsService {
@@ -34,8 +34,8 @@ export class CommentsService {
   // third get the comments
   // the name is getComments and the parameter is CommentsDto
 
-  async getComments(): Promise<CommentsEntity[]> {
-    return this.commentsRepository.find();
+  async getCommentsbyID(postId: string): Promise<CommentsEntity[]> {
+    return this.commentsRepository.find({ where: { postId }});
   }
 
   //update a comment

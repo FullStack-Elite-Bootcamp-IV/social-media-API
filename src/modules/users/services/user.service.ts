@@ -72,18 +72,19 @@ export class UserService {
       console.log(error)
     }
   }
-
-  async deleteUser(id: string) {
+  
+  async setDarkMode(userDto: UserDto) {
     try {
-      return await this.userRepository.delete(id)
+      userDto.darkMode = !userDto.darkMode
+      await this.userRepository.update({ id: userDto.id }, { darkMode: userDto.darkMode });
     } catch (error) {
       console.log(error)
     }
   }
-
-  async setDarkMode(userDto: UserDto) {
+  
+  async deleteUser(id: string) {
     try {
-      
+      return await this.userRepository.delete(id)
     } catch (error) {
       console.log(error)
     }

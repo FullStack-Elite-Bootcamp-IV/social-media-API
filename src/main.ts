@@ -1,29 +1,26 @@
-// make the app
+// src/main.ts
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ConfigService } from '@nestjs/config';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
-import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  const config = new DocumentBuilder()
-    .setTitle('Social Network Backend')
-    .setDescription('The Social Network API description')
-    .setVersion('1.0')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-  app.useGlobalPipes(new ValidationPipe());
+  const app = await NestFactory.create(AppModule);
 
-  const configService = app.get(ConfigService);
-  const port = configService.get('PORT');
+  // Configuración global de prefijos de rutas
+  app.setGlobalPrefix('api');
 
-  await app.listen(port);
-  Logger.log(`Application listening on port ${port}`);
+  // Usar un ValidationPipe global para validar DTOs
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true, // elimina propiedades no definidas en el DTO
+    forbidNonWhitelisted: true, // lanza un error si hay propiedades no definidas en el DTO
+    transform: true, // transforma los objetos entrantes a sus tipos definidos en el DTO
+  }));
+
+  // CORS (Cross-Origin Resource Sharing) habilitado
+  app.enableCors();
+
+  await app.listen(3000);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 
-export default bootstrap(); 
+bootstrap();

@@ -1,15 +1,14 @@
-// I need that yoo make all aplication
-
 import { Module } from '@nestjs/common';
-import { ChatController } from './controllers/chats.controllers';
-import { ChatService } from './services/chat.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ChatService } from './services/chats.service';
+import { ChatController } from './controllers/chats.controller';
 import { ChatEntity } from './entities/chat.entity';
-import { UserModule } from '../users/users.module';
+import { MessageEntity } from '../messages/entities/message.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([ChatEntity]), UserModule],
-    controllers: [ChatController],
-    providers: [ChatService],
+  imports: [TypeOrmModule.forFeature([ChatEntity, MessageEntity])],
+  controllers: [ChatController],
+  providers: [ChatService],
+  exports: [ChatService],
 })
 export class ChatModule {}

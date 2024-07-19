@@ -1,3 +1,5 @@
 // here you must to create a post dto
-
-import { PartialType } from '@nestjs/mapped-types';
+export class CreatePostDto {
+    // here you must to create a post dto whit the properties based on the data base
+  }
+  

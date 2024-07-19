@@ -1,21 +1,13 @@
-// user module 
-import { UserService } from '../users/services/user.service';
-import { UsersController } from '../users/controllers/users.controller';
-import { UserEntity } from '../users/entities/user.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt'; 
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersService } from './services/users.service';
+import { UsersController } from './controllers/users.controller';
+import { UserEntity } from './entities/user.entity';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([UserEntity]),
-        JwtModule.register({}),
-        ConfigModule
-    ],
-    controllers: [UsersController],
-    providers: [UserService, JwtService],
-    exports: [UserService]
+  imports: [TypeOrmModule.forFeature([UserEntity])],
+  controllers: [UsersController],
+  providers: [UsersService],
+  exports: [UsersService],
 })
-export class UserModule {}
+export class UsersModule {}

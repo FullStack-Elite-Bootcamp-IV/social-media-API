@@ -20,7 +20,7 @@ export class CreateMessageDto {
     content: string;
 
     @IsString()
-    media: string;
+    media?: string;
 
     @IsDate()
     creationTime: Date;

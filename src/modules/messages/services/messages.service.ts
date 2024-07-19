@@ -17,9 +17,6 @@ export class MessagesService {
   // Function to find all messages
   // findAllMessages(): Promise<MessageEntity[]> { ... }
 
-  // Function to update a message by ID
-  // updateMessage(messageId: string, updateMessageDto: CreateMessageDto): Promise<MessageEntity> { ... }
-
   // Function to delete a message by ID
   // deleteMessage(messageId: string): Promise<void> { ... }
 

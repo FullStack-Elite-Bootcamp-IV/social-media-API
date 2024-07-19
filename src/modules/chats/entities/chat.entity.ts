@@ -6,10 +6,10 @@ export class ChatEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'text'})
   user1Id: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'text'})
   user2Id: string;
 
   @Column({ type: 'timestamp', nullable: true })

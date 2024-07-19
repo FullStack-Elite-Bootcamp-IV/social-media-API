@@ -63,7 +63,7 @@ export class UserService {
     }
   }
 
-  async modifyProfile(userDto: UserDto) {
+  async editProfile(userDto: UserDto) {
     try {
       const user = this.userRepository.create(userDto)
       return await this.userRepository.save(user)

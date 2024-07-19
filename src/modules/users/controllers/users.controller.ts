@@ -1,39 +1,52 @@
-// // here we must create the user controller
-// import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-// import { UsersService } from '../services/user.service';
-// import { CreateUserDto } from '../dto/create-user.dto';
-// import { UpdateUserDto } from '../dto/update-user.dto';
-// import path from 'path';
+// here we must create the user controller
+ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { UserService } from '../services/user.service';
+ import { UserDto } from '../dto/create-user.dto';
+ import { UserEntity } from '../entities/user.entity';
+ import path from 'path';
 
-// @Controller('users')
-// export class UsersController {
-//     constructor(private readonly usersService: UsersService) {}
+ @Controller('users')
+ export class UsersController {
+   constructor(private readonly UserService: UserService) {}
+   @Post('/register')
+   async createUser(@Body() UserDto: UserDto): Promise<UserEntity> {
+     return this.UserService.createUser(UserDto);
+   }
 
-//     @Post('/create')
-//     createUser() {
-//     }
+   /*@Get('/comment:id')
+  async getCommentById(@Param('id') postId: string): Promise<CommentsEntity[]> {
+    return this.CommentsService.getCommentsbyId(postId);
+  }*/
 
-//     @Get('/getuser')
-//     getuser(){
-//     }
+   @Get('/users')
+   getUsers(): Promise<UserEntity[]> {
+    try{
+      return this.UserService.getUsers();
+    }catch(e){
+      console.error(e)
+      throw new Error
+    }
+   }
 
-//     @Post('/login')
-//     loginUser() {
-//     }
+   @Get('/users:id')
+   getUserById(@Param('id') id: string): Promise<UserEntity> {
+     return this.UserService.getUserById(id);
+   }
 
-//     @Post('/logout')
-//     logoutUser() {
-//     }
+   @Get('/users/username')
+   getUserByUserName(@Param('username') id: string): Promise<UserEntity> {
+     return this.UserService.getUserById(id);
+   }
 
-//     @Post('/modifydarkmode')
-//     modifyDarkMode(){
-//     }
+   // @Post('/login')
+   // loginUser() {}
 
-//     @Patch('/modify')
-//     modifyUser() {
-//     }
+   @Post('/setDarkMode')
+   modifyDarkMode() {}
 
-//     @Delete('/delete')
-//     deleteUser() {
-//     }
-// }
+   @Patch('/editProfile')
+   modifyUser() {}
+
+   @Delete('/delete')
+   deleteUser() {}
+ }

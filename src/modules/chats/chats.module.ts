@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+/* import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatService } from './services/chats.service';
 import { ChatController } from './controllers/chats.controller';
@@ -12,3 +12,4 @@ import { MessageEntity } from '../messages/entities/message.entity';
   exports: [ChatService],
 })
 export class ChatModule {}
+ */

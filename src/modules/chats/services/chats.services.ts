@@ -1,4 +1,4 @@
-// src/modules/chat/services/chat.service.ts
+/* // src/modules/chat/services/chat.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -24,3 +24,4 @@ export class ChatService {
   // Function to find all chats by a specific user
   // findChatsByUser(userId: string): Promise<ChatEntity[]> { ... }
 }
+ */

@@ -1,10 +1,10 @@
-import { Entity, PrimaryColumn, Column, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne } from 'typeorm';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { PostEntity } from 'src/modules/posts/entities/post.entity';
 
 
 @Entity('comments')
-export class commentsEntity {f
+export class CommentsEntity {
   @PrimaryColumn({ type: 'varchar', length: 100 })
   id: string;
 

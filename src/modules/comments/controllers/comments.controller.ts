@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CommentsService } from '../services/chats.services';
+import { Controller, Get, Post, Patch, Param, Delete } from '@nestjs/common';
+import { CommentsService } from '../services/comments.service';
 
-@Controller('chats')
-export class chatsController {
+@Controller('comments')
+export class CommentsController {
     constructor(private readonly CommentsService: CommentsService) {}
 
     @Post('/create')
@@ -15,7 +15,7 @@ export class chatsController {
 
     }
 
-    @Get('/comments')
+    @Get('/comment')
     GetComments(){
         
     }

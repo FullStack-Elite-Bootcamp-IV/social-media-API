@@ -21,10 +21,8 @@ export class commentsEntity {f
   createdAt: Date; 
 
   @ManyToOne(() => UserEntity, user => user.id)
-  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
-  user: UserEntity;
+  user: UserEntity[];
 
   @ManyToOne(() => PostEntity, post => post.id)
-  @JoinColumn({ name: 'postId', referencedColumnName: 'id' })
-  post: PostEntity;
+  post: PostEntity[];
 }

@@ -5,16 +5,16 @@ import { PostEntity } from '../../posts/entities/post.entity';
 
 @Entity('likes')
 export class LikeEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
+    @Column({type: 'varchar', length: 100})
     postId : string;
 
-    @Column()
+    @Column({type: 'varchar', length: 100})
     userId : string;
 
-    @Column()
+    @Column({type: 'timestamp', default: ()=> 'CURRENT_TIMESTAMP'})
     creationDate: Date;
 
     @ManyToOne(type => PostEntity, post => post.likes)

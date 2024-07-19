@@ -34,7 +34,7 @@ export class CommentsService {
   // third get the comments
   // the name is getComments and the parameter is CommentsDto
 
-  async getCommentsbyID(postId: string): Promise<CommentsEntity[]> {
+  async getCommentsbyId(postId: string): Promise<CommentsEntity[]> {
     return this.commentsRepository.find({ where: { postId }});
   }
 

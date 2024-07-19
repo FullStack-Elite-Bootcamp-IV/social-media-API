@@ -14,10 +14,20 @@ export class FavouritesService {
         // IN this service i need a function to add a post in favourite
     // the name is addFavourite and the parameter is FavouritesDto
 
-    public async addFavourite(addFavourite: FavouritesDto): Promise<FavouritesEntity> {
+
+//createPost(createPostDto: CreatePostDto): Promise<PostEntity> {
+   // try {
+      //const post = this.postRepository.create(createPostDto)
+    //  return this.postRepository.save(post)
+   // } catch (error) {
+    //  console.log(error)
+  //  }
+//  }
+
+    public async addFavourite(FavouritesDto: FavouritesDto): Promise<FavouritesEntity> {
         try {
-         //const xd = await this.favouritesRepository.create(addFavourite)
-         //return this.favouritesRepository.save(xd)
+         const favourite = this.favouritesRepository.create(FavouritesDto)
+         return this.favouritesRepository.save(favourite)
         } catch (error) {
           throw new Error(error);
         }
@@ -42,7 +52,12 @@ export class FavouritesService {
     // third get a favourites Post
     // the name is getFavourites 
 
-    async getFavourites () {
+    async getFavourites (userId: FavouritesDto['userId']):Promise<FavouritesEntity[]> {
+      try {
+        return this.favouritesRepository.find({where: { userId: userId }})
+      } catch (error) {
+        throw new Error(error);
+      }
     }
 
 }

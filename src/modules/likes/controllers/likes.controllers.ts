@@ -1,6 +1,6 @@
 // src/modules/likes/controllers/likes.controller.ts
 import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
-import { LikesService } from '../services/likes.service';
+import { LikesService } from '../services/likes.services';
 import { CreateLikeDto } from '../dto/create-like.dto';
 import { LikeEntity } from '../entities/like.entity';
 
@@ -8,8 +8,8 @@ import { LikeEntity } from '../entities/like.entity';
 export class LikesController {
   constructor(private readonly likesService: LikesService) {}
 
-  // @Post()
-  // createLike(@Body() createLikeDto: CreateLikeDto): Promise<LikeEntity> { ... }
+  /* @Post("")
+  createLike(@Body() createLikeDto: CreateLikeDto): Promise<LikeEntity> { ... } */
 
   // @Get()
   // findAllLikes(): Promise<LikeEntity[]> { ... }

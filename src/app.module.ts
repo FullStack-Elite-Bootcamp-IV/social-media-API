@@ -1,57 +1,50 @@
-// src/app.module.ts
-import Joi from 'joi';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './modules/auth/auth.module';
-import { UsersModule } from './modules/users/user.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as Joi from 'joi';
 import { PostsModule } from './modules/posts/posts.module';
-import { CommentsModule } from './modules/comments/comments.module';
 import { LikesModule } from './modules/likes/likes.module';
 import { FavouritesModule } from './modules/favourites/favourites.module';
 import { MessagesModule } from './modules/messages/messages.module';
-import { ChatModule } from './modules/chats/chats.module';
 import { FollowersModule } from './modules/followers/followers.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
-import { DatabaseConfig } from './config/database.config';
-import { JwtConfig } from './config/jwt.config';
-import { SocketConfig } from './config/socket.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '../.env',
+      envFilePath: '.env',
+      validationSchema: Joi.object({
+        DB_HOST: Joi.string().required(),
+        DB_PORT: Joi.number().required(),
+        DB_USER: Joi.string().required(),
+        DB_PASSWORD: Joi.string().required(),
+        DB_NAME: Joi.string().required(),
+        /* JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRATION_TIME: Joi.string().required(), */
+        PORT: Joi.number(),
+      }),
     }),
-    ConfigModule.forRoot({
-      validationSchema: Joi?.object({
-        JWT_SECRET: Joi.string().required(),
-        JWT_EXPIRATION_TIME: Joi.string().required(),
-        POSTGRES_HOST: Joi?.string().required(),
-        POSTGRES_PORT: Joi?.number().required(),
-        POSTGRES_USER: Joi?.string().required(),
-        POSTGRES_PASSWORD: Joi?.string().required(),
-        POSTGRES_DB: Joi?.string().required(),
-        PORT: Joi?.number(),
-      })
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USER'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_NAME'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: true, // Cambia esto a false en producción
+      }),
     }),
-    AuthModule,
-    UsersModule,
     PostsModule,
-    CommentsModule,
     LikesModule,
     FavouritesModule,
     MessagesModule,
-    ChatModule,
     FollowersModule,
     NotificationsModule,
-    JwtConfig,
-    SocketConfig,
   ],
 })
-
 export class AppModule {}
-
-
-
-

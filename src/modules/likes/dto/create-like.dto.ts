@@ -1,5 +1,18 @@
-// here you must to create a like dto
+import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 export class CreateLikeDto {
-    // here you must to create a like dto
-  }
-  
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  postId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
+
+  @IsDate()
+  @IsNotEmpty()
+  creationDate: Date;
+}

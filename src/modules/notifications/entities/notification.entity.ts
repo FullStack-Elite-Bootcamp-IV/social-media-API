@@ -11,29 +11,28 @@ export enum NotificationAction {
 
 @Entity('notifications')
 export class NotificationEntity {
-    // here define the notification entity
-    @PrimaryGeneratedColumn('uuid')
-    id: string; 
+  // here define the notification entity
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({type: 'varchar', length:100, nullable: false})
-    emisorUser: UserEntity;
-    
-    @ManyToOne(()=>UserEntity, (user) => user.id)
-    receptorUser:UserEntity;
+  @Column({ type: 'varchar', length: 100, nullable: false })
+  emisorUser: UserEntity['id'];
 
+  @ManyToOne(() => UserEntity, (user) => user.id)
+  receptorUser: UserEntity['id'];
 
-    @Column({type: 'boolean', default: false})
-    status: boolean;
+  @Column({ type: 'boolean', default: false })
+  status: boolean;
 
-    @Column({ type: 'enum', enum: NotificationAction, nullable: false })
-    action: NotificationAction;
+  @Column({ type: 'enum', enum: NotificationAction, nullable: false })
+  action: NotificationAction;
 
-    @Column({type: 'varchar', length: 100, nullable: false})
-    title: string;
+  @Column({ type: 'varchar', length: 100, nullable: false })
+  title: string;
 
-    @Column({type: 'varchar', length:100, nullable: false})
-    description: string; 
-    
-    @Column({type: 'timestamp', default: ()=> 'CURRENT_TIMESTAMP'})
-    notificationDate: Date;
+  @Column({ type: 'varchar', length: 100, nullable: false })
+  description: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  notificationDate: Date;
 }

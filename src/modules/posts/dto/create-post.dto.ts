@@ -2,44 +2,26 @@
 import {
   IsString,
   IsBoolean,
-  IsDate,
-  IsNumber,
   IsNotEmpty,
 } from 'class-validator';
+import { UserEntity } from 'src/modules/users/entities/user.entity';
 
 export class CreatePostDto {
   // here you must to create a post dto whit the properties based on thec data base
-  @IsString()
-  @IsNotEmpty()
-  id: string;
 
   @IsNotEmpty()
   @IsString()
-  userId: string;
-
-  @IsNotEmpty()
-  @IsString()
-  title: string;
+  userId: UserEntity;
 
   @IsString()
-  description: string;
+  title?: string;
 
   @IsString()
-  media: string;
+  description?: string;
 
-  @IsNotEmpty()
+  @IsString()
+  media?: string;
+
   @IsBoolean()
-  isPublic: boolean;
-
-  @IsNotEmpty()
-  @IsDate()
-  publicationDate: Date;
-
-  @IsNotEmpty()
-  @IsDate()
-  updateDate: Date;
-
-  @IsNotEmpty()
-  @IsNumber()
-  likes: number;
+  isPublic?: boolean;
 }

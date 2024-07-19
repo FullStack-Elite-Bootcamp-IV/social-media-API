@@ -14,6 +14,7 @@ export class NotificationEntity {
     @ManyToOne(()=>UserEntity, (user) => user.id)
     receptorUser:UserEntity;
 
+    
     @Column({type: 'boolean', default: false})
     status: boolean;
 

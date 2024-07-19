@@ -1,15 +1,15 @@
 // create a notification dto
 
-import { IsNotEmpty, IsString, IsDate, IsBoolean, IsNumber } from "class-validator";
+import { IsNotEmpty, IsString, IsDate, IsBoolean, IsNumber, IsUUID } from "class-validator";
 
 export class CreateNotificationDto {
   @IsNotEmpty()
-  @IsString()
+  @IsUUID()
   id?: string;
 
   @IsNotEmpty()
   @IsString()
-  emisorUser: string;
+  emisorUser: string; // FK
 
   @IsNotEmpty()
   @IsString()

@@ -20,7 +20,7 @@ export class LikesController {
     status: 400,
     description: 'Bad request.'
   })
-   @Post()
+   @Post('create')
   createLike(@Body() createLikeDto: CreateLikeDto): Promise<LikeEntity> { 
     return this.likesService.createLike(createLikeDto);
    } 
@@ -37,7 +37,7 @@ export class LikesController {
     status: 404,
     description: 'Likes not found.'
   })
-  @Get()
+  @Get('all')
   findAllLikes(): Promise<LikeEntity[]> {
     return this.likesService.findAllLikes();
   }

@@ -9,6 +9,10 @@ export class CreateChatDto {
 
     @IsString()
     @IsNotEmpty()
+    chatId: string;
+
+    @IsString()
+    @IsNotEmpty()
     user1Id: string;
 
     @IsString()

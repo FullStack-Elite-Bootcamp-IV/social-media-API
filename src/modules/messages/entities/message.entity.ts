@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';// if need more entity you can add here 
 import { UserEntity } from '../../users/entities/user.entity';
-import { ChatEntity } from 'src/modules/chats/entities/chat.entity';
+import { ChatEntity } from '../../chats/entities/chat.entity';
 
 @Entity('messages')
 export class MessageEntity {

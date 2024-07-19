@@ -1,17 +1,16 @@
 import { Entity, PrimaryColumn, Column, JoinColumn, ManyToOne } from 'typeorm';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
-import { PostEntity } from 'src/modules/posts/entities/post.entity';
-
+import { UserEntity } from '../../users/entities/user.entity';
+import { PostEntity } from '../../posts/entities/post.entity'; 
 
 @Entity('comments')
-export class commentsEntity {f
+export class commentsEntity {
   @PrimaryColumn({ type: 'varchar', length: 100 })
   id: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar'})
   userId: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar' })
   postId: string;
 
   @Column({ type: 'text' })

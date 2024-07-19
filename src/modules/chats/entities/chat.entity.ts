@@ -1,9 +1,9 @@
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
 
 @Entity('Chats')
 export class ChatEntity {
-  @PrimaryColumn({ type: 'varchar', length: 100 })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'varchar', length: 100 })

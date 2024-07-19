@@ -1,11 +1,11 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Entity, CreateDateColumn, ManyToOne } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
 import { PostEntity } from '../../posts/entities/post.entity';
 
 @Entity('Favourites')
 export class FavouritesEntity {
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
   creationDate: Date;
 
   @ManyToOne(() => UserEntity, (user) => user.id)

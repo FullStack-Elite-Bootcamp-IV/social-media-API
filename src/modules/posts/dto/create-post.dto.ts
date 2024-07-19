@@ -9,9 +9,6 @@ import {
 
 export class CreatePostDto {
   // here you must to create a post dto whit the properties based on thec data base
-  @IsString()
-  @IsNotEmpty()
-  id: string;
 
   @IsNotEmpty()
   @IsString()
@@ -21,9 +18,11 @@ export class CreatePostDto {
   @IsString()
   title: string;
 
+  @IsNotEmpty()
   @IsString()
   description: string;
 
+  @IsNotEmpty()
   @IsString()
   media: string;
 

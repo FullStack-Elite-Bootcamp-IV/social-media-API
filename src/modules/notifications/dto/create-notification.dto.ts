@@ -5,9 +5,6 @@ import { UserEntity } from "src/modules/users/entities/user.entity";
 import { NotificationEntity } from "../entities/notification.entity";
 
 export class CreateNotificationDto {
-  @IsNotEmpty()
-  @IsUUID()
-  id?: NotificationEntity;
 
   @IsNotEmpty()
   @IsString()
@@ -31,8 +28,4 @@ export class CreateNotificationDto {
   @IsNotEmpty()
   @IsString()
   description: string;
-  
-  @IsNotEmpty()
-  @IsDate()
-  notificationDate: Date; // TIMESTAMP
 }

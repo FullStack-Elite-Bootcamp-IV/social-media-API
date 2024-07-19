@@ -1,4 +1,6 @@
 import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { PostEntity } from 'src/modules/posts/entities/post.entity';
+import { UserEntity } from 'src/modules/users/entities/user.entity';
 export class CreateLikeDto {
   @IsString()
   @IsNotEmpty()
@@ -6,11 +8,11 @@ export class CreateLikeDto {
 
   @IsString()
   @IsNotEmpty()
-  postId: string;
+  postId: PostEntity;
 
   @IsString()
   @IsNotEmpty()
-  userId: string;
+  userId: UserEntity;
 
   @IsDate()
   @IsNotEmpty()

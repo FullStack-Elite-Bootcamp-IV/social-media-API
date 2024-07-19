@@ -5,17 +5,6 @@ import { UserEntity } from '../../users/entities/user.entity';
 @Entity('posts')
 export class PostEntity {
   // here define the post entity whit the properties based on the data base
-  /*
-    id VARCHAR(100) PRIMARY KEY,
-    userId VARCHAR(100) NOT NULL,
-    title VARCHAR(100) NOT NULL,
-    description TEXT,
-    media VARCHAR(100), 
-    isPublic BOOLEAN NOT NULL DEFAULT FALSE,
-    publicationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    likes INTEGER DEFAULT 0,
-  */
 
   @PrimaryGeneratedColumn('uuid')
   id: string;

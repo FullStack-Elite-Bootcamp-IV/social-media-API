@@ -37,16 +37,6 @@ export class PostsController {
     return this.postsService.unlikePost(postId, userId)
   }
 
-  // @Post(':id/favorite')
-  addToFavorites(@Param('id') postId: string, @Body('userId') userId: UserEntity): Promise<void> {
-    return this.postsService.addToFavorites(postId, userId)
-  }
-
-  // @Delete(':id/favorite')
-  removeFromFavorites(@Param('id') postId: string, @Body('userId') userId: UserEntity): Promise<void> {
-    return this.postsService.removeFromFavorites(postId, userId)
-  }
-
   // @Get('user/:userId')
   findPostsByUser(@Param('userId') userId: UserEntity): Promise<PostEntity[]> {
     return this.postsService.findPostsByUser(userId)

@@ -3,13 +3,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateFollowerDto } from '../dto/create-follower.dto';
-import { FollowerEntity } from '../entities/follower.entity';
+import { FollowersEntity } from '../entities/followers.entity';
 
 @Injectable()
 export class FollowersService {
   constructor(
-    @InjectRepository(FollowerEntity)
-    private readonly followerRepository: Repository<FollowerEntity>
+    @InjectRepository(FollowersEntity)
+    private readonly followerRepository: Repository<FollowersEntity>
   ) {}
 
   // Function to create a new follower
@@ -26,5 +26,4 @@ export class FollowersService {
 
   // Function to find followers by user ID
   // findFollowersByUser(userId: string): Promise<FollowerEntity[]> { ... }
-. }
 }

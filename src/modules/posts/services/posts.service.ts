@@ -14,9 +14,6 @@ export class PostsService {
     // Function to create a new post
     // createPost(createPostDto: CreatePostDto): Promise<PostEntity> { ... }
 
-    // Function to find all posts
-    // findAllPosts(): Promise<PostEntity[]> { ... }
-
     // Function to update a post by ID
     // updatePost(postId: string, updatePostDto: CreatePostDto): Promise<PostEntity> { ... }
 

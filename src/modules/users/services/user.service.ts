@@ -63,22 +63,18 @@ export class UserService {
     }
   }
 
-  async editProfile(userDto: UserDto) {
-    try {
-      const user = this.userRepository.create(userDto)
-      return await this.userRepository.save(user)
-    } catch (error) {
-      console.log(error)
-    }
+  async editProfile(userId: string, userDto: UserDto): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    Object.assign(user, userDto);
+    return await this.userRepository.save(user);
   }
   
-  async setDarkMode(userDto: UserDto) {
-    try {
-      userDto.darkMode = !userDto.darkMode
-      await this.userRepository.update({ id: userDto.id }, { darkMode: userDto.darkMode });
-    } catch (error) {
-      console.log(error)
-    }
+  async setDarkMode(userId: string): Promise<void> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    user.darkMode = !user.darkMode;
+    await this.userRepository.save(user);
   }
   
   async deleteUser(id: string) {

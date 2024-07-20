@@ -76,7 +76,7 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Delete a post'
   })
-  // @Delete(':id')
+  @Delete(':id')
   deletePost(@Param('id') postId: string): Promise<void> {
     return this.postsService.deletePost(postId);
   }
@@ -97,7 +97,7 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Like a post'
   })
-  // @Post(':id/like')
+  @Post(':id/like')
   likePost(@Param('id') postId: string, @Body('userId') userId: string): Promise<void> {
     return this.postsService.likePost(postId, userId)
   }
@@ -118,7 +118,7 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Unlike a post'
   })
-  // @Post(':id/unlike')
+  @Post(':id/unlike')
   unlikePost(@Param('id') postId: string, @Body('userId') userId: string): Promise<void> {
     return this.postsService.unlikePost(postId, userId)
   }
@@ -139,7 +139,7 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Find posts by user'
   })
-  // @Get('user/:userId')
+  @Get('user/:userId')
   findPostsByUser(@Param('userId') userId: UserEntity): Promise<PostEntity[]> {
     return this.postsService.findPostsByUser(userId)
   }
@@ -160,7 +160,7 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Find posts visible to user'
   })
-  // @Get('user/:userId/visible')
+  @Get('user/:userId/visible')
   findPostsVisibleToUser(@Param('userId') userId: UserEntity): Promise<PostEntity[]> {
     return this.postsService.findPostsVisibleToUser(userId)
   }

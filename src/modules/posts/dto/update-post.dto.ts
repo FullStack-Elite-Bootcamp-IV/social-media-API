@@ -2,9 +2,7 @@
 import {
   IsString,
   IsBoolean,
-  IsNotEmpty,
 } from 'class-validator';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
 
 export class UpdatePostDto {
   // here you must to create a post dto whit the properties based on thec data base

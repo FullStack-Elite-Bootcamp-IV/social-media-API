@@ -5,6 +5,7 @@ import { CreatePostDto } from '../dto/create-post.dto';
 import { PostEntity } from '../entities/post.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { ApiResponse, ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { UpdatePostDto } from '../dto/update-post.dto';
 
 @ApiTags('Posts')
 @Controller('posts')

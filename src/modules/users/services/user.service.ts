@@ -17,8 +17,10 @@ export class UserService {
 
   async createUser(userDto: UserDto) {
     try {
-      const userEmail = this.userRepository.findOne({ where: { email: userDto.email } })
-      const userName = this.userRepository.findOne({ where: { username: userDto.username } })
+      const userEmail = await this.userRepository.findOne({ where: { email: userDto.email } });
+
+      const userName = await this.userRepository.findOne({ where: { username: userDto.username } })
+
       if(userEmail){
         throw new Error('Email in use')
       }
@@ -29,7 +31,7 @@ export class UserService {
         return;
       }
 
-      userDto.password = await bycryptjs.hash(userDto.password, 20);
+      userDto.password = await bycryptjs.hash(userDto.password, 10);
 
       const user = this.userRepository.create(userDto);
       return await this.userRepository.save(user);
@@ -92,6 +94,8 @@ export class UserService {
   }
 
   async editProfile(userId: string, userDto: UserDto): Promise<UserEntity> {
+
+    console.log("hello world")
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if(!user){
       throw new Error('User not found')
@@ -100,14 +104,16 @@ export class UserService {
     return await this.userRepository.save(user);
   }
   
-  async setDarkMode(userId: string): Promise<void> {
+  async setDarkMode(userId: string): Promise<boolean> {
     const user = await this.userRepository.findOne({ where: { id: userId } });
-    if(!user){
+    if (!user) {
       throw new Error('User Not found');
     }
     user.darkMode = !user.darkMode;
     await this.userRepository.save(user);
+    return user.darkMode;
   }
+  
   
   async deleteUser(id: string) {
     try {

@@ -3,8 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm'; 
 import { UserEntity } from '../entities/user.entity';
 import { UserDto } from '../dto/create-user.dto';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import * as bycryptjs from 'bcryptjs';
+import { AuthDTO } from 'src/modules/auth/dto/auth.dto';
+import { catchError } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -17,6 +18,14 @@ export class UserService {
 
   async createUser(userDto: UserDto) {
     try {
+      const userEmail = this.userRepository.findOne({ where: { email: userDto.email } })
+      const userName = this.userRepository.findOne({ where: { username: userDto.username } })
+      if (userEmail || userName) {
+        return;
+      }
+      
+      userDto.password = await bycryptjs.hash(userDto.password, 20);
+
       const user = this.userRepository.create(userDto);
       return await this.userRepository.save(user);
     } catch (error) {
@@ -24,23 +33,6 @@ export class UserService {
     }
   }
 
-    // second login user
-    // the name is loginUser and the parameter is UserDto
-
-/*   async loginUser(userDto: UserDto) {
-    try {
-      const 
-    } catch (error) {
-      console.log(error);
-    }
-  } */
-
-    // logaut user
-    // the name is logoutUser and the parameter is UserDto
-
-/*   async logoutUser(userDto: UserDto) {
-  } */
- 
  async getUsers () {
    try {
      return await this.userRepository.find()
@@ -60,6 +52,14 @@ export class UserService {
   async getUserByUserName (userName: string) {
     try {
       return await this.userRepository.findOne({ where: { username: userName } })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async getByEmail(email: string) {
+    try {
+      return await this.userRepository.findOne({ where: { email: email } })
     } catch (error) {
       console.log(error)
     }

@@ -3,8 +3,10 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToMany,
+  Like,
 } from 'typeorm';
 import { PostEntity } from '../../posts/entities/post.entity';
+import { LikeEntity } from 'src/modules/likes/entities/like.entity';
 
 export enum Gender {
   MALE = 'male',
@@ -74,4 +76,7 @@ export class UserEntity {
 
   @OneToMany(() => PostEntity, post => post.user)
   posts: PostEntity[];
+
+  @OneToMany(() => LikeEntity, like => like.user)
+  likes: LikeEntity[];
 }

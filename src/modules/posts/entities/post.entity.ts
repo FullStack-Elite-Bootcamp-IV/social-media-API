@@ -1,6 +1,7 @@
 // here define the post entity
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, Like } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
+import { LikeEntity } from 'src/modules/likes/entities/like.entity';
 
 @Entity('posts')
 export class PostEntity {
@@ -35,4 +36,7 @@ export class PostEntity {
 
   @Column()
   userId: string;
+
+  @OneToMany(() => LikeEntity, (like) => like.post)
+  likesPost: LikeEntity[];
 }

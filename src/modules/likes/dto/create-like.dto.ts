@@ -7,11 +7,15 @@ export class CreateLikeDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
+  postId: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   id: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  postId: PostEntity;
-
+  userId: string;
 }

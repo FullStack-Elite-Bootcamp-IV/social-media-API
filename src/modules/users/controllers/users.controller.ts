@@ -42,8 +42,8 @@ export class UsersController {
   getUsers(): Promise<UserEntity[]> {
     try {
       return this.userService.getUsers();
-    } catch (e) {
-      console.error(e)
+    } catch (error) {
+      console.error(error)
       throw new Error
     }
   }
@@ -64,7 +64,7 @@ export class UsersController {
     status: 404,
     description: 'User not found.'
 })
-  @Get('/users:id')
+  @Get('/users/:id')
   getUserById(@Param('id') id: string): Promise<UserEntity> {
     return this.userService.getUserById(id);
   }
@@ -85,7 +85,7 @@ export class UsersController {
     status: 404,
     description: 'User not found.'
 })
-  @Get('/users/:username')
+  @Get('/users/::username')
   getUserByUserName(@Param('username') id: string): Promise<UserEntity> {
     return this.userService.getUserById(id);
   }

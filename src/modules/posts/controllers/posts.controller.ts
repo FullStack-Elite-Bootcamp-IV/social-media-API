@@ -163,4 +163,31 @@ export class PostsController {
   findPostsVisibleToUser(@Param('userId') userId: UserEntity): Promise<PostEntity[]> {
     return this.postsService.findPostsVisibleToUser(userId)
   }
+
+  // Function to find posts of a specific followed user
+  // have two parametres followersId and followingId
+  @ApiOperation({ summary: 'Find posts of followed user' })
+  @ApiResponse({
+    status: 200,
+    type: [CreatePostDto],
+    description: 'Find posts of followed user'
+  })
+  @ApiResponse({
+    status: 400,
+    type: CreatePostDto,
+    description: 'BAD REQUEST: Find posts of followed user'
+  })
+  @ApiResponse({
+    status: 500,
+    type: CreatePostDto,
+    description: 'INTERNAL SERVER ERROR: Find posts of followed user'
+  })
+  // Endpoint to find posts of a specific followed user
+  @Get('followed/:followerId/:followedUserId')
+  async findPostsOfFollowedUser(
+    @Param('followerId') followerId: string,
+    @Param('followedUserId') followedUserId: string,
+  ): Promise<PostEntity[]> {
+      return await this.postsService.findPostsOfFollowedUser(followerId, followedUserId);
+  }
 }

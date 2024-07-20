@@ -10,7 +10,6 @@ export class CreateFollowerDto {
   followingId: string;
 
   @IsDate()
-  @IsNotEmpty()
-  followDate: Date;
+  followDate?: Date;
 }
   

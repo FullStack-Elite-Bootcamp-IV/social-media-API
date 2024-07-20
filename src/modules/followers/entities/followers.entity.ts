@@ -8,11 +8,11 @@ export class FollowersEntity {
 
     @ManyToOne(() => UserEntity, user => user.id, { nullable: false })
     @JoinColumn({ name: 'followerId' })
-    follower: UserEntity['id'];
+    followerId: UserEntity['id'];
 
     @ManyToOne(() => UserEntity, user => user.id, { nullable: false })
     @JoinColumn({ name: 'followingId' })
-    following: UserEntity['id'];
+    followingId: UserEntity['id'];
 
     @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     followDate: Date;

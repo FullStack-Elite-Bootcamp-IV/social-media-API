@@ -4,13 +4,16 @@ import { Repository } from 'typeorm';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { PostEntity } from '../entities/post.entity';
 import { UpdatePostDto } from '../dto/update-post.dto';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
+import { UserEntity } from '../../users/entities/user.entity';
+import { FollowersEntity } from '../../followers/entities/followers.entity';
 
 @Injectable()
 export class PostsService { 
   constructor(
     @InjectRepository(PostEntity)
-    private readonly postRepository: Repository<PostEntity>
+    private readonly postRepository: Repository<PostEntity>,
+    @InjectRepository(FollowersEntity)
+    private readonly followersRepository: Repository<FollowersEntity>,
   ) {}
 
   // Function to create a new post
@@ -94,4 +97,23 @@ export class PostsService {
       throw new HttpException('server error', 500);
     }
   }
+
+ // Function to find posts of a specific followed user
+ async findPostsOfFollowedUser(followerId: string, followedUserId: string): Promise<PostEntity[]> {
+  try {
+    if (!followerId || !followedUserId) {
+      throw new HttpException('Invalid request', 400);
+    }
+    const isFollowing = await this.followersRepository.findOne({ where: { followerId, followingId: followedUserId } });
+
+    if (!isFollowing) {
+      throw new HttpException('You are not following this user', 400);
+    }
+
+    const posts = await this.postRepository.find({ where: { user: followedUserId } });
+    return posts;
+  } catch (error) {
+    throw new HttpException('server error', 500);
+  }
+}
 }

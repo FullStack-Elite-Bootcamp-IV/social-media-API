@@ -34,7 +34,7 @@ export class UserService {
       const user = this.userRepository.create(userDto);
       return await this.userRepository.save(user);
     } catch (error) {
-      console.log(error);
+      return error;
     }
   }
 

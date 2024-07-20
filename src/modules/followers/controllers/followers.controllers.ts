@@ -8,7 +8,8 @@ export class FollowersController {
   constructor(private readonly followersService: FollowersService) {}
 
    @Post()
-  createFollower(@Body() createFollowerDto: CreateFollowerDto): Promise<FollowersEntity> {
+  createFollower(@Body() createFollowerDto: any): Promise<FollowersEntity> {
+    console.log(createFollowerDto);
     return this.followersService.createFollower(createFollowerDto);
   }
 

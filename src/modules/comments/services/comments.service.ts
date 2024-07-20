@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CommentsEntity } from '../entities/comment.entity';
@@ -23,11 +23,13 @@ export class CommentsService {
     createCommentDTO: CreateCommentDTO,
   ): Promise<CommentsEntity> {
     try{
+      if (!createCommentDTO) {
+        throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+      }
       const newComment = this.commentsRepository.create(createCommentDTO);
       return await this.commentsRepository.save(newComment);
     }catch(e){
-      console.error(e)
-      throw new Error
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -37,13 +39,11 @@ export class CommentsService {
   async deleteComment(id: string): Promise<void> {
     try {
       if (!isString(id)) {
-        console.error('el id no es valido');
-        throw new Error();
+        throw new HttpException('Not found', HttpStatus.NOT_FOUND);
       }
       await this.commentsRepository.delete(id);
     } catch (e) {
-      console.error('error en el servicio: ', e);
-      throw new Error();
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -53,13 +53,11 @@ export class CommentsService {
   async getCommentsbyId(postId: string): Promise<CommentsEntity[]> {
     try {
       if (!isString(postId)) {
-        console.error('el id no es valido');
-        throw new Error();
+        throw new HttpException('Not found', HttpStatus.NOT_FOUND);
       }
       return await this.commentsRepository.find({ where: { postId } });
     } catch (e) {
-      console.error('error en el servicio: ', e);
-      throw new Error();
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -70,11 +68,13 @@ export class CommentsService {
     updateData: Partial<CommentsEntity>,
   ): Promise<CommentsEntity> {
     try {
+      if(!id){
+        throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+      }
       await this.commentsRepository.update(id, updateData);
       return this.commentsRepository.findOne(id);
     } catch (e) {
-      console.error('error en el servicio: ', e);
-      throw new Error();
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
   }
 }

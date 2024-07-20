@@ -160,7 +160,7 @@ export class PostsController {
     description: 'INTERNAL SERVER ERROR: Find posts visible to user'
   })
   // @Get('user/:userId/visible')
-  findPostsVisibleToUser(@Param('userId') userId: string): Promise<PostEntity[]> {
+  findPostsVisibleToUser(@Param('userId') userId: UserEntity): Promise<PostEntity[]> {
     return this.postsService.findPostsVisibleToUser(userId)
   }
 }

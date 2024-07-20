@@ -84,10 +84,10 @@ export class PostsService {
   }
 
   // Function to find all posts visible to a specific user (public posts and posts of followed users)
-  async findPostsVisibleToUser(userId: string): Promise<PostEntity[]> {
+  async findPostsVisibleToUser(userId: UserEntity): Promise<PostEntity[]> {
     try {
       if(!userId) throw new HttpException('Posts not found, please provide the id', 400);
-      const posts = await this.postRepository.find({ where: { isPublic: true } });
+      const posts = await this.postRepository.find({ where: { isPublic: true, userId: userId } });
       if(!posts) throw new HttpException('Posts not found', 500);
       return posts;
     } catch (error) {

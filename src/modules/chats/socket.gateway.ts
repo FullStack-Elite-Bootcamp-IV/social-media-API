@@ -9,7 +9,7 @@ import {
 } from "@nestjs/websockets";
 import { Socket } from "socket.io";
 import { Server } from "socket.io";
-import { ChatService } from "./services/chats.services";
+import { ChatService } from "./services/chats.service";
 @WebSocketGateway(5002, {namespace: '/chat', cors: true} )
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect

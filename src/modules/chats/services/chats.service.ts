@@ -58,19 +58,19 @@ export class ChatService {
 
   // Function to find all chats by a specific user
   findChatsByUser(userId: string): Promise<ChatEntity[]> {
-    try{
-    const chats = this.chatRepository.find({
-      where: [
-        { user1Id: userId },
-        { user2Id: userId },
-      ],
-    });
-   if(!chats){
-    throw new Error('Chat not found');
-   }
-    return chats;
-  } catch (error) {
-    throw new Error('Chat not found');
+    try {
+      const chats = this.chatRepository.find({
+        where: [
+          { user1Id: userId },
+          { user2Id: userId },
+        ],
+      });
+      if (!chats) {
+        throw new Error('Chat not found');
+      }
+      return chats;
+    } catch (error) {
+      throw new Error('Chat not found');
+    }
   }
-}
 }

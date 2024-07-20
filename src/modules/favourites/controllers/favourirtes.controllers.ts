@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards } from '@nestjs/common';
 import { FavouritesService } from '../service/favourite.service';
 import { FavouritesDto } from '../dto/create-favourite.dto';
 import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-
+import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags("Favourites")
 @Controller('favourites')
@@ -22,6 +22,7 @@ export class FavouritesController {
         description: 'Unauthorized'
       })
     @Post('/add')
+    @UseGuards(JwtAuthGuard)
     public async AddFavourites(@Body() body: FavouritesDto){
         return await this.FavouritesService.addFavourite(body);
     }
@@ -44,6 +45,7 @@ export class FavouritesController {
       })
       
     @Delete('/delete/:id')
+    @UseGuards(JwtAuthGuard)
     public async DeleteFavourites(@Param('id') id: any){
         return await this.FavouritesService.deleteFavourite(id);
     }
@@ -65,6 +67,7 @@ export class FavouritesController {
         description: 'Favourites not found.'
     })
     @Get('/get/:userId')
+    @UseGuards(JwtAuthGuard)
     public async GeFavourites(@Param('userId') userId: string){
         return await this.FavouritesService.getFavourites(userId);
         

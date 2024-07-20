@@ -1,8 +1,10 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
+import { PostEntity } from '../../posts/entities/post.entity';
 
 export enum Gender {
   MALE = 'male',
@@ -69,4 +71,7 @@ export class UserEntity {
 
   @Column({ type: 'timestamp', nullable: true })
   lastLoginDate?: Date;
+
+  @OneToMany(() => PostEntity, post => post.user)
+  posts: PostEntity[];
 }

@@ -11,9 +11,9 @@ export class LikeEntity {
     @Column({type: 'timestamp', default: ()=> 'CURRENT_TIMESTAMP'})
     creationDate: Date;
     
-    @ManyToOne(() => PostEntity, post => post.id)
+    @ManyToOne(() => PostEntity, post => post.id, { onDelete: 'CASCADE' })
     postId : PostEntity;
 
-    @ManyToOne(() => UserEntity, user => user.id)
+    @ManyToOne(() => UserEntity, user => user.id, { onDelete: 'CASCADE' })
     userId : UserEntity;
 }

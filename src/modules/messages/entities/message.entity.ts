@@ -17,11 +17,11 @@ export class MessageEntity {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   creationTime: Date;
   
-  @ManyToOne(() => UserEntity, user => user.id)
+  @ManyToOne(() => UserEntity, user => user.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user' })
   user: string;
   
-  @ManyToOne(() => ChatEntity, chat => chat.id) 
+  @ManyToOne(() => ChatEntity, chat => chat.id, { onDelete: 'CASCADE' }) 
   @JoinColumn({ name: 'chatId' })
   chatId: string;
 }

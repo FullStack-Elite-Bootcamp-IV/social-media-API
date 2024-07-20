@@ -19,9 +19,9 @@ export class CommentsEntity {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @ManyToOne(() => UserEntity, (user) => user.id)
+  @ManyToOne(() => UserEntity, (user) => user.id, { onDelete: 'CASCADE' })
   user: UserEntity[];
 
-  @ManyToOne(() => PostEntity, (post) => post.id)
+  @ManyToOne(() => PostEntity, (post) => post.id, { onDelete: 'CASCADE' })
   post: PostEntity[];
 }

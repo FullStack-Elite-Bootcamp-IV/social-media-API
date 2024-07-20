@@ -15,11 +15,11 @@ export class ChatEntity {
   @Column({ type: 'timestamp', nullable: true })
   lastMessage?: Date;
 
-  @ManyToOne(() => UserEntity, user => user.id)
+  @ManyToOne(() => UserEntity, user => user.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user1Id' })
   user1: UserEntity;
 
-  @ManyToOne(() => UserEntity, user => user.id)
+  @ManyToOne(() => UserEntity, user => user.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user2Id' })
   user2: UserEntity;
 }

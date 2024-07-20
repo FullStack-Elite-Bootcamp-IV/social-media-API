@@ -7,6 +7,7 @@ import { UpdatePostDto } from '../dto/update-post.dto';
 import { FollowersEntity } from '../../followers/entities/followers.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { LikeEntity } from 'src/modules/likes/entities/like.entity';
+import { CreateLikeDto } from 'src/modules/likes/dto/create-like.dto';
 
 @Injectable()
 export class PostsService {
@@ -60,10 +61,11 @@ export class PostsService {
   }
 
   // Function to like a post by ID
-  async likePost(postId: string, userId: string): Promise<any> {
+  async likePost(postId: string, userId: string, createLikeDto: CreateLikeDto): Promise<any> {
     try {
       if (!postId || !userId) throw new HttpException('Post not liked, please provide the id', 400);
       await this.postRepository.increment({ id: postId }, 'likes', 1);
+      await this.likeRepository.save(createLikeDto)
     } catch (error) {
       throw new HttpException('Post not liked', 500);
     }

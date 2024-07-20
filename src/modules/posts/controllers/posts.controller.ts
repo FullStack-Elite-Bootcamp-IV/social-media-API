@@ -109,8 +109,8 @@ export class PostsController {
   })
   @Post(':id/like')
   @UseGuards(JwtAuthGuard)
-  likePost(@Param('id') postId: string, @Body('userId') userId: string): Promise<void> {
-    return this.postsService.likePost(postId, userId)
+  likePost(@Param('id') postId: string, @Body('userId') userId: string, createLikeDto: CreateLikeDto): Promise<void> {
+    return this.postsService.likePost(postId, userId, createLikeDto)
   }
 
   @ApiOperation({ summary: 'Unlike a post' })

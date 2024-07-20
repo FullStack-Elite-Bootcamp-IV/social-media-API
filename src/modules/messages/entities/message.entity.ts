@@ -9,10 +9,10 @@ export class MessageEntity {
   id: string;
   
   @Column({ type: 'text'})
-  messageContent: string;
+  messageContent?: string;
   
   @Column({ type: 'varchar', length: 100, nullable: true })
-  media: string;
+  media?: string;
   
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   creationTime: Date;

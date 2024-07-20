@@ -28,7 +28,7 @@ export class AuthController {
     description: 'Datos no válidos.',
   })
   @Post('login')
-  async login(@Body() { email, password }: AuthDTO) {
+  async login(@Body() { email, password, date }: AuthDTO) {
     const userValidate = await this.authService.validateUser(
       email,
       password,
@@ -36,7 +36,7 @@ export class AuthController {
     if (!userValidate) {
       throw new UnauthorizedException('Data not valid');
     }
-    this.authService.updateLoginDate(email);
+    this.authService.updateLoginDate(email,date);
     const jwt = await this.authService.generateJWT(userValidate);
 
     return jwt;

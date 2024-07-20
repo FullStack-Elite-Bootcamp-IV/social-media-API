@@ -58,7 +58,7 @@ export class AuthService {
     }
   }
 
-  public async updateLoginDate(email: string): Promise<void> {
-    this.userService.updateUserLastLogin(email);
+  public async updateLoginDate(email: string, Date: Date): Promise<void> {
+    this.userService.updateUserLastLogin(email, Date);
   }
 }

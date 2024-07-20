@@ -120,13 +120,13 @@ export class UserService {
     }
   }
 
-  async updateUserLastLogin(email: string): Promise<void> { 
+  async updateUserLastLogin(email: string, Date: Date): Promise<void> { 
     try{
       const user = await this.userRepository.findOne({ where: { email: email } });
       if(!user){
         throw new Error('User not found')
       }
-      user.lastLoginDate = new Date();
+      user.lastLoginDate = Date;
       await this.userRepository.save(user);
     }
     catch(error){

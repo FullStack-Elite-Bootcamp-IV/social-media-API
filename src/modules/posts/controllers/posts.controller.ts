@@ -5,6 +5,7 @@ import { CreatePostDto } from '../dto/create-post.dto';
 import { PostEntity } from '../entities/post.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { ApiResponse, ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { UpdatePostDto } from '../dto/update-post.dto';
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -55,7 +56,7 @@ export class PostsController {
     description: 'INTERNAL SERVER ERROR: Update a post'
   })
   // @Put(':id')
-  updatePost(@Param('id') postId: string, @Body() updatePostDto: CreatePostDto): Promise<PostEntity> {
+  updatePost(@Param('id') postId: string, @Body() updatePostDto: UpdatePostDto): Promise<PostEntity> {
     return this.postsService.updatePost(postId, updatePostDto);
   }
 

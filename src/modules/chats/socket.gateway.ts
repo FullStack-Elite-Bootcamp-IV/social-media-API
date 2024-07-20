@@ -7,14 +7,17 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from "@nestjs/websockets";
-import { Socket } from "dgram";
-
+import { Socket } from "socket.io";
 import { Server } from "socket.io";
+import { ChatService } from "./services/chats.services";
 const chatsUser = [12, 9, 8]
 @WebSocketGateway(5002, {namespace: '/chat', cors: true} )
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
+  constructor(
+    private readonly chatService: ChatService,
+  ) {}
   private readonly logger = new Logger(ChatGateway.name);
 
   @WebSocketServer() io: Server;
@@ -23,26 +26,35 @@ export class ChatGateway
     this.logger.log("Initialized");
   }
 
-  handleConnection(client: any, ...args: any[]) {
-    this.logger.log(`Client id: ${client.id} connected`);
+  
+  async handleConnection(socket: Socket) {
+
+   const userId = socket.handshake.auth.token
+
+    // procesar la userid apartir del token
+
+    // Buscar en la base de datos todos los chats (chatid)
+   // const userChats = await this.chatService.findChatsByUser(userId)
+   const userChats = [{id: "1"}, {id: "3"}, {id: "5"}]
+
+    // Unir al usuario a las rooms (chatid) especificas
+    userChats.forEach(chat => {
+      socket.join(chat.id)
+    });
+
+    this.logger.log(`Client id: ${socket.id} connected`);
   }
 
-  handleDisconnect(client: any) {
-    this.logger.log(`Cliend id:${client.id} disconnected`);
+  handleDisconnect(socket: Socket) {
+    this.logger.log(`Cliend id:${socket.id} disconnected`);
   }
 
   @SubscribeMessage("message")
-  handleMessage(client: any, data: any) {
-    const token = client.handshake.auth.token
-    const chatId = +client.handshake.auth.chatId
+  handleMessage(socket: Socket, data: any) {
+    console.log("data:" , data)
 
-    if (chatsUser.includes(chatId)) {
-      console.log("bbb")
-      this.logger.log(`Message received from client id: ${client.id}`);
-      this.logger.debug(`Payload: ${data}`);
-      client.emit("recieveMessage", { chatId, data})
+    this.io.to(data[1]).emit("receiveMessage", {"message": data[0], "chatId": data[1]} )
 
-    }
   }
 
   @SubscribeMessage("recieveMessage")

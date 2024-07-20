@@ -68,7 +68,7 @@ export class FollowersController {
     status: 404,
     description: 'Followers not found.'
   })
-  @Get('followers/:followingId')
+  @Get('/user/:followingId')
   @UseGuards(JwtAuthGuard)
   findFollowersByUser(@Param('followingId') followingId: string): Promise<String[]> {
     return this.followersService.findFollowersByUser(followingId);
@@ -90,7 +90,7 @@ export class FollowersController {
     status: 404,
     description: 'Follow not found.'
   })
-  @Delete(':followerId')
+  @Delete('/delete/:followerId')
   @UseGuards(JwtAuthGuard) 
   deleteFollower(@Param('followerId') followerId: string): Promise<String> {
     return this.followersService.deleteFollower(followerId);

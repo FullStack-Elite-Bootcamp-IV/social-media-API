@@ -12,8 +12,6 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    /* private readonly jwtService: JwtService,    
-    private readonly configService: ConfigService */
   ) {}
 
   async createUser(userDto: UserDto) {
@@ -23,7 +21,7 @@ export class UserService {
       if (userEmail || userName) {
         return;
       }
-      
+
       userDto.password = await bycryptjs.hash(userDto.password, 20);
 
       const user = this.userRepository.create(userDto);

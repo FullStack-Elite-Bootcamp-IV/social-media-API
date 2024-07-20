@@ -8,7 +8,7 @@ import { UserService } from 'src/modules/users/services/user.service';
 export class AuthService {
   constructor(private readonly userService: UserService) { }
 
-  public async validateUser( email: string, password: string ): Promise<UserEntity | null> {
+  public async validateUser(email: string, password: string): Promise<UserEntity | null> {
     try {
       const userByEmail = await this.userService.getByEmail(email);
 

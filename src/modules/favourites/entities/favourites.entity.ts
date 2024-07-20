@@ -12,8 +12,8 @@ export class FavouritesEntity {
   creationDate: Date;
 
   @ManyToOne(() => UserEntity, (user) => user.id)
-  userId: UserEntity;
+  userId: string;
 
   @ManyToOne(() => PostEntity, (post) => post.id)
-  postId: PostEntity
+  postId: string
 }

@@ -10,7 +10,7 @@ import { UserService } from '../services/user.service';
    constructor(private readonly UserService: UserService) {}
    
    @Post('/register')
-   async createUser(@Body() UserDto: UserDto): Promise<UserEntity> {
+   async createUser(@Body() UserDto: UserDto): Promise<UserEntity | Error> {
      return this.UserService.createUser(UserDto);
    }
 

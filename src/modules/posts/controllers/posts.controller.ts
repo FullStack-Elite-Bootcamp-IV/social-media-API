@@ -6,11 +6,16 @@ import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { ApiResponse, ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
+import { LikesService } from 'src/modules/likes/services/likes.service';
+import { LikeEntity } from 'src/modules/likes/entities/like.entity';
+import { CreateLikeDto } from 'src/modules/likes/dto/create-like.dto';
 
 @ApiTags('Posts')
 @Controller('posts')
 export class PostsController {
-  constructor(private readonly postsService: PostsService) { }
+  constructor(private readonly postsService: PostsService, 
+              private readonly likesService: LikesService
+  ) { }
 
   // Documentation whit swagger the service posts
   @ApiOperation({ summary: 'Create a new post' })
@@ -126,7 +131,7 @@ export class PostsController {
   })
   @Post(':id/unlike')
   @UseGuards(JwtAuthGuard)
-  unlikePost(@Param('id') postId: string, @Body('userId') userId: string): Promise<void> {
+  unlikePost(@Param('id') postId: string, @Body('userId') userId: string, ): Promise<any> {
     return this.postsService.unlikePost(postId, userId)
   }
 

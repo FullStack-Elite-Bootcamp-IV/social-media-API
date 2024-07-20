@@ -14,13 +14,4 @@ export class CreateLikeDto {
   @IsNotEmpty()
   postId: PostEntity;
 
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  userId: UserEntity;
-
-  @ApiProperty()
-  @IsDate()
-  @IsNotEmpty()
-  creationDate: Date;
 }

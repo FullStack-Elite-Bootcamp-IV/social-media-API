@@ -6,6 +6,7 @@ import { PostEntity } from '../entities/post.entity';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { FollowersEntity } from '../../followers/entities/followers.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
+import { LikeEntity } from 'src/modules/likes/entities/like.entity';
 
 @Injectable()
 export class PostsService {
@@ -16,6 +17,8 @@ export class PostsService {
     private readonly followersRepository: Repository<FollowersEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(LikeEntity)
+    private readonly likeRepository: Repository<LikeEntity>
   ) {}
 
   // Function to create a new post
@@ -67,10 +70,12 @@ export class PostsService {
   }
 
   // Function to unlike a post by ID
-  async unlikePost(postId: string, userId: string): Promise<any> {
+  async unlikePost(postId: any, userId: any): Promise<any> {
     try {
       if (!postId || !userId) throw new HttpException('Post not unliked, please provide the id', 400);
-      return await this.postRepository.decrement({ id: postId }, 'likes', 1)
+      const like = await this.likeRepository.find({where: {userId: userId, postId: postId}})
+      const likeId = like[0].id 
+      return await this.postRepository.decrement({ id: postId }, 'likes', 1), this.likeRepository.delete(likeId)
     } catch (error) {
       throw new HttpException('Post not unliked', 500);
     }

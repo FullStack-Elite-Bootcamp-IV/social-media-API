@@ -1,11 +1,12 @@
 // src/modules/posts/controllers/posts.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Patch, UseGuards } from '@nestjs/common';
 import { PostsService } from '../services/posts.service';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { PostEntity } from '../entities/post.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { ApiResponse, ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { UpdatePostDto } from '../dto/update-post.dto';
+import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -212,6 +213,7 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Find posts of followed users'
   })
+  @UseGuards(JwtAuthGuard)
   @Get('followed-post/:followerId/:page/:limit')
   async findPaginatedPosts(@Param() { followerId, page, limit } ): Promise<object[]> {
     console.log({

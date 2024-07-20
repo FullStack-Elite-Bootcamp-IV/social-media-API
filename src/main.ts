@@ -1,11 +1,15 @@
-// src/main.ts
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { JwtAuthGuard } from './modules/auth/guards/jwt.guard';
+import { JwtService } from '@nestjs/jwt';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const jwtService = app.get(JwtService);
+  app.useGlobalGuards(new JwtAuthGuard(jwtService));
 
   // Configuración global de prefijos de rutas
   app.setGlobalPrefix('api');

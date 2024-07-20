@@ -5,18 +5,18 @@ import { UserEntity } from '../entities/user.entity';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UserService) {}
-   
+  constructor(private readonly userService: UserService) { }
+
   @Post('/register')
   async createUser(@Body() UserDto: UserDto): Promise<UserEntity> {
-     return this.userService.createUser(UserDto);
+    return this.userService.createUser(UserDto);
   }
 
   @Get('/users')
   getUsers(): Promise<UserEntity[]> {
-    try{
+    try {
       return this.userService.getUsers();
-    }catch(e){
+    } catch (e) {
       console.error(e)
       throw new Error
     }

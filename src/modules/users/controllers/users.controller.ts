@@ -31,12 +31,22 @@ import { UserService } from '../services/user.service';
 
    @Get('/users:id')
    getUserById(@Param('id') id: string): Promise<UserEntity> {
-     return this.UserService.getUserById(id);
+    try{
+      return this.UserService.getUserById(id);
+    }catch(e){
+      console.error(e)
+      throw new Error
+    }
    }
 
    @Get('/users/username')
    getUserByUserName(@Param('username') id: string): Promise<UserEntity> {
-     return this.UserService.getUserById(id);
+    try{
+      return this.UserService.getUserById(id);
+    }catch(e){
+      console.error(e)
+      throw new Error
+    }
    }
 
    // @Post('/login')

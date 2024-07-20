@@ -3,11 +3,12 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm'; // 
 import { UserEntity } from '../../users/entities/user.entity';
 
 export enum NotificationAction {
-    MESSAGES = 'messages',
-    LIKES = 'likes',
-    COMMENTS = 'comments',
-    FOLLOWS = 'follows',
-  }
+  MESSAGES = 'messages',
+  LIKES = 'likes',
+  COMMENTS = 'comments',
+  NEW_FOLLOW_REQUEST = 'new_follow_resquest',
+  FOLLOW_REQUEST_ACCEPTED = 'follow_request_acepted', // notificacion al recibir solicitud // notification para aceptar solicitud
+}
 
 @Entity('notifications')
 export class NotificationEntity {

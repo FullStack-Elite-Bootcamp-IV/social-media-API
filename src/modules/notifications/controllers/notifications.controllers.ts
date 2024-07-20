@@ -1,12 +1,20 @@
-import { Controller, Get, Post, Delete, Param, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Param,
+  Body,
+  UseGuards,
+} from '@nestjs/common';
 import { NotificationsService } from '../services/notifications.service';
 import { CreateNotificationDto } from '../dto/create-notification.dto';
 import { NotificationEntity } from '../entities/notification.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
-import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
-@ApiTags("Notifications")
+@ApiTags('Notifications')
 @Controller('notifications')
 export class NotificationsController {
   constructor(private notificationsService: NotificationsService) {}
@@ -18,11 +26,11 @@ export class NotificationsController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.'
+    description: 'Bad request.',
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized'
+    description: 'Unauthorized',
   })
   @Post()
   @UseGuards(JwtAuthGuard)
@@ -39,15 +47,15 @@ export class NotificationsController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.'
+    description: 'Bad request.',
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized'
+    description: 'Unauthorized',
   })
   @ApiResponse({
     status: 404,
-    description: 'Notification not found.'
+    description: 'Notification not found.',
   })
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
@@ -61,15 +69,15 @@ export class NotificationsController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.'
+    description: 'Bad request.',
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized'
+    description: 'Unauthorized',
   })
   @ApiResponse({
     status: 404,
-    description: 'Notifications not found.'
+    description: 'Notifications not found.',
   })
   @Get('user/:userId')
   @UseGuards(JwtAuthGuard)

@@ -17,8 +17,10 @@ export class UserService {
 
   async createUser(userDto: UserDto) {
     try {
-      const userEmail = this.userRepository.findOne({ where: { email: userDto.email } })
-      const userName = this.userRepository.findOne({ where: { username: userDto.username } })
+      const userEmail = await this.userRepository.findOne({ where: { email: userDto.email } });
+
+      const userName = await this.userRepository.findOne({ where: { username: userDto.username } })
+
       if(userEmail){
         throw new Error('Email in use')
       }
@@ -29,7 +31,7 @@ export class UserService {
         return;
       }
 
-      userDto.password = await bycryptjs.hash(userDto.password, 20);
+      userDto.password = await bycryptjs.hash(userDto.password, 10);
 
       const user = this.userRepository.create(userDto);
       return await this.userRepository.save(user);

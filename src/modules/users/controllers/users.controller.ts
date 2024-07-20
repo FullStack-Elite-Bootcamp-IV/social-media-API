@@ -64,7 +64,7 @@ export class UsersController {
     status: 404,
     description: 'User not found.'
 })
-  @Get('/users/:id')
+  @Get('/by-id/:id')
   getUserById(@Param('id') id: string): Promise<UserEntity> {
     return this.userService.getUserById(id);
   }
@@ -85,9 +85,9 @@ export class UsersController {
     status: 404,
     description: 'User not found.'
 })
-  @Get('/users/:username')
-  getUserByUserName(@Param('username') id: string): Promise<UserEntity> {
-    return this.userService.getUserById(id);
+  @Get('/by-username/:username')
+  getUserByUserName(@Param('username') username: string): Promise<UserEntity> {
+    return this.userService.getUserByUserName(username);
   }
 
 
@@ -100,9 +100,10 @@ export class UsersController {
     description: 'Bad request.',
   })
   @Post('/setDarkMode/:id')
-  async modifyDarkMode(@Param('id') userId: string): Promise<void> {
-    await this.userService.setDarkMode(userId);
-  }
+async modifyDarkMode(@Param('id') userId: string): Promise<{ darkMode: boolean }> {
+  const darkMode = await this.userService.setDarkMode(userId);
+  return { darkMode };
+}
 
 @ApiResponse({
     status: 200,

@@ -10,7 +10,6 @@ import {
 import { Socket } from "socket.io";
 import { Server } from "socket.io";
 import { ChatService } from "./services/chats.services";
-const chatsUser = [12, 9, 8]
 @WebSocketGateway(5002, {namespace: '/chat', cors: true} )
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
@@ -31,10 +30,12 @@ export class ChatGateway
 
    const userId = socket.handshake.auth.token
 
-    // procesar la userid apartir del token
+    // TO DO procesar la userid apartir del token
 
-    // Buscar en la base de datos todos los chats (chatid)
+    // TO PRODUCTION Buscar en la base de datos todos los chats (chatid)
    // const userChats = await this.chatService.findChatsByUser(userId)
+
+   // IN DEV
    const userChats = [{id: "1"}, {id: "3"}, {id: "5"}]
 
     // Unir al usuario a las rooms (chatid) especificas
@@ -51,8 +52,6 @@ export class ChatGateway
 
   @SubscribeMessage("message")
   handleMessage(socket: Socket, data: any) {
-    console.log("data:" , data)
-
     this.io.to(data[1]).emit("receiveMessage", {"message": data[0], "chatId": data[1]} )
 
   }

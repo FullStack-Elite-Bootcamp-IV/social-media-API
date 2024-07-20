@@ -34,7 +34,6 @@ export class AuthController {
       email,
       password,
     );
-
     if (!userValidate) {
       throw new UnauthorizedException('Data not valid');
     }

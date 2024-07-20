@@ -7,13 +7,16 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from "@nestjs/websockets";
-
+import { Socket } from "socket.io";
 import { Server } from "socket.io";
-
-@WebSocketGateway()
+import { ChatService } from "./services/chats.services";
+@WebSocketGateway(5002, {namespace: '/chat', cors: true} )
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
+  constructor(
+    private readonly chatService: ChatService,
+  ) {}
   private readonly logger = new Logger(ChatGateway.name);
 
   @WebSocketServer() io: Server;
@@ -22,24 +25,40 @@ export class ChatGateway
     this.logger.log("Initialized");
   }
 
-  handleConnection(client: any, ...args: any[]) {
-    const { sockets } = this.io.sockets;
+  
+  async handleConnection(socket: Socket) {
 
-    this.logger.log(`Client id: ${client.id} connected`);
-    this.logger.debug(`Number of connected clients: ${sockets.size}`);
+   const userId = socket.handshake.auth.token
+
+    // TO DO procesar la userid apartir del token
+
+    // TO PRODUCTION Buscar en la base de datos todos los chats (chatid)
+   // const userChats = await this.chatService.findChatsByUser(userId)
+
+   // IN DEV
+   const userChats = [{id: "1"}, {id: "3"}, {id: "5"}]
+
+    // Unir al usuario a las rooms (chatid) especificas
+    userChats.forEach(chat => {
+      socket.join(chat.id)
+    });
+
+    this.logger.log(`Client id: ${socket.id} connected`);
   }
 
-  handleDisconnect(client: any) {
-    this.logger.log(`Cliend id:${client.id} disconnected`);
+  handleDisconnect(socket: Socket) {
+    this.logger.log(`Cliend id:${socket.id} disconnected`);
   }
 
-  @SubscribeMessage("ping")
-  handleMessage(client: any, data: any) {
-    this.logger.log(`Message received from client id: ${client.id}`);
-    this.logger.debug(`Payload: ${data}`);
-    return {
-      event: "pong",
-      data,
-    };
+  @SubscribeMessage("message")
+  handleMessage(socket: Socket, data: any) {
+    this.io.to(data[1]).emit("receiveMessage", {"message": data[0], "chatId": data[1]} )
+
+  }
+
+  @SubscribeMessage("recieveMessage")
+  handleRecieve(client: any, data: any) {
+    console.log("aaaa")
   }
 }
+

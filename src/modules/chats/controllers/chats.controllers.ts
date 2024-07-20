@@ -1,9 +1,9 @@
-// src/modules/chat/controllers/chat.controller.ts
+
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { ChatService } from '../services/chats.services';
 import { CreateChatDto } from '../dto/create-chat.dto';
 import { ChatEntity } from '../entities/chat.entity';
 import { ApiResponse } from '@nestjs/swagger';
-import { ChatService } from '../services/chats.services';
 
 @Controller('chat')
 export class ChatController {

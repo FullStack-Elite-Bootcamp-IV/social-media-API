@@ -85,7 +85,7 @@ export class UsersController {
     status: 404,
     description: 'User not found.'
 })
-  @Get('/users/::username')
+  @Get('/users/:username')
   getUserByUserName(@Param('username') id: string): Promise<UserEntity> {
     return this.userService.getUserById(id);
   }

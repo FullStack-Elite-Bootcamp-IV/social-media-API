@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body, UseGuards } from '@nestjs/common';
 import { NotificationsService } from '../services/notifications.service';
 import { CreateNotificationDto } from '../dto/create-notification.dto';
 import { NotificationEntity } from '../entities/notification.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags("Notifications")
 @Controller('notifications')
@@ -24,6 +25,7 @@ export class NotificationsController {
     description: 'Unauthorized'
   })
   @Post()
+  @UseGuards(JwtAuthGuard)
   createNotification(
     @Body() createNotificationDto: CreateNotificationDto,
   ): Promise<NotificationEntity> {
@@ -48,6 +50,7 @@ export class NotificationsController {
     description: 'Notification not found.'
   })
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   deleteNotification(@Param('id') notificationId: string): Promise<void> {
     return this.notificationsService.deleteNotification(notificationId);
   }
@@ -69,6 +72,7 @@ export class NotificationsController {
     description: 'Notifications not found.'
   })
   @Get('user/:userId')
+  @UseGuards(JwtAuthGuard)
   async findNotificationsByUser(
     @Param('userId') userId: UserEntity,
   ): Promise<void> {

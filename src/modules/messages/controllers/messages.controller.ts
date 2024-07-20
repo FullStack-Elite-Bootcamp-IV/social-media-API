@@ -6,11 +6,13 @@ import {
   Delete,
   Param,
   Body,
+  UseGuards,
 } from '@nestjs/common';
 import { MessagesService } from '../services/messages.service';
 import { CreateMessageDto } from '../dto/create-message.dto';
 import { MessageEntity } from '../entities/message.entity';
 import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags("Messages")
 @Controller('messages')
@@ -31,6 +33,7 @@ export class MessagesController {
     description: 'Unauthorized'
   })
   @Post()
+  @UseGuards(JwtAuthGuard)
   createMessage(
     @Body() createMessageDto: CreateMessageDto,
   ): Promise<MessageEntity> {
@@ -55,6 +58,7 @@ export class MessagesController {
     description: 'Messages not found.'
   })
   @Get(':chatId')
+  @UseGuards(JwtAuthGuard)
   findMessagesByChat(@Param('chatId') chatId: string): Promise<void> {
     return this.messagesService.findMessagesByChat(chatId);
   }
@@ -77,6 +81,7 @@ export class MessagesController {
     description: 'Message not found.'
   })
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   deleteMessage(@Param('id') messageId: string): Promise<void> {
     return this.messagesService.deleteMessage(messageId);
   }
@@ -99,6 +104,7 @@ export class MessagesController {
     description: 'Messages not found.'
   })
   @Get(':userId')
+  @UseGuards(JwtAuthGuard)
   async findMessagesByUser(@Param('userId') userId: string): Promise<void> {
     return this.messagesService.findMessagesByUser(userId);
   }

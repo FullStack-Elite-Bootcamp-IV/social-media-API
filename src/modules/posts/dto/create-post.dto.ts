@@ -13,7 +13,7 @@ export class CreatePostDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  userId: UserEntity;
+  userId: string;
 
   @ApiProperty()
   @IsNotEmpty()

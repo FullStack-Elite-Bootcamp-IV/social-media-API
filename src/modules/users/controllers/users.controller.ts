@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { UserDto } from '../dto/create-user.dto';
 import { UserEntity } from '../entities/user.entity';
 import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags("User")
 @Controller('users')
@@ -18,7 +19,7 @@ export class UsersController {
     description: 'Bad request.',
   })
   @Post('/register')
-  async createUser(@Body() UserDto: UserDto): Promise<UserEntity> {
+  async createUser(@Body() UserDto: UserDto): Promise<UserEntity | Error> {
     return this.userService.createUser(UserDto);
   }
 
@@ -39,6 +40,7 @@ export class UsersController {
     description: 'Users not found.'
 })
   @Get('/users')
+  @UseGuards(JwtAuthGuard)
   getUsers(): Promise<UserEntity[]> {
     try {
       return this.userService.getUsers();
@@ -50,7 +52,7 @@ export class UsersController {
 
 @ApiResponse({
     status: 200,
-    description: 'Get all User.',
+    description: 'Get user by id.',
 })
 @ApiResponse({
     status: 400,
@@ -65,6 +67,7 @@ export class UsersController {
     description: 'User not found.'
 })
   @Get('/by-id/:id')
+  @UseGuards(JwtAuthGuard)
   getUserById(@Param('id') id: string): Promise<UserEntity> {
     return this.userService.getUserById(id);
   }
@@ -86,6 +89,7 @@ export class UsersController {
     description: 'User not found.'
 })
   @Get('/by-username/:username')
+  @UseGuards(JwtAuthGuard)
   getUserByUserName(@Param('username') username: string): Promise<UserEntity> {
     return this.userService.getUserByUserName(username);
   }
@@ -100,9 +104,9 @@ export class UsersController {
     description: 'Bad request.',
   })
   @Post('/setDarkMode/:id')
-async modifyDarkMode(@Param('id') userId: string): Promise<{ darkMode: boolean }> {
-  const darkMode = await this.userService.setDarkMode(userId);
-  return { darkMode };
+  @UseGuards(JwtAuthGuard)
+async modifyDarkMode(@Param('id') userId: string): Promise<void> {
+  return await this.userService.setDarkMode(userId);
 }
 
 @ApiResponse({
@@ -122,6 +126,7 @@ async modifyDarkMode(@Param('id') userId: string): Promise<{ darkMode: boolean }
     description: 'User not found.'
 })  
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   async modifyUser(
     @Param('id') userId: string,
     @Body() userDto: UserDto,
@@ -146,6 +151,7 @@ async modifyDarkMode(@Param('id') userId: string): Promise<{ darkMode: boolean }
     description: 'User not found.'
   })
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async deleteUser(@Param('id') userId: string): Promise<string> {
     await this.userService.deleteUser(userId);
     return "Usuario eliminado exitosamente";

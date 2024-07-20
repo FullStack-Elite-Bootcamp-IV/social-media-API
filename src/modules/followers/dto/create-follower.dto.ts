@@ -15,7 +15,6 @@ export class CreateFollowerDto {
 
   @ApiProperty()
   @IsDate()
-  @IsNotEmpty()
-  followDate: Date;
+  followDate?: Date;
 }
   

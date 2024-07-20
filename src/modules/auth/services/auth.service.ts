@@ -58,7 +58,20 @@ export class AuthService {
     }
   }
 
-  public async updateLoginDate(email: string, Date: Date): Promise<void> {
-    this.userService.updateUserLastLogin(email, Date);
+  public async logout(date: Date, email: string): Promise<UserEntity | null> {
+    try{
+      if (!date) {
+        throw new UnauthorizedException('Invalid date');
+      }
+      const user = await this.userService.getByEmail(email);
+
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      return await this.userService.updateLastLogout(email, date);
+    } catch (error) {
+      throw new UnauthorizedException('Failed to logout');
+    }
   }
 }

@@ -19,3 +19,15 @@ export class AuthDTO {
   @IsDate()
   date: Date;
 }
+
+export class LogoutDTO{
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsDate()
+  date: Date;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+}

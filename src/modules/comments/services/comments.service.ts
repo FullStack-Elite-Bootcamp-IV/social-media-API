@@ -38,10 +38,13 @@ export class CommentsService {
 
   async deleteComment(id: string): Promise<void> {
     try {
-      if (!isString(id)) {
+      const erased = this.commentsRepository.delete(id).then(() => { return });
+      console.log("colo")
+      if (!erased) {
+        console.log("no colo")
         throw new HttpException('Not found', HttpStatus.NOT_FOUND);
       }
-      await this.commentsRepository.delete(id);
+      return erased
     } catch (e) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
@@ -72,7 +75,7 @@ export class CommentsService {
         throw new HttpException('Not found', HttpStatus.NOT_FOUND);
       }
       await this.commentsRepository.update(id, updateData);
-      return this.commentsRepository.findOne(id);
+      return this.commentsRepository.findOne({where: {id}});
     } catch (e) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }

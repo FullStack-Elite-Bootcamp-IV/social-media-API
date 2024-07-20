@@ -6,6 +6,8 @@ import { UserDto } from '../dto/create-user.dto';
 import * as bycryptjs from 'bcryptjs';
 import { AuthDTO } from 'src/modules/auth/dto/auth.dto';
 import { catchError } from 'rxjs';
+import { HttpException, HttpStatus } from '@nestjs/common';
+
 
 @Injectable()
 export class UserService {
@@ -14,16 +16,21 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async createUser(userDto: UserDto) {
+  async createUser(userDto: UserDto): Promise<UserEntity | Error> {
     try {
-      const userEmail = this.userRepository.findOne({ where: { email: userDto.email } })
-      const userName = this.userRepository.findOne({ where: { username: userDto.username } })
+      const userEmail = await this.getByEmail(userDto.email);
+      const userName = await this.getUserByUserName(userDto.username)
       if (userEmail || userName) {
-        return;
+
+      const error = new HttpException(
+          'User already exists',
+          HttpStatus.BAD_REQUEST
+        );
+
+        return error;
       }
-
-      userDto.password = await bycryptjs.hash(userDto.password, 20);
-
+      
+      userDto.password = await bycryptjs.hash(userDto.password, 0);
       const user = this.userRepository.create(userDto);
       return await this.userRepository.save(user);
     } catch (error) {

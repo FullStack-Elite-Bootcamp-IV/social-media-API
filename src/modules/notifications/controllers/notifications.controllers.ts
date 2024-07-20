@@ -57,7 +57,7 @@ export class NotificationsController {
     status: 404,
     description: 'Notification not found.',
   })
-  @Delete('/delete:id')
+  @Delete('/delete/:id')
   @UseGuards(JwtAuthGuard)
   deleteNotification(@Param('id') notificationId: string): Promise<void> {
     return this.notificationsService.deleteNotification(notificationId);

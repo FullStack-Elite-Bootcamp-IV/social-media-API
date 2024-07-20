@@ -36,7 +36,7 @@ export class AuthController {
     if (!userValidate) {
       throw new UnauthorizedException('Data not valid');
     }
-
+    this.authService.updateLoginDate(email);
     const jwt = await this.authService.generateJWT(userValidate);
 
     return jwt;

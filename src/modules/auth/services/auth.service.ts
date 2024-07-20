@@ -57,4 +57,8 @@ export class AuthService {
       throw new UnauthorizedException('Failed to generate JWT');
     }
   }
+
+  public async updateLoginDate(email: string): Promise<void> {
+    this.userService.updateUserLastLogin(email);
+  }
 }

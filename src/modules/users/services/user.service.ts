@@ -18,8 +18,8 @@ export class UserService {
 
   async createUser(userDto: UserDto): Promise<UserEntity | Error> {
     try {
-      const userEmail = await this.getByEmail(userDto.email);
-      const userName = await this.getUserByUserName(userDto.username)
+      const userEmail = await this.userRepository.findOne({ where: { email: userDto.email } });
+      const userName = await this.userRepository.findOne({ where: { username: userDto.username } });
       if (userEmail || userName) {
 
       const error = new HttpException(
@@ -85,7 +85,6 @@ export class UserService {
       }
       return user;
     } catch (error) {
-      console.log(error)
       throw new Error(error);
     }
   }

@@ -50,7 +50,7 @@ export class UsersController {
 
 @ApiResponse({
     status: 200,
-    description: 'Get all User.',
+    description: 'Get user by id.',
 })
 @ApiResponse({
     status: 400,

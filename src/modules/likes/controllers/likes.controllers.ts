@@ -1,11 +1,11 @@
-// src/modules/likes/controllers/likes.controller.ts
-import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body, UseGuards } from '@nestjs/common';
 import { LikesService } from '../services/likes.services';
 import { CreateLikeDto } from '../dto/create-like.dto';
 import { LikeEntity } from '../entities/like.entity';
 import { PostEntity } from 'src/modules/posts/entities/post.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags("Likes")
 @Controller('likes')
@@ -25,6 +25,7 @@ export class LikesController {
     description: 'Unauthorized'
   })
   @Post('create')
+  @UseGuards(JwtAuthGuard)
   createLike(@Body() createLikeDto: CreateLikeDto): Promise<LikeEntity> {
     return this.likesService.createLike(createLikeDto);
   }
@@ -46,6 +47,7 @@ export class LikesController {
     description: 'Likes not found.'
   })
   @Get('all')
+  @UseGuards(JwtAuthGuard)
   findAllLikes(): Promise<LikeEntity[]> {
     return this.likesService.findAllLikes();
   }
@@ -67,6 +69,7 @@ export class LikesController {
     description: 'Like not found.'
   })
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   deleteLike(@Param('id') likeId: string): Promise<void> {
     return this.likesService.deleteLike(likeId);
   }
@@ -88,6 +91,7 @@ export class LikesController {
     description: 'Likes not found.'
   })
   @Get('post/:postId')
+  @UseGuards(JwtAuthGuard)
   findLikesByPost(@Param('postId') postId: PostEntity): Promise<LikeEntity[]> {
     return this.likesService.findLikesByPost(postId);
   }
@@ -109,6 +113,7 @@ export class LikesController {
     description: 'Likes not found.'
   })
   @Get('user/:userId')
+  @UseGuards(JwtAuthGuard)
   findLikesByUser(@Param('userId') userId: UserEntity): Promise<LikeEntity[]> {
     return this.likesService.findLikesByUser(userId);
   }

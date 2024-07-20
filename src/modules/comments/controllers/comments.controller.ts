@@ -6,11 +6,13 @@ import {
   Param,
   Body,
   Delete,
+  UseGuards
 } from '@nestjs/common';
 import { CommentsService } from '../services/comments.service';
 import { CreateCommentDTO } from '../dto/create-comment.dto';
 import { CommentsEntity } from '../entities/comment.entity';
 import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags("Comments")
 @Controller('comments')
@@ -31,6 +33,7 @@ export class CommentsController {
     description: 'Unauthorized'
   })
   @Post('/create')
+  @UseGuards(JwtAuthGuard)
   async createComment(
     @Body() createCommentDTO: CreateCommentDTO,
   ): Promise<CommentsEntity> {
@@ -54,7 +57,8 @@ export class CommentsController {
     status: 404,
     description: 'Favorite not found.'
   })
-  @Delete('/delete/:id')
+  @Delete('/delete:id')
+  @UseGuards(JwtAuthGuard)
   async deleteComment(@Param('id') id: string): Promise<void> {
     return this.CommentsService.deleteComment(id);
   }
@@ -76,6 +80,7 @@ export class CommentsController {
     description: 'Comments not found.'
 })
   @Get('/comment/:id')
+  @UseGuards(JwtAuthGuard)
   async getCommentById(@Param('id') postId: string): Promise<CommentsEntity[]> {
     return this.CommentsService.getCommentsbyId(postId);
   }
@@ -97,6 +102,7 @@ export class CommentsController {
     description: 'Comment not found.'
 })
   @Patch('/edit/:id')
+  @UseGuards(JwtAuthGuard)
   async EditComments(
     @Param('id') id: string,
     @Body() updateData: Partial<CreateCommentDTO>,

@@ -14,7 +14,6 @@ import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
-  @Post('login')
   @ApiHeader({
     name: 'Token',
     description: 'Token de autenticación',
@@ -28,13 +27,12 @@ export class AuthController {
     status: 401,
     description: 'Datos no válidos.',
   })
-  
+  @Post('login')
   async login(@Body() { email, password }: AuthDTO) {
     const userValidate = await this.authService.validateUser(
       email,
       password,
     );
-
     if (!userValidate) {
       throw new UnauthorizedException('Data not valid');
     }

@@ -6,7 +6,8 @@ import { UserDto } from '../dto/create-user.dto';
 import * as bycryptjs from 'bcryptjs';
 import { AuthDTO } from 'src/modules/auth/dto/auth.dto';
 import { catchError } from 'rxjs';
-import { error } from 'console';
+import { HttpException, HttpStatus } from '@nestjs/common';
+
 
 @Injectable()
 export class UserService {
@@ -15,29 +16,25 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async createUser(userDto: UserDto) {
+  async createUser(userDto: UserDto): Promise<UserEntity | Error> {
     try {
       const userEmail = await this.userRepository.findOne({ where: { email: userDto.email } });
-
-      const userName = await this.userRepository.findOne({ where: { username: userDto.username } })
-
-      if(userEmail){
-        throw new Error('Email in use')
-      }
-      if(userName){
-        throw new Error('Name in use')
-      }
+      const userName = await this.userRepository.findOne({ where: { username: userDto.username } });
       if (userEmail || userName) {
-        return;
+
+      const error = new HttpException(
+          'User already exists',
+          HttpStatus.BAD_REQUEST
+        );
+
+        return error;
       }
-
+      
       userDto.password = await bycryptjs.hash(userDto.password, 10);
-
       const user = this.userRepository.create(userDto);
       return await this.userRepository.save(user);
     } catch (error) {
-      console.log(error);
-      throw new Error(error);
+      return error;
     }
   }
 
@@ -45,7 +42,7 @@ export class UserService {
    try {
      const users = await this.userRepository.find()
      if(!users){
-      throw new Error('Users not found')
+      throw new Error('Users not found');
      }
      return users
    } catch (error) {
@@ -88,14 +85,11 @@ export class UserService {
       }
       return user;
     } catch (error) {
-      console.log(error)
       throw new Error(error);
     }
   }
 
   async editProfile(userId: string, userDto: UserDto): Promise<UserEntity> {
-
-    console.log("hello world")
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if(!user){
       throw new Error('User not found')
@@ -104,16 +98,14 @@ export class UserService {
     return await this.userRepository.save(user);
   }
   
-  async setDarkMode(userId: string): Promise<boolean> {
+  async setDarkMode(userId: string): Promise<void> {
     const user = await this.userRepository.findOne({ where: { id: userId } });
-    if (!user) {
+    if(!user){
       throw new Error('User Not found');
     }
     user.darkMode = !user.darkMode;
     await this.userRepository.save(user);
-    return user.darkMode;
   }
-  
   
   async deleteUser(id: string) {
     try {

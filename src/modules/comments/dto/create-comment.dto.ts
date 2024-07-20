@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsString,
   IsNotEmpty,
@@ -7,14 +8,18 @@ import {
 
 
 export class CreateCommentDTO  {
+
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   userId: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   postId: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   content: string;

@@ -3,60 +3,128 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm'; 
 import { UserEntity } from '../entities/user.entity';
 import { UserDto } from '../dto/create-user.dto';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import * as bycryptjs from 'bcryptjs';
+import { AuthDTO } from 'src/modules/auth/dto/auth.dto';
+import { catchError } from 'rxjs';
+import { error } from 'console';
 
 @Injectable()
 export class UserService {
-    constructor(
-        @InjectRepository(UserEntity)
-        private readonly userRepository: Repository<UserEntity>,
-        private readonly jwtService: JwtService,    
-        private readonly configService: ConfigService
-    ) {}
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+  ) {}
 
-    // Here is the services of user 
+  async createUser(userDto: UserDto) {
+    try {
+      const userEmail = await this.userRepository.findOne({ where: { email: userDto.email } });
 
-    // first create user
-        // IN this service i need a function to create a user
-    // the name is createUser and the parameter is UserDto
+      const userName = await this.userRepository.findOne({ where: { username: userDto.username } })
 
-    async createUser(user: UserDto) {
+      if(userEmail){
+        throw new Error('Email in use')
+      }
+      if(userName){
+        throw new Error('Name in use')
+      }
+      if (userEmail || userName) {
+        return;
+      }
+
+      userDto.password = await bycryptjs.hash(userDto.password, 10);
+
+      const user = this.userRepository.create(userDto);
+      return await this.userRepository.save(user);
+    } catch (error) {
+      console.log(error);
+      throw new Error(error);
     }
+  }
 
-    // second login user
-    // the name is loginUser and the parameter is UserDto
+ async getUsers () {
+   try {
+     const users = await this.userRepository.find()
+     if(!users){
+      throw new Error('Users not found')
+     }
+     return users
+   } catch (error) {
+     console.log(error)
+     throw new Error(error);
+   }
+ }
 
-    async loginUser(user: UserDto) {
+  async getUserById (userId: string) {
+    try {
+      const user = await this.userRepository.findOne({ where: { id: userId } })
+      if(!user){
+        throw new Error('User not found')
+      }
+      return user
+    } catch (error) {
+      console.log(error)
+      throw new Error(error);
     }
+  }
 
-    // logaut user
-    // the name is logoutUser and the parameter is UserDto
-
-    async logoutUser(user: UserDto) {
+  async getUserByUserName (userName: string) {
+    try {
+      const user = await this.userRepository.findOne({ where: { username: userName } })
+      if(!user){
+        throw new Error('User not found')
+      }
+      return user;
+    } catch (error) {
+      console.log(error)
+      throw new Error(error);
     }
+  }
 
-    // get user 
-    // the name is getUser and the parameter is UserDto
-
-    async getUser(user: UserDto) {
+  async getByEmail(email: string) {
+    try {
+      const user = await this.userRepository.findOne({ where: { email: email } })
+      if(!user){
+        throw new Error('User not found')
+      }
+      return user;
+    } catch (error) {
+      console.log(error)
+      throw new Error(error);
     }
+  }
 
-    // modify user
-    // the name is modifyUser and the parameter is UserDto
+  async editProfile(userId: string, userDto: UserDto): Promise<UserEntity> {
 
-    async modifyUser(user: UserDto) {
+    console.log("hello world")
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if(!user){
+      throw new Error('User not found')
     }
-
-    // delete user
-    // the name is deleteUser and the parameter is UserDto
-
-    async deleteUser(user: UserDto) {
+    Object.assign(user, userDto);
+    return await this.userRepository.save(user);
+  }
+  
+  async setDarkMode(userId: string): Promise<boolean> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new Error('User Not found');
     }
-
-    // modify the state of a darkMode 
-
-    async modifyDarkMode(user: UserDto) {
+    user.darkMode = !user.darkMode;
+    await this.userRepository.save(user);
+    return user.darkMode;
+  }
+  
+  
+  async deleteUser(id: string) {
+    try {
+      const user = await this.userRepository.delete(id)
+      if (!user) {
+        throw new Error('User not found');
     }
-}
-
+    return user
+    } catch (error) {
+      console.log(error)
+      throw new Error(error);
+    }
+  }
+};

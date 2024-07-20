@@ -1,39 +1,153 @@
-// // here we must create the user controller
-// import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-// import { UsersService } from '../services/user.service';
-// import { CreateUserDto } from '../dto/create-user.dto';
-// import { UpdateUserDto } from '../dto/update-user.dto';
-// import path from 'path';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { UserService } from '../services/user.service';
+import { UserDto } from '../dto/create-user.dto';
+import { UserEntity } from '../entities/user.entity';
+import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-// @Controller('users')
-// export class UsersController {
-//     constructor(private readonly usersService: UsersService) {}
+@ApiTags("User")
+@Controller('users')
+export class UsersController {
+  constructor(private readonly userService: UserService) { }
 
-//     @Post('/create')
-//     createUser() {
-//     }
+  @ApiResponse({
+    status: 201,
+    description: 'User added.',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request.',
+  })
+  @Post('/register')
+  async createUser(@Body() UserDto: UserDto): Promise<UserEntity> {
+    return this.userService.createUser(UserDto);
+  }
 
-//     @Get('/getuser')
-//     getuser(){
-//     }
+@ApiResponse({
+    status: 200,
+    description: 'Get all Users.',
+})
+@ApiResponse({
+    status: 400,
+    description: 'Bad request.'
+})  
+@ApiResponse({
+  status: 401,
+  description: 'Unauthorized'
+})
+@ApiResponse({
+    status: 404,
+    description: 'Users not found.'
+})
+  @Get('/users')
+  getUsers(): Promise<UserEntity[]> {
+    try {
+      return this.userService.getUsers();
+    } catch (error) {
+      console.error(error)
+      throw new Error
+    }
+  }
 
-//     @Post('/login')
-//     loginUser() {
-//     }
+@ApiResponse({
+    status: 200,
+    description: 'Get all User.',
+})
+@ApiResponse({
+    status: 400,
+    description: 'Bad request.'
+})  
+@ApiResponse({
+  status: 401,
+  description: 'Unauthorized'
+})
+@ApiResponse({
+    status: 404,
+    description: 'User not found.'
+})
+  @Get('/by-id/:id')
+  getUserById(@Param('id') id: string): Promise<UserEntity> {
+    return this.userService.getUserById(id);
+  }
 
-//     @Post('/logout')
-//     logoutUser() {
-//     }
+@ApiResponse({
+    status: 200,
+    description: 'Get all User.',
+})
+@ApiResponse({
+    status: 400,
+    description: 'Bad request.'
+})  
+@ApiResponse({
+  status: 401,
+  description: 'Unauthorized'
+})
+@ApiResponse({
+    status: 404,
+    description: 'User not found.'
+})
+  @Get('/by-username/:username')
+  getUserByUserName(@Param('username') username: string): Promise<UserEntity> {
+    return this.userService.getUserByUserName(username);
+  }
 
-//     @Post('/modifydarkmode')
-//     modifyDarkMode(){
-//     }
 
-//     @Patch('/modify')
-//     modifyUser() {
-//     }
+  @ApiResponse({
+    status: 201,
+    description: 'Set Dark mode.',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request.',
+  })
+  @Post('/setDarkMode/:id')
+async modifyDarkMode(@Param('id') userId: string): Promise<{ darkMode: boolean }> {
+  const darkMode = await this.userService.setDarkMode(userId);
+  return { darkMode };
+}
 
-//     @Delete('/delete')
-//     deleteUser() {
-//     }
-// }
+@ApiResponse({
+    status: 200,
+    description: 'User modify.',
+})
+@ApiResponse({
+    status: 400,
+    description: 'Bad request.'
+})  
+@ApiResponse({
+  status: 401,
+  description: 'Unauthorized'
+})
+@ApiResponse({
+    status: 404,
+    description: 'User not found.'
+})  
+  @Patch(':id')
+  async modifyUser(
+    @Param('id') userId: string,
+    @Body() userDto: UserDto,
+  ): Promise<UserEntity> {
+    return await this.userService.editProfile(userId, userDto);
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: 'User deleted.',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request.'
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found.'
+  })
+  @Delete(':id')
+  async deleteUser(@Param('id') userId: string): Promise<string> {
+    await this.userService.deleteUser(userId);
+    return "Usuario eliminado exitosamente";
+  }
+}

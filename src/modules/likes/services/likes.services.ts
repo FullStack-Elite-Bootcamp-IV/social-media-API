@@ -11,56 +11,70 @@ export class LikesService {
   constructor(
     @InjectRepository(LikeEntity)
     private readonly likeRepository: Repository<LikeEntity>,
-  ) {}
+  ) { }
 
   // Function to create a new like
   createLike(createLikeDto: CreateLikeDto): Promise<LikeEntity> {
     try {
       return this.likeRepository.save(createLikeDto);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
   // Function to find all likes
   findAllLikes(): Promise<LikeEntity[]> {
     try {
-      return this.likeRepository.find();
+      const likes = this.likeRepository.find();
+      if (!likes) {
+        throw new Error('Likes not found');
+      }
+      return likes;
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
   // Function to delete a like by ID
   deleteLike(likeId: string): Promise<void> {
 
-    try{
-      return this.likeRepository.delete(likeId).then(() => {
-        return;
-      });
+    try {
+      const like = this.likeRepository.delete(likeId).then(() => { return });
+      if (!like) {
+        throw new Error('Like not found');
+      }
+      return like
     }
-    catch(error){
-      console.log(error);
+    catch (error) {
+      throw new Error(error);
     }
   }
 
   // Function to find likes by post ID
   findLikesByPost(postId: PostEntity): Promise<LikeEntity[]> {
 
-    try{
-      return this.likeRepository.find({ where: { postId: postId } });
+    try {
+      const like = this.likeRepository.find({ where: { postId: postId } });
+      if (!like) {
+        throw new Error('Like not found');
+      }
+      return like;
     }
-    catch(error){
-      console.log(error);
+    catch (error) {
+      throw new Error(error);
     }
   }
 
   // Function to find likes by user ID
   findLikesByUser(userId: UserEntity): Promise<LikeEntity[]> {
     try {
-      return this.likeRepository.find({ where: { userId: userId } });
+      const userLikes = this.likeRepository.find({ where: { userId: userId } });
+      if (!userLikes) {
+        throw new Error('Likes not found');
+      }
+      return userLikes;
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 }

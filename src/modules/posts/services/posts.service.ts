@@ -33,9 +33,9 @@ export class PostsService {
       if (!updatePostDto) {
         throw new HttpException('Post not updated, please complete the form', 400)
       }
-      const post = this.postRepository.create(updatePostDto)
+      const post = this.postRepository.update(postId, updatePostDto)
       if (!post) throw new HttpException('Post not updated', 500)
-      return await this.postRepository.save(post)
+      return post.then(() => this.postRepository.findOneBy({ id: postId }))
     } catch (error) {
       throw new HttpException('Post not updated', 500)
     }
@@ -71,11 +71,21 @@ export class PostsService {
     }
   }
 
+  // Function to find a post by Id
+  async findPostById(postId: string): Promise<PostEntity> {
+    try {
+      const post = await this.postRepository.findOneBy({ id: postId });
+      return post;
+    } catch (error) {
+      throw new HttpException('server error', 500);
+    }
+  }
+
   // Function to find all posts by a specific user
-  async findPostsByUser(userId: UserEntity): Promise<PostEntity[]> {
+  async findPostsByUser(userId: string): Promise<PostEntity[]> {
     try {
       if (!userId) throw new HttpException('Posts not found, please provide the id', 400);
-      const posts = await this.postRepository.find({ where: { userId: userId } });
+      const posts = await this.postRepository.findBy({ userId: userId });
       if (!posts) throw new HttpException('Posts not found', 500);
       return posts;
     } catch (error) {
@@ -84,7 +94,7 @@ export class PostsService {
   }
 
   // Function to find all posts visible to a specific user (public posts and posts of followed users)
-  async findPostsVisibleToUser(userId: UserEntity): Promise<PostEntity[]> {
+  async findPostsVisibleToUser(userId: string): Promise<PostEntity[]> {
     try {
       if (!userId) throw new HttpException('Posts not found, please provide the id', 400);
       const posts = await this.postRepository.find({ where: { isPublic: true, userId: userId } });

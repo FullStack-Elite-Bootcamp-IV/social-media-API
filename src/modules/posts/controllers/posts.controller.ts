@@ -1,5 +1,5 @@
 // src/modules/posts/controllers/posts.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Patch } from '@nestjs/common';
 import { PostsService } from '../services/posts.service';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { PostEntity } from '../entities/post.entity';
@@ -36,8 +36,10 @@ export class PostsController {
     return this.postsService.createPost(createPostDto);
   }
 
-  // @Get(':id')
-  // findPostById(@Param('id') postId: string): Promise<PostEntity> { ... }
+  @Get(':id')
+  findPostById(@Param('id') postId: string): Promise<PostEntity> {
+    return this.postsService.findPostById(postId);
+  }
 
   @ApiOperation({ summary: 'Update a post' })
   @ApiResponse({
@@ -55,8 +57,8 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Update a post'
   })
-  @Put(':id')
-  updatePost(@Param('id') postId: string, @Body() updatePostDto: CreatePostDto): Promise<PostEntity> {
+  @Patch(':id')
+  updatePost(@Param('id') postId: string, @Body() updatePostDto: UpdatePostDto): Promise<PostEntity> {
     return this.postsService.updatePost(postId, updatePostDto);
   }
 
@@ -140,7 +142,7 @@ export class PostsController {
     description: 'INTERNAL SERVER ERROR: Find posts by user'
   })
   @Get('user/:userId')
-  findPostsByUser(@Param('userId') userId: UserEntity): Promise<PostEntity[]> {
+  findPostsByUser(@Param('userId') userId: string): Promise<PostEntity[]> {
     return this.postsService.findPostsByUser(userId)
   }
 
@@ -161,7 +163,7 @@ export class PostsController {
     description: 'INTERNAL SERVER ERROR: Find posts visible to user'
   })
   @Get('user/:userId/visible')
-  findPostsVisibleToUser(@Param('userId') userId: UserEntity): Promise<PostEntity[]> {
+  findPostsVisibleToUser(@Param('userId') userId: string): Promise<PostEntity[]> {
     return this.postsService.findPostsVisibleToUser(userId)
   }
 }

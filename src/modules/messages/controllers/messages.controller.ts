@@ -14,7 +14,7 @@ import { MessageEntity } from '../entities/message.entity';
 import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
-@ApiTags("Messages")
+@ApiTags('Messages')
 @Controller('messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
@@ -26,13 +26,13 @@ export class MessagesController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.'
+    description: 'Bad request.',
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized'
+    description: 'Unauthorized',
   })
-  @Post()
+  @Post('/create')
   @UseGuards(JwtAuthGuard)
   createMessage(
     @Body() createMessageDto: CreateMessageDto,
@@ -47,17 +47,17 @@ export class MessagesController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.'
+    description: 'Bad request.',
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized'
+    description: 'Unauthorized',
   })
   @ApiResponse({
     status: 404,
-    description: 'Messages not found.'
+    description: 'Messages not found.',
   })
-  @Get(':chatId')
+  @Get('/chat/:chatId')
   @UseGuards(JwtAuthGuard)
   findMessagesByChat(@Param('chatId') chatId: string): Promise<void> {
     return this.messagesService.findMessagesByChat(chatId);
@@ -70,17 +70,17 @@ export class MessagesController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.'
+    description: 'Bad request.',
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized'
+    description: 'Unauthorized',
   })
   @ApiResponse({
     status: 404,
-    description: 'Message not found.'
+    description: 'Message not found.',
   })
-  @Delete(':id')
+  @Delete('/delete/:id')
   @UseGuards(JwtAuthGuard)
   deleteMessage(@Param('id') messageId: string): Promise<void> {
     return this.messagesService.deleteMessage(messageId);
@@ -93,17 +93,17 @@ export class MessagesController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.'
+    description: 'Bad request.',
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized'
+    description: 'Unauthorized',
   })
   @ApiResponse({
     status: 404,
-    description: 'Messages not found.'
+    description: 'Messages not found.',
   })
-  @Get(':userId')
+  @Get('/user/:userId')
   @UseGuards(JwtAuthGuard)
   async findMessagesByUser(@Param('userId') userId: string): Promise<void> {
     return this.messagesService.findMessagesByUser(userId);

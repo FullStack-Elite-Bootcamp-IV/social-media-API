@@ -18,7 +18,7 @@ export class UsersController {
     description: 'Bad request.',
   })
   @Post('/register')
-  async createUser(@Body() UserDto: UserDto): Promise<UserEntity> {
+  async createUser(@Body() UserDto: UserDto): Promise<UserEntity | Error> {
     return this.userService.createUser(UserDto);
   }
 

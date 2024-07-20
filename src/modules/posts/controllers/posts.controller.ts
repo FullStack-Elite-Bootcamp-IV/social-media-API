@@ -191,6 +191,7 @@ export class PostsController {
     @Param('followerId') followerId: string,
     @Param('followedUserId') followedUserId: string,
   ): Promise<PostEntity[]> {
+    console.log(followerId, followedUserId);
       return await this.postsService.findPostsOfFollowedUser(followerId, followedUserId);
   }
 }

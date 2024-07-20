@@ -32,18 +32,18 @@ export class FollowersService {
   }
 
   // Function to find all followings by follower ID
-  async findFollowingsById(followerId: FollowersEntity['follower']): Promise<String[]> {
+  async findFollowingsById(followerId: FollowersEntity['followerId']): Promise<String[]> {
     try {
       if (!followerId) {
         throw new HttpErrorByCode[400]('please provide all fields');
       };
-      const followings = await this.followerRepository.find({ where: { follower: followerId } });
+      const followings = await this.followerRepository.find({ where: { followerId: followerId } });
 
       if (!followings || followings.length === 0) {
         throw new Error('No followings found for the provided followerId');
       }
 
-      const result = followings.map(following => following.following);
+      const result = followings.map(following => following.followingId);
 
       return result;
     }
@@ -53,17 +53,17 @@ export class FollowersService {
   }
 
   // Function to find followers by user ID
-  async findFollowersByUser(followingID: FollowersEntity['following']): Promise<String[]> {
+  async findFollowersByUser(followingID: FollowersEntity['followingId']): Promise<String[]> {
     try {
       if (!followingID) {
         throw new HttpErrorByCode[400]('please provide all fields');
       };
-      const followers = await this.followerRepository.find({ where: { following: followingID } });
+      const followers = await this.followerRepository.find({ where: { followingId: followingID } });
       if (!followers) {
         throw new Error('No followers found for the provided userId');
       };
 
-      const result = followers.map(follower => follower.follower);
+      const result = followers.map(follower => follower.followerId);
 
       return result;
     }

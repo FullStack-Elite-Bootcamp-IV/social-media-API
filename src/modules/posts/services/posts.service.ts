@@ -120,7 +120,7 @@ export class PostsService {
       throw new HttpException('You are not following this user', 400);
     }
 
-    const posts = await this.postRepository.find({ where: { user: followedUserId } });
+    const posts = await this.postRepository.find({ where: { userId: followedUserId } });
     return posts;
   } catch (error) {
     throw new HttpException('server error', 500);

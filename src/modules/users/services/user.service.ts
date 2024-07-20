@@ -30,7 +30,7 @@ export class UserService {
         return error;
       }
       
-      userDto.password = await bycryptjs.hash(userDto.password, 0);
+      userDto.password = await bycryptjs.hash(userDto.password, 10);
       const user = this.userRepository.create(userDto);
       return await this.userRepository.save(user);
     } catch (error) {
@@ -42,7 +42,7 @@ export class UserService {
    try {
      const users = await this.userRepository.find()
      if(!users){
-      throw new Error('Users not found')
+      throw new Error('Users not found');
      }
      return users
    } catch (error) {

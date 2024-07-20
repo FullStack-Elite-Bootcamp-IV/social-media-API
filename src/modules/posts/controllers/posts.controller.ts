@@ -194,4 +194,31 @@ export class PostsController {
     console.log(followerId, followedUserId);
       return await this.postsService.findPostsOfFollowedUser(followerId, followedUserId);
   }
+
+  // Endpoint para obtener todos los post de los usuarios con los que sigues
+  @ApiOperation({ summary: 'Find posts of followed users' })
+  @ApiResponse({
+    status: 200,
+    type: [CreatePostDto],
+    description: 'Find posts of followed users'
+  })
+  @ApiResponse({
+    status: 400,
+    type: CreatePostDto,
+    description: 'BAD REQUEST: Find posts of followed users'
+  })
+  @ApiResponse({
+    status: 500,
+    type: CreatePostDto,
+    description: 'INTERNAL SERVER ERROR: Find posts of followed users'
+  })
+  @Get('followed-post/:followerId/:page/:limit')
+  async findPaginatedPosts(@Param() { followerId, page, limit } ): Promise<object[]> {
+    console.log({
+      followerId,
+      page,
+      limit
+    });
+    return await this.postsService.findPaginatedPosts(followerId, page, limit);
+  }
 }

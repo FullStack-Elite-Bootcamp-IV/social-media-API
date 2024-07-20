@@ -4,10 +4,12 @@ import { PostsService } from './services/posts.service';
 import { PostsController } from './controllers/posts.controller';
 import { PostEntity } from './entities/post.entity';
 import { FollowersModule } from '../followers/followers.module';
+import { UserEntity } from '../users/entities/user.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PostEntity]),
-    FollowersModule
+    FollowersModule,
+    TypeOrmModule.forFeature([UserEntity])
    ],
   controllers: [PostsController],
   providers: [PostsService],

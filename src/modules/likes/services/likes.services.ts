@@ -11,7 +11,7 @@ export class LikesService {
   constructor(
     @InjectRepository(LikeEntity)
     private readonly likeRepository: Repository<LikeEntity>,
-  ) {}
+  ) { }
 
   // Function to create a new like
   createLike(createLikeDto: CreateLikeDto): Promise<LikeEntity> {
@@ -26,7 +26,7 @@ export class LikesService {
   findAllLikes(): Promise<LikeEntity[]> {
     try {
       const likes = this.likeRepository.find();
-      if(!likes){
+      if (!likes) {
         throw new Error('Likes not found');
       }
       return likes;
@@ -38,14 +38,14 @@ export class LikesService {
   // Function to delete a like by ID
   deleteLike(likeId: string): Promise<void> {
 
-    try{
-      const like = this.likeRepository.delete(likeId).then(() => {return});
-      if(!like){
+    try {
+      const like = this.likeRepository.delete(likeId).then(() => { return });
+      if (!like) {
         throw new Error('Like not found');
       }
       return like
     }
-    catch(error){
+    catch (error) {
       console.log(error);
     }
   }
@@ -53,14 +53,14 @@ export class LikesService {
   // Function to find likes by post ID
   findLikesByPost(postId: PostEntity): Promise<LikeEntity[]> {
 
-    try{
-      const like =  this.likeRepository.find({ where: { postId: postId } });
-      if(!like){
+    try {
+      const like = this.likeRepository.find({ where: { postId: postId } });
+      if (!like) {
         throw new Error('Like not found');
       }
       return like;
     }
-    catch(error){
+    catch (error) {
       console.log(error);
     }
   }

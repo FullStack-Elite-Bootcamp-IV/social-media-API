@@ -7,7 +7,7 @@ import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags("Followers")
 @Controller('followers')
 export class FollowersController {
-  constructor(private readonly followersService: FollowersService) {}
+  constructor(private readonly followersService: FollowersService) { }
 
   @ApiResponse({
     status: 201,
@@ -21,53 +21,53 @@ export class FollowersController {
     status: 401,
     description: 'Unauthorized'
   })
-   @Post()
+  @Post()
   createFollower(@Body() createFollowerDto: CreateFollowerDto): Promise<FollowersEntity> {
     return this.followersService.createFollower(createFollowerDto);
   }
 
   // here we can to find a users that i am following
-@ApiResponse({
+  @ApiResponse({
     status: 200,
     description: 'Get all users that i am following.',
-})
-@ApiResponse({
+  })
+  @ApiResponse({
     status: 400,
     description: 'Bad request.'
-})  
-@ApiResponse({
-  status: 401,
-  description: 'Unauthorized'
-})
-@ApiResponse({
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
+  })
+  @ApiResponse({
     status: 404,
     description: 'Followers not found.'
-})
+  })
   @Get('followings/:followerId')
-   findFollowingsById(@Param('followerId') followerId: string): Promise<String[]> { 
-      return this.followersService.findFollowingsById(followerId);
-    }
- 
+  findFollowingsById(@Param('followerId') followerId: string): Promise<String[]> {
+    return this.followersService.findFollowingsById(followerId);
+  }
+
   // here we can find all followers that follow me 
-@ApiResponse({
+  @ApiResponse({
     status: 200,
     description: 'Get all followers that follow me.',
-})
-@ApiResponse({
+  })
+  @ApiResponse({
     status: 400,
     description: 'Bad request.'
-})  
-@ApiResponse({
-  status: 401,
-  description: 'Unauthorized'
-})
-@ApiResponse({
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
+  })
+  @ApiResponse({
     status: 404,
     description: 'Followers not found.'
-})
-   @Get('followers/:followingId')
-  findFollowersByUser(@Param('followingId') followingId: string): Promise<String[]> { 
-      return this.followersService.findFollowersByUser(followingId);
+  })
+  @Get('followers/:followingId')
+  findFollowersByUser(@Param('followingId') followingId: string): Promise<String[]> {
+    return this.followersService.findFollowersByUser(followingId);
   }
 
   @ApiResponse({
@@ -88,6 +88,6 @@ export class FollowersController {
   })
   @Delete(':followerId') // is like unfollow 
   deleteFollower(@Param('followerId') followerId: string): Promise<String> {
-      return this.followersService.deleteFollower(followerId);
+    return this.followersService.deleteFollower(followerId);
   }
 }

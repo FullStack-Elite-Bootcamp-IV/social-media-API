@@ -10,26 +10,26 @@ import { UpdatePostDto } from '../dto/update-post.dto';
 @ApiTags('Posts')
 @Controller('posts')
 export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(private readonly postsService: PostsService) { }
 
-    // Documentation whit swagger the service posts
-    @ApiOperation({ summary: 'Create a new post' })
-    @ApiResponse({
-       status: 200,
-        type: CreatePostDto,
-        description: 'Create a new post'
-     })
-     // now the respose error
-     @ApiResponse({
-      status: 400,
-      type: CreatePostDto,
-      description: 'BAD REQUEST: Create a new post'
-    })
-    @ApiResponse({
-      status: 500,
-      type: CreatePostDto,
-      description: 'INTERNAL SERVER ERROR: Create a new post'
-    })
+  // Documentation whit swagger the service posts
+  @ApiOperation({ summary: 'Create a new post' })
+  @ApiResponse({
+    status: 200,
+    type: CreatePostDto,
+    description: 'Create a new post'
+  })
+  // now the respose error
+  @ApiResponse({
+    status: 400,
+    type: CreatePostDto,
+    description: 'BAD REQUEST: Create a new post'
+  })
+  @ApiResponse({
+    status: 500,
+    type: CreatePostDto,
+    description: 'INTERNAL SERVER ERROR: Create a new post'
+  })
 
   @Post()
   createPost(@Body() createPostDto: CreatePostDto): Promise<PostEntity> {

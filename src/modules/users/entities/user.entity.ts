@@ -33,7 +33,7 @@ export class UserEntity {
 
   @Column({ type: 'varchar', length: 200 })
   fullName: string;
-
+  
   @Column({ type: 'int', nullable: true })
   age?: number;
 

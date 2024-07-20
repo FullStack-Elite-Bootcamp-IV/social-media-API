@@ -11,7 +11,7 @@ export class CreatePostDto {
 
   @IsNotEmpty()
   @IsString()
-  userId: UserEntity;
+  userId: string;
 
   @IsNotEmpty()
   @IsString()

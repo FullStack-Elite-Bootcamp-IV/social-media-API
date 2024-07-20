@@ -2,22 +2,25 @@
 import {
   IsString,
   IsBoolean,
-  IsNotEmpty,
+  IsOptional,
 } from 'class-validator';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
 
 export class UpdatePostDto {
   // here you must to create a post dto whit the properties based on thec data base
 
+  @IsOptional()
   @IsString()
   title?: string;
 
+  @IsOptional()
   @IsString()
   description?: string;
 
+  @IsOptional()
   @IsString()
   media?: string;
 
+  @IsOptional()
   @IsBoolean()
   isPublic?: boolean;
 }

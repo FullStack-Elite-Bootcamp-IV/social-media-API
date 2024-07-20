@@ -10,7 +10,7 @@ import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags("Likes")
 @Controller('likes')
 export class LikesController {
-  constructor(private readonly likesService: LikesService) {}
+  constructor(private readonly likesService: LikesService) { }
 
   @ApiResponse({
     status: 201,
@@ -20,18 +20,26 @@ export class LikesController {
     status: 400,
     description: 'Bad request.'
   })
-   @Post('create')
-  createLike(@Body() createLikeDto: CreateLikeDto): Promise<LikeEntity> { 
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
+  })
+  @Post('create')
+  createLike(@Body() createLikeDto: CreateLikeDto): Promise<LikeEntity> {
     return this.likesService.createLike(createLikeDto);
-   } 
+  }
 
-   @ApiResponse({
+  @ApiResponse({
     status: 200,
     description: 'Get all likes.',
   })
   @ApiResponse({
     status: 400,
     description: 'Bad request.'
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
   })
   @ApiResponse({
     status: 404,
@@ -44,11 +52,15 @@ export class LikesController {
 
   @ApiResponse({
     status: 200,
-    description: 'Se ha borrado el like.',
+    description: 'Like deleted.',
   })
   @ApiResponse({
     status: 400,
     description: 'Bad request.'
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
   })
   @ApiResponse({
     status: 404,
@@ -68,6 +80,10 @@ export class LikesController {
     description: 'Bad request.'
   })
   @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
+  })
+  @ApiResponse({
     status: 404,
     description: 'Likes not found.'
   })
@@ -83,6 +99,10 @@ export class LikesController {
   @ApiResponse({
     status: 400,
     description: 'Bad request.'
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
   })
   @ApiResponse({
     status: 404,

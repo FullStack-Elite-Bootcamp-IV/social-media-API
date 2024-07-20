@@ -31,5 +31,8 @@ export class PostEntity {
   likes: number;
 
   @ManyToOne(() => UserEntity, (user) => user.id)
-  userId: UserEntity;
+  user: UserEntity;
+
+  @Column()
+  userId: string;
 }

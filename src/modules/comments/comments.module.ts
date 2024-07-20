@@ -11,4 +11,3 @@ import { CommentsEntity } from './entities/comment.entity';
   exports: [CommentsService],
 })
 export class CommentsModule {}
- 

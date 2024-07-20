@@ -1,42 +1,45 @@
 // src/modules/posts/controllers/posts.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Patch } from '@nestjs/common';
 import { PostsService } from '../services/posts.service';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { PostEntity } from '../entities/post.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { ApiResponse, ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { UpdatePostDto } from '../dto/update-post.dto';
 
 @ApiTags('Posts')
 @Controller('posts')
 export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(private readonly postsService: PostsService) { }
 
-    // Documentation whit swagger the service posts
-    @ApiOperation({ summary: 'Create a new post' })
-    @ApiResponse({
-       status: 200,
-        type: CreatePostDto,
-        description: 'Create a new post'
-     })
-     // now the respose error
-     @ApiResponse({
-      status: 400,
-      type: CreatePostDto,
-      description: 'BAD REQUEST: Create a new post'
-    })
-    @ApiResponse({
-      status: 500,
-      type: CreatePostDto,
-      description: 'INTERNAL SERVER ERROR: Create a new post'
-    })
+  // Documentation whit swagger the service posts
+  @ApiOperation({ summary: 'Create a new post' })
+  @ApiResponse({
+    status: 200,
+    type: CreatePostDto,
+    description: 'Create a new post'
+  })
+  // now the respose error
+  @ApiResponse({
+    status: 400,
+    type: CreatePostDto,
+    description: 'BAD REQUEST: Create a new post'
+  })
+  @ApiResponse({
+    status: 500,
+    type: CreatePostDto,
+    description: 'INTERNAL SERVER ERROR: Create a new post'
+  })
 
   @Post()
   createPost(@Body() createPostDto: CreatePostDto): Promise<PostEntity> {
     return this.postsService.createPost(createPostDto);
   }
 
-  // @Get(':id')
-  // findPostById(@Param('id') postId: string): Promise<PostEntity> { ... }
+  @Get(':id')
+  findPostById(@Param('id') postId: string): Promise<PostEntity> {
+    return this.postsService.findPostById(postId);
+  }
 
   @ApiOperation({ summary: 'Update a post' })
   @ApiResponse({
@@ -54,8 +57,8 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Update a post'
   })
-  @Put(':id')
-  updatePost(@Param('id') postId: string, @Body() updatePostDto: CreatePostDto): Promise<PostEntity> {
+  @Patch(':id')
+  updatePost(@Param('id') postId: string, @Body() updatePostDto: UpdatePostDto): Promise<PostEntity> {
     return this.postsService.updatePost(postId, updatePostDto);
   }
 
@@ -75,7 +78,7 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Delete a post'
   })
-  // @Delete(':id')
+  @Delete(':id')
   deletePost(@Param('id') postId: string): Promise<void> {
     return this.postsService.deletePost(postId);
   }
@@ -96,7 +99,7 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Like a post'
   })
-  // @Post(':id/like')
+  @Post(':id/like')
   likePost(@Param('id') postId: string, @Body('userId') userId: string): Promise<void> {
     return this.postsService.likePost(postId, userId)
   }
@@ -117,7 +120,7 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Unlike a post'
   })
-  // @Post(':id/unlike')
+  @Post(':id/unlike')
   unlikePost(@Param('id') postId: string, @Body('userId') userId: string): Promise<void> {
     return this.postsService.unlikePost(postId, userId)
   }
@@ -138,8 +141,8 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Find posts by user'
   })
-  // @Get('user/:userId')
-  findPostsByUser(@Param('userId') userId: UserEntity): Promise<PostEntity[]> {
+  @Get('user/:userId')
+  findPostsByUser(@Param('userId') userId: string): Promise<PostEntity[]> {
     return this.postsService.findPostsByUser(userId)
   }
 
@@ -159,8 +162,8 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Find posts visible to user'
   })
-  // @Get('user/:userId/visible')
-  findPostsVisibleToUser(@Param('userId') userId: UserEntity): Promise<PostEntity[]> {
+  @Get('user/:userId/visible')
+  findPostsVisibleToUser(@Param('userId') userId: string): Promise<PostEntity[]> {
     return this.postsService.findPostsVisibleToUser(userId)
   }
 

@@ -11,88 +11,86 @@ export class FollowersService {
   constructor(
     @InjectRepository(FollowersEntity)
     private readonly followerRepository: Repository<FollowersEntity>
-  ) {}
+  ) { }
 
   // Function to create a new follower
-  async createFollower(createFollowerDto: CreateFollowerDto): Promise<FollowersEntity> { 
-    try{
-      console.log(createFollowerDto);
-      if(!createFollowerDto) {
+  async createFollower(createFollowerDto: CreateFollowerDto): Promise<FollowersEntity> {
+    try {
+      if (!createFollowerDto) {
         throw new HttpErrorByCode[400]('please provide all fields');
       };
-      const follower =  this.followerRepository.create(createFollowerDto);
-      if(!follower) {
+      const follower = this.followerRepository.create(createFollowerDto);
+      if (!follower) {
         throw new Error('Follower not created error from createFollower');
       };
-  
+
       return await this.followerRepository.save(follower);
     }
-    catch(err){
-      console.log(err);
+    catch (err) {
       throw new Error(err);
     }
-   }
+  }
 
   // Function to find all followings by follower ID
-  async findFollowingsById(followerId: FollowersEntity['followerId']): Promise<String[]> {
-    try{
-      if(!followerId) {
+  async findFollowingsById(followerId: FollowersEntity['follower']): Promise<String[]> {
+    try {
+      if (!followerId) {
         throw new HttpErrorByCode[400]('please provide all fields');
       };
-      const followings = await this.followerRepository.find({ where: { followerId: followerId } });
-    
+      const followings = await this.followerRepository.find({ where: { follower: followerId } });
+
       if (!followings || followings.length === 0) {
         throw new Error('No followings found for the provided followerId');
       }
-  
-      const result = followings.map(following => following.followingId);
-      
+
+      const result = followings.map(following => following.following);
+
       return result;
     }
-    catch(err){
+    catch (err) {
       throw new Error(err);
     }
   }
 
   // Function to find followers by user ID
-  async findFollowersByUser(followingID: FollowersEntity['followingId']): Promise<String[]> { 
-    try{
-      if(!followingID) {
+  async findFollowersByUser(followingID: FollowersEntity['following']): Promise<String[]> {
+    try {
+      if (!followingID) {
         throw new HttpErrorByCode[400]('please provide all fields');
       };
-      const followers = await this.followerRepository.find({ where: { followingId: followingID } });
-      if(!followers) {
+      const followers = await this.followerRepository.find({ where: { following: followingID } });
+      if (!followers) {
         throw new Error('No followers found for the provided userId');
       };
-  
-      const result = followers.map(follower => follower.followerId);
-  
+
+      const result = followers.map(follower => follower.follower);
+
       return result;
     }
-    catch(err){
+    catch (err) {
       throw new Error(err);
     }
-   }
+  }
 
   // Function to delete a follower by ID
-  async deleteFollower(followerId: string): Promise<string> { 
-    try{
-      if(!followerId) {
+  async deleteFollower(followerId: string): Promise<string> {
+    try {
+      if (!followerId) {
         throw new HttpErrorByCode[400]('please provide all fields');
       };
-      const follower = await this.followerRepository.findOneBy({id: followerId});
-      if(!follower) {
+      const follower = await this.followerRepository.findOneBy({ id: followerId });
+      if (!follower) {
         throw new Error('Follower not found');
       };
       // delete follower
       const deleted = await this.followerRepository.remove(follower);
-      if(!deleted) {
+      if (!deleted) {
         throw new Error('Follower not deleted');
       };
       return 'Follower deleted';
     }
-    catch(err){
+    catch (err) {
       throw new Error(err);
     }
   }
- }
+}

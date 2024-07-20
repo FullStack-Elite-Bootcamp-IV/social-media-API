@@ -18,7 +18,7 @@ export class LikesService {
     try {
       return this.likeRepository.save(createLikeDto);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -31,7 +31,7 @@ export class LikesService {
       }
       return likes;
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -46,7 +46,7 @@ export class LikesService {
       return like
     }
     catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -61,7 +61,7 @@ export class LikesService {
       return like;
     }
     catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -74,7 +74,7 @@ export class LikesService {
       }
       return userLikes;
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 }

@@ -9,6 +9,7 @@ import { JwtAuthGuard } from './guards/jwt.guard'; // Importa el JwtAuthGuard
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ConfigModule, // Importa ConfigModule aquí, para asegurarte de que esté disponible
     forwardRef(() => UsersModule), // Usa forwardRef si hay una dependencia circular
     PassportModule,

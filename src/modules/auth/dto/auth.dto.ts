@@ -13,18 +13,12 @@ export class AuthDTO {
   @IsString()
   @MinLength(8)
   password: string
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsDate()
-  date: Date;
 }
 
 export class LogoutDTO{
   @ApiProperty()
   @IsNotEmpty()
-  @IsDate()
-  date: Date;
+  date: string;
 
   @ApiProperty()
   @IsNotEmpty()

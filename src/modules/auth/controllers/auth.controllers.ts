@@ -52,6 +52,7 @@ export class AuthController {
     description: 'Fecha no válida.',
   })
   async logout(@Body() {date, email}: LogoutDTO) {
+    
     const userLogout = await this.authService.logout(
       date,
       email,

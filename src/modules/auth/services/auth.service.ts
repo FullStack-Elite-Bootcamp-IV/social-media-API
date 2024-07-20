@@ -58,7 +58,7 @@ export class AuthService {
     }
   }
 
-  public async logout(date: Date, email: string): Promise<UserEntity | null> {
+  public async logout(date: string, email: string): Promise<UserEntity | null> {
     try{
       if (!date) {
         throw new UnauthorizedException('Invalid date');

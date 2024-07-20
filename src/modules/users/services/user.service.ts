@@ -120,7 +120,7 @@ export class UserService {
     }
   }
 
-  async updateLastLogout (email: string, date: Date): Promise<UserEntity> {
+  async updateLastLogout (email: string, date: string): Promise<UserEntity> {
     try {
       const user = await this.userRepository.findOne({ where: { email: email } });
       if(!user){

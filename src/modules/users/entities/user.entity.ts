@@ -70,7 +70,7 @@ export class UserEntity {
   updateDate?: Date;
 
   @Column({ type: 'timestamp', nullable: true })
-  lastLogoutDate?: Date;
+  lastLogoutDate?: string;
 
   @OneToMany(() => PostEntity, post => post.user)
   posts: PostEntity[];

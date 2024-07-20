@@ -40,7 +40,6 @@ export class UsersController {
     description: 'Users not found.'
 })
   @Get('/users')
-  @UseGuards(JwtAuthGuard)
   getUsers(): Promise<UserEntity[]> {
     try {
       return this.userService.getUsers();

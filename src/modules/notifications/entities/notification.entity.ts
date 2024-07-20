@@ -7,7 +7,7 @@ export enum NotificationAction {
   LIKES = 'likes',
   COMMENTS = 'comments',
   NEW_FOLLOW_REQUEST = 'new_follow_resquest',
-  FOLLOW_REQUEST_ACCEPTED = 'follow_request_acepted', // notificacion al recibir solicitud // notification para aceptar solicitud
+  FOLLOW_REQUEST_ACCEPTED = 'follow_request_acepted',
 }
 
 @Entity('notifications')

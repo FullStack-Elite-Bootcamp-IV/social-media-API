@@ -91,27 +91,22 @@ export class UserService {
     }
   }
 
-  async modifyProfile(userDto: UserDto) {
-    try {
-      const user = this.userRepository.create(userDto)
-      if(!user){
-        throw new Error('User not found')
-      }
-      return await this.userRepository.save(user)
-    } catch (error) {
-      console.log(error)
-      throw new Error(error);
+  async editProfile(userId: string, userDto: UserDto): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if(!user){
+      throw new Error('User not found')
     }
+    Object.assign(user, userDto);
+    return await this.userRepository.save(user);
   }
   
-  async setDarkMode(userDto: UserDto) {
-    try {
-      userDto.darkMode = !userDto.darkMode
-      await this.userRepository.update({ id: userDto.id }, { darkMode: userDto.darkMode });
-    } catch (error) {
-      console.log(error)
-      throw new Error(error);
+  async setDarkMode(userId: string): Promise<void> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if(!user){
+      throw new Error('User Not found');
     }
+    user.darkMode = !user.darkMode;
+    await this.userRepository.save(user);
   }
   
   async deleteUser(id: string) {

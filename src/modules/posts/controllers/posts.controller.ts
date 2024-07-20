@@ -55,8 +55,8 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Update a post'
   })
-  // @Put(':id')
-  updatePost(@Param('id') postId: string, @Body() updatePostDto: UpdatePostDto): Promise<PostEntity> {
+  @Put(':id')
+  updatePost(@Param('id') postId: string, @Body() updatePostDto: CreatePostDto): Promise<PostEntity> {
     return this.postsService.updatePost(postId, updatePostDto);
   }
 
@@ -161,7 +161,7 @@ export class PostsController {
     description: 'INTERNAL SERVER ERROR: Find posts visible to user'
   })
   // @Get('user/:userId/visible')
-  findPostsVisibleToUser(@Param('userId') userId: string): Promise<PostEntity[]> {
+  findPostsVisibleToUser(@Param('userId') userId: UserEntity): Promise<PostEntity[]> {
     return this.postsService.findPostsVisibleToUser(userId)
   }
 }

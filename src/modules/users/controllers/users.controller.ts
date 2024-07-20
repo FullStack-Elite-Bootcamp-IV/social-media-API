@@ -16,8 +16,8 @@ export class UsersController {
   getUsers(): Promise<UserEntity[]> {
     try {
       return this.userService.getUsers();
-    } catch (e) {
-      console.error(e)
+    } catch (error) {
+      console.error(error)
       throw new Error
     }
   }

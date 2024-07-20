@@ -32,7 +32,7 @@ export class NotificationsController {
     status: 401,
     description: 'Unauthorized',
   })
-  @Post()
+  @Post('/create')
   @UseGuards(JwtAuthGuard)
   createNotification(
     @Body() createNotificationDto: CreateNotificationDto,
@@ -57,7 +57,7 @@ export class NotificationsController {
     status: 404,
     description: 'Notification not found.',
   })
-  @Delete(':id')
+  @Delete('/delete:id')
   @UseGuards(JwtAuthGuard)
   deleteNotification(@Param('id') notificationId: string): Promise<void> {
     return this.notificationsService.deleteNotification(notificationId);
@@ -79,7 +79,7 @@ export class NotificationsController {
     status: 404,
     description: 'Notifications not found.',
   })
-  @Get('user/:userId')
+  @Get('/user/:userId')
   @UseGuards(JwtAuthGuard)
   async findNotificationsByUser(
     @Param('userId') userId: UserEntity,

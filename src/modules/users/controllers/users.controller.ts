@@ -22,12 +22,12 @@ export class UsersController {
     }
   }
 
-  @Get('/users:id')
+  @Get('/users/:id')
   getUserById(@Param('id') id: string): Promise<UserEntity> {
     return this.userService.getUserById(id);
   }
 
-  @Get('/users/username')
+  @Get('/users/:username')
   getUserByUserName(@Param('username') id: string): Promise<UserEntity> {
     return this.userService.getUserById(id);
   }

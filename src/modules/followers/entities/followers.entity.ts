@@ -7,12 +7,16 @@ export class FollowersEntity {
     id: string;
 
     @ManyToOne(() => UserEntity, user => user.id, { nullable: false })
-    @JoinColumn({ name: 'followerId' })
-    follower: UserEntity['id'];
+    follower: UserEntity;
+
+    @Column()
+    followerId: string;
 
     @ManyToOne(() => UserEntity, user => user.id, { nullable: false })
-    @JoinColumn({ name: 'followingId' })
-    following: UserEntity['id'];
+    following: UserEntity;
+
+    @Column()
+    followingId: string;
 
     @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     followDate: Date;

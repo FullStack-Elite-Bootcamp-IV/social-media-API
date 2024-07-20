@@ -2,13 +2,15 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
+import { UsersModule } from './modules/users/user.module';
 import { PostsModule } from './modules/posts/posts.module';
 import { LikesModule } from './modules/likes/likes.module';
 import { FavouritesModule } from './modules/favourites/favourites.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import { FollowersModule } from './modules/followers/followers.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
-import { ChatModule } from './modules/chats/chats.module';
+import { AuthModule } from './modules/auth/auth.module';
+
 
 
 @Module({
@@ -41,6 +43,8 @@ import { ChatModule } from './modules/chats/chats.module';
         synchronize: true, // Cambia esto a false en producción
       }),
     }),
+    UsersModule,
+    AuthModule,
     PostsModule,
     LikesModule,
     FavouritesModule,

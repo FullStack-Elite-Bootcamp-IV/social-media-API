@@ -16,7 +16,6 @@ export class AuthService {
         const match = await bcrypt.compare(password, userByEmail.password);
         if (match) return userByEmail;
       }
-
       return null;
     } catch (error) {
       console.error('Error validating user:', error);
@@ -48,7 +47,7 @@ export class AuthService {
       return {
         accessToken: this.signJWT({
           payload,
-          secret: "asjdjkashdjkashdjkha", // Usa una variable de entorno para el secreto
+          secret: process.env.AUTH_SECRET,
           expires: '1h',
         }),
         user: getUser,

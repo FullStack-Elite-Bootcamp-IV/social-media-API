@@ -27,7 +27,7 @@ export class LikesService {
     try {
       const likes = this.likeRepository.find();
       if(!likes){
-        throw new Error('No hay likes');
+        throw new Error('Likes not found');
       }
       return likes;
     } catch (error) {
@@ -41,7 +41,7 @@ export class LikesService {
     try{
       const like = this.likeRepository.delete(likeId).then(() => {return});
       if(!like){
-        throw new Error('No se encontro el like');
+        throw new Error('Like not found');
       }
       return like
     }
@@ -56,7 +56,7 @@ export class LikesService {
     try{
       const like =  this.likeRepository.find({ where: { postId: postId } });
       if(!like){
-        throw new Error('No se encontraron likes');
+        throw new Error('Like not found');
       }
       return like;
     }
@@ -70,7 +70,7 @@ export class LikesService {
     try {
       const userLikes = this.likeRepository.find({ where: { userId: userId } });
       if (!userLikes) {
-        throw new Error('No se encontraron likes');
+        throw new Error('Likes not found');
       }
       return userLikes;
     } catch (error) {

@@ -17,6 +17,10 @@ export class FavouritesController {
         status: 400,
         description: 'Bad request.'
       })
+      @ApiResponse({
+        status: 401,
+        description: 'Unauthorized'
+      })
     @Post('/add')
     public async AddFavourites(@Body() body: FavouritesDto){
         return await this.FavouritesService.addFavourite(body);
@@ -31,9 +35,14 @@ export class FavouritesController {
         description: 'Bad request.'
       })
       @ApiResponse({
+        status: 401,
+        description: 'Unauthorized'
+      })
+      @ApiResponse({
         status: 404,
         description: 'Favorite not found.'
       })
+      
     @Delete('/delete/:id')
     public async DeleteFavourites(@Param('id') id: any){
         return await this.FavouritesService.deleteFavourite(id);
@@ -47,6 +56,10 @@ export class FavouritesController {
         status: 400,
         description: 'Bad request.'
     })  
+    @ApiResponse({
+      status: 401,
+      description: 'Unauthorized'
+    })
     @ApiResponse({
         status: 404,
         description: 'Favourites not found.'

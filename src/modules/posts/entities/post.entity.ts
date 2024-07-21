@@ -16,7 +16,7 @@ export class PostEntity {
   @PrimaryGeneratedColumn('uuid')
   postId: string;
 
-  @Column()
+  @Column({ nullable: true})
   title: string;
 
   @Column({ type: 'text', nullable: true })

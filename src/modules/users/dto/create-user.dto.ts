@@ -76,6 +76,5 @@ export class UserDto extends PartialType(UserEntity) {
   personalWebSite?: string;
 
   @ApiProperty()
-  @IsDate()
   lastLogoutDate?: string;
 }

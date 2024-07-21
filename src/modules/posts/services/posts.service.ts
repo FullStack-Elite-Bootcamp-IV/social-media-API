@@ -75,9 +75,9 @@ export class PostsService {
   // Function to unlike a post by ID
   async unlikePost(createLikeDto: CreateLikeDto): Promise<any> {
     try {
-      const like = await this.likeRepository.findOne({where: {userId: createLikeDto.userId, postId: createLikeDto.postId}})
+      const like = this.likeRepository.create(createLikeDto)
+      this.likeRepository.delete(like);
       await this.postRepository.decrement({ postId: like.postId }, 'likes', 1)
-      await this.likeRepository.delete(like)
     } catch (error) {
       throw new HttpException('Post not unliked', 500);
     }

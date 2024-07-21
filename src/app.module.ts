@@ -47,8 +47,6 @@ import { CommentsModule } from './modules/comments/comments.module';
     }),
     UsersModule,
     AuthModule,
-    PostsModule,
-    LikesModule,
     FavouritesModule,
     MessagesModule,
     FollowersModule,

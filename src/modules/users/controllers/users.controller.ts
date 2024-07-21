@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { UserService } from '../services/user.service';
 import { UserDto } from '../dto/create-user.dto';
 import { UserEntity } from '../entities/user.entity';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags("User")
@@ -36,30 +36,6 @@ export class UsersController {
       console.error(error);
       throw new Error(); // Consider replacing with a more descriptive error message
     }
-  }
-
-  // Get user by ID
-  @ApiResponse({
-    status: 200,
-    description: 'Get user by ID.',
-    type: UserEntity
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad request.'
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized'
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'User not found.'
-  })
-  @Get('/by-id/:id')
-  @UseGuards(JwtAuthGuard)
-  getUserById(@Param('id') id: string): Promise<UserEntity> {
-    return this.userService.getUserById(id);
   }
 
   // Get user by username
@@ -150,5 +126,36 @@ export class UsersController {
   async deleteUser(@Param('id') userId: string): Promise<string> {
     await this.userService.deleteUser(userId);
     return "Usuario eliminado exitosamente";
+  }
+
+
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Search user.',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request.'
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found.'
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error.'
+  })
+  @Get('search/:search')
+  @UseGuards(JwtAuthGuard)
+  async searchUser(@Param('search') search: string): Promise<UserEntity[]> {
+    return await this.userService.searchUser(search);
   }
 }

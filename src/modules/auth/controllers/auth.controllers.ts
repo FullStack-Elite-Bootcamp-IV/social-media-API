@@ -5,9 +5,9 @@ import {
   Post,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AuthDTO, LogoutDTO } from '../dto/auth.dto';
+import { AuthDTO, LogoutDTO, RegisterDTO } from '../dto/auth.dto';
 import { AuthService } from '../services/auth.service';
-import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags("Auth")
 @Controller()
@@ -19,6 +19,10 @@ export class AuthController {
     status: 200,
     description: 'Usuario registrado exitosamente.',
   })
+  
+  async register(@Body() registerDto: RegisterDTO) {
+    return this.authService.createUser(registerDto)
+  };
 
   @Post('login')
   @ApiResponse({
@@ -41,7 +45,7 @@ export class AuthController {
     const jwt = await this.authService.generateJWT(userValidate);
 
     return jwt;
-  }
+  };
 
   @Post('logout')
   @ApiResponse({

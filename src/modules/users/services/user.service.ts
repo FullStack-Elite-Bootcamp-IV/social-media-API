@@ -3,9 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm'; 
 import { UserEntity } from '../entities/user.entity';
 import { UserDto } from '../dto/create-user.dto';
-import * as bycryptjs from 'bcryptjs';
 import { HttpException, HttpStatus } from '@nestjs/common';
-
+import bcrypt from "bcrypt";
 
 @Injectable()
 export class UserService {
@@ -36,16 +35,10 @@ export class UserService {
         return error;
       }
       
-      console.log("Hashing passwd")
-      userDto.password = await bycryptjs.hash(userDto.password, 10);
+      userDto.password = await bcrypt.hash(userDto.password, 10);
 
-      const user = new UserEntity();
-      user.userName = userDto.userName;
-      user.email = userDto.email;
-      user.password = userDto.password;
-      user.fullName = userDto.fullName ?? '';
-      user.age = userDto.age ?? 0;
-      console.log("User Created")
+      // Hacemos la entidad manualmente
+      const user = this.userRepository.create(userDto);
       const result = await this.userRepository.save(user);
       delete result.password;
       return result
@@ -111,7 +104,7 @@ export class UserService {
     if(!user){
       throw new Error('User not found')
     }
-    userDto.password = await bycryptjs.hash(userDto.password, 10);
+    userDto.password = await bcrypt.hash(userDto.password, 10);
     Object.assign(user, userDto);
     return await this.userRepository.save(user);
   }

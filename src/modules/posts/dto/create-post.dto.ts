@@ -4,26 +4,30 @@ import {
   IsString,
   IsBoolean,
   IsNotEmpty,
+  IsOptional,
+  IsUrl,
 } from 'class-validator';
 
 export class CreatePostDto {
-
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
   userId: string;
 
   @ApiProperty()
-  @IsNotEmpty()
   @IsString()
+  @IsOptional()
   title?: string;
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
   description?: string;
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
+  @IsUrl()
   media?: string;
 
   @ApiProperty()

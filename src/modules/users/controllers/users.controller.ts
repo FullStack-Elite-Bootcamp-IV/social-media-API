@@ -10,20 +10,6 @@ import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 export class UsersController {
   constructor(private readonly userService: UserService) { }
 
-  @ApiResponse({
-    status: 201,
-    description: 'User added.',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad request.',
-  })
-  @Post('/register')
-  async createUser(@Body() UserDto: UserDto): Promise<UserEntity | Error> {
-    console.log("Enter User Controller - createUser")
-    return this.userService.createUser(UserDto);
-  }
-
 @ApiResponse({
     status: 200,
     description: 'Get all Users.',

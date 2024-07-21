@@ -11,6 +11,7 @@ export enum Gender {
   MALE = 'male',
   FEMALE = 'female',
   OTHER = 'other',
+  NULL = null
 }
 
 @Entity('User')
@@ -37,7 +38,7 @@ export class UserEntity {
     type: 'enum',
     enum: Gender,
     nullable: true,
-    default: null, 
+    default: null
   })
   gender?: Gender;
 

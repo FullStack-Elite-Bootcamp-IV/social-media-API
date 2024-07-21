@@ -24,19 +24,19 @@ export class ChatGateway
   afterInit() {
     this.logger.log("Initialized");
   }
-
   
   async handleConnection(socket: Socket) {
 
-   const userId = socket.handshake.auth.token
+   const userId = socket.handshake.auth.token  
 
     // TO DO procesar la userid apartir del token
 
     // TO PRODUCTION Buscar en la base de datos todos los chats (chatid)
-   // const userChats = await this.chatService.findChatsByUser(userId)
-
+   // const userChats = await this.chatService.findChatsByUser(userId)  
+    
    // IN DEV
-   const userChats = [{id: "1"}, {id: "3"}, {id: "5"}]
+   const userChats = [{id: "1"}, {id: "3"}, {id: "5"}] 
+
 
     // Unir al usuario a las rooms (chatid) especificas
     userChats.forEach(chat => {
@@ -47,12 +47,14 @@ export class ChatGateway
   }
 
   handleDisconnect(socket: Socket) {
+
     this.logger.log(`Cliend id:${socket.id} disconnected`);
   }
 
   @SubscribeMessage("message")
   handleMessage(socket: Socket, data: any) {
-    this.io.to(data[1]).emit("receiveMessage", {"message": data[0], "chatId": data[1]} )
+    const userId = socket.handshake.auth.token
+    this.io.to(data[1]).emit("receiveMessage", {"message": data[0], "chatId": data[1], "userId": userId } )
 
   }
 

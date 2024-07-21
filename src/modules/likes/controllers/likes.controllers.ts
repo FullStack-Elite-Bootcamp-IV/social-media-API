@@ -32,7 +32,7 @@ export class LikesController {
     status: 401,
     description: 'Unauthorized',
   })
-  @Post('create')
+  @Post('/create')
   @UseGuards(JwtAuthGuard)
   createLike(@Body() createLikeDto: CreateLikeDto): Promise<LikeEntity> {
     return this.likesService.createLike(createLikeDto);
@@ -76,7 +76,7 @@ export class LikesController {
     status: 404,
     description: 'Like not found.',
   })
-  @Delete(':id')
+  @Delete('/delete/:id')
   @UseGuards(JwtAuthGuard)
   deleteLike(@Param('id') likeId: string): Promise<void> {
     return this.likesService.deleteLike(likeId);
@@ -98,7 +98,7 @@ export class LikesController {
     status: 404,
     description: 'Likes not found.',
   })
-  @Get('post/:postId')
+  @Get('/post/:postId')
   @UseGuards(JwtAuthGuard)
   findLikesByPost(@Param('postId') postId: string): Promise<LikeEntity[]> {
     return this.likesService.findLikesByPost(postId);
@@ -120,7 +120,7 @@ export class LikesController {
     status: 404,
     description: 'Likes not found.',
   })
-  @Get('user/:userId')
+  @Get('/user/:userId')
   @UseGuards(JwtAuthGuard)
   findLikesByUser(@Param('userId') userId: string): Promise<LikeEntity[]> {
     return this.likesService.findLikesByUser(userId);

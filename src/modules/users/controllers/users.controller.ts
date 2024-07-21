@@ -142,4 +142,10 @@ async modifyDarkMode(@Param('id') userId: string): Promise<void> {
     await this.userService.deleteUser(userId);
     return "Usuario eliminado exitosamente";
   }
+
+  @Get('search/:search')
+  @UseGuards(JwtAuthGuard)
+  async searchUser(@Param('search') search: string): Promise<UserEntity[]> {
+    return await this.userService.searchUser(search);
+  }
 }

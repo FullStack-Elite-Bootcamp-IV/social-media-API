@@ -235,4 +235,20 @@ export class PostsController {
     });
     return await this.postsService.findPaginatedPosts(followerId, page, limit);
   }
+
+  @ApiOperation({ summary: 'Find all posts' })
+  @ApiResponse({
+    status: 200,
+    type: [CreatePostDto],
+    description: 'Find all posts'
+  })
+  @ApiResponse({
+    status: 400,
+    type: CreatePostDto,
+    description: 'BAD REQUEST: Find all posts'
+  })
+  @Get('search/:search')
+  async searchPosts(@Param('search') search: string): Promise<PostEntity[]> {
+    return this.postsService.postSearch(search);
+  }
 }

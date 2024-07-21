@@ -4,8 +4,6 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { UserDto } from '../dto/create-user.dto';
 import * as bycryptjs from 'bcryptjs';
-import { AuthDTO } from 'src/modules/auth/dto/auth.dto';
-import { catchError } from 'rxjs';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 
@@ -19,7 +17,7 @@ export class UserService {
   async createUser(userDto: UserDto): Promise<UserEntity | Error> {
     try {
       const userEmail = await this.userRepository.findOne({ where: { email: userDto.email } });
-      const userName = await this.userRepository.findOne({ where: { username: userDto.username } });
+      const userName = await this.userRepository.findOne({ where: { userName: userDto.userName } });
       if (userEmail || userName) {
 
       const error = new HttpException(
@@ -54,7 +52,7 @@ export class UserService {
 
   async getUserById (userId: string) {
     try {
-      const user = await this.userRepository.findOne({ where: { id: userId } })
+      const user = await this.userRepository.findOne({ where: { userId: userId } })
       if(!user){
         throw new Error('User not found')
       }
@@ -67,7 +65,7 @@ export class UserService {
 
   async getUserByUserName (userName: string) {
     try {
-      const user = await this.userRepository.findOne({ where: { username: userName } })
+      const user = await this.userRepository.findOne({ where: { userName: userName } })
       if(!user){
         throw new Error('User not found')
       }
@@ -91,16 +89,17 @@ export class UserService {
   }
 
   async editProfile(userId: string, userDto: UserDto): Promise<UserEntity> {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const user = await this.userRepository.findOne({ where: { userId: userId } });
     if(!user){
       throw new Error('User not found')
     }
+    userDto.password = await bycryptjs.hash(userDto.password, 10);
     Object.assign(user, userDto);
     return await this.userRepository.save(user);
   }
   
   async setDarkMode(userId: string): Promise<void> {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const user = await this.userRepository.findOne({ where: { userId: userId } });
     if(!user){
       throw new Error('User Not found');
     }

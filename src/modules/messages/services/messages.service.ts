@@ -3,8 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateMessageDto } from '../dto/create-message.dto';
 import { MessageEntity } from '../entities/message.entity';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
-import { FindOneOptions } from 'typeorm';
 import { DeepPartial } from 'typeorm';
 
 @Injectable()

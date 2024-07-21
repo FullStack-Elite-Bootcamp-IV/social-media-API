@@ -11,7 +11,7 @@ import {
 import { CommentsService } from '../services/comments.service';
 import { CreateCommentDTO } from '../dto/create-comment.dto';
 import { CommentsEntity } from '../entities/comment.entity';
-import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags("Comments")
@@ -57,7 +57,7 @@ export class CommentsController {
     status: 404,
     description: 'Favorite not found.'
   })
-  @Delete('/delete:id')
+  @Delete('/delete/:id')
   @UseGuards(JwtAuthGuard)
   async deleteComment(@Param('id') id: string): Promise<void> {
     return this.CommentsService.deleteComment(id);

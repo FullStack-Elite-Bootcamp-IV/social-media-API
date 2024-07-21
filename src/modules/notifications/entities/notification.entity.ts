@@ -1,5 +1,4 @@
-// src/modules/notifications/entities/notification.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm'; // if need more entity you can add here
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
 
 export enum NotificationAction {
@@ -12,28 +11,27 @@ export enum NotificationAction {
 
 @Entity('notifications')
 export class NotificationEntity {
-  // here define the notification entity
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({ type: 'varchar', length: 100, nullable: false })
-  emisorUser: UserEntity['id'];
-
-  @ManyToOne(() => UserEntity, (user) => user.id, { onDelete: 'CASCADE' })
-  receptorUser: UserEntity['id'];
-
+  
   @Column({ type: 'boolean', default: false })
   status: boolean;
 
   @Column({ type: 'enum', enum: NotificationAction, nullable: false })
   action: NotificationAction;
-
+  
   @Column({ type: 'varchar', length: 100, nullable: false })
   title: string;
-
+  
   @Column({ type: 'varchar', length: 100, nullable: false })
   description: string;
-
+  
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   notificationDate: Date;
+  
+  @ManyToOne(() => UserEntity, (user) => user.userId, { cascade: true, onDelete: 'CASCADE' })
+  receptorUser: UserEntity;
+  
+  @ManyToOne(() => UserEntity, (user) => user.userId, { cascade: true, onDelete: 'CASCADE' })
+  emisorUser: UserEntity;
 }

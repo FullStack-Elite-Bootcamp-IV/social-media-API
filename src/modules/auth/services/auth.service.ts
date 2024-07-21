@@ -37,12 +37,12 @@ export class AuthService {
 
   public async generateJWT(user: UserEntity): Promise<{ accessToken: string; user: UserEntity }> {
     try {
-      const getUser = await this.userService.getUserById(user.id);
+      const getUser = await this.userService.getUserById(user.userId);
       if (!getUser) {
         throw new UnauthorizedException('User not found');
       }
 
-      const payload: jwt.JwtPayload = { id: getUser.id };
+      const payload: jwt.JwtPayload = { id: getUser.userId };
 
       return {
         accessToken: this.signJWT({

@@ -11,11 +11,6 @@ export class CreateChatDto {
     @ApiProperty()
     @IsString()
     @IsNotEmpty()
-    chatId: string;
-
-    @ApiProperty()
-    @IsString()
-    @IsNotEmpty()
     user1Id: string;
 
     @ApiProperty()
@@ -24,8 +19,8 @@ export class CreateChatDto {
     user2Id: string;
 
     @ApiProperty()
-    @IsDate()
-    lastMessage: Date;
+    @IsString()
+    lastMessage: String;
   
   }
   

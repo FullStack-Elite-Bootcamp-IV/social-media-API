@@ -9,8 +9,6 @@ import {
 } from '@nestjs/common';
 import { NotificationsService } from '../services/notifications.service';
 import { CreateNotificationDto } from '../dto/create-notification.dto';
-import { NotificationEntity } from '../entities/notification.entity';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
@@ -36,7 +34,7 @@ export class NotificationsController {
   @UseGuards(JwtAuthGuard)
   createNotification(
     @Body() createNotificationDto: CreateNotificationDto,
-  ): Promise<NotificationEntity> {
+  ) {
     return this.notificationsService.createNotification(createNotificationDto);
   }
 
@@ -82,7 +80,7 @@ export class NotificationsController {
   @Get('/user/:userId')
   @UseGuards(JwtAuthGuard)
   async findNotificationsByUser(
-    @Param('userId') userId: UserEntity,
+    @Param('userId') userId: string,
   ): Promise<void> {
     await this.notificationsService.findNotificationsByUser(userId);
   }

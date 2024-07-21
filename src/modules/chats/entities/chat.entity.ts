@@ -4,7 +4,7 @@ import { UserEntity } from '../../users/entities/user.entity';
 @Entity('Chats')
 export class ChatEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  chatId: string;
 
   @Column({ type: 'text'})
   user1Id: string;
@@ -15,11 +15,11 @@ export class ChatEntity {
   @Column({ type: 'timestamp', nullable: true })
   lastMessage?: Date;
 
-  @ManyToOne(() => UserEntity, user => user.id, { onDelete: 'CASCADE' })
+  @ManyToOne(() => UserEntity, user => user.userId, { cascade: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user1Id' })
   user1: UserEntity;
 
-  @ManyToOne(() => UserEntity, user => user.id, { onDelete: 'CASCADE' })
+  @ManyToOne(() => UserEntity, user => user.userId, { cascade: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user2Id' })
   user2: UserEntity;
 }

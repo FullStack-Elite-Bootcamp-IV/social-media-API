@@ -14,12 +14,13 @@ import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
-  @Post('login')
-  @ApiHeader({
-    name: 'Token',
-    description: 'Token de autenticación',
-    required: false
+  @Post('register')
+  @ApiResponse({
+    status: 200,
+    description: 'Usuario registrado exitosamente.',
   })
+
+  @Post('login')
   @ApiResponse({
     status: 200,
     description: 'Inicio de sesión exitoso.',

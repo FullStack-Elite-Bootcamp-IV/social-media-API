@@ -1,17 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
-import { PostEntity } from '../../posts/entities/post.entity'; 
+import { PostEntity } from '../../posts/entities/post.entity';
 
 @Entity('comments')
 export class CommentsEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({ type: 'varchar' })
-  userId: string;
-
-  @Column({ type: 'varchar' })
-  postId: string;
 
   @Column({ type: 'text' })
   content: string;
@@ -19,9 +19,17 @@ export class CommentsEntity {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @ManyToOne(() => UserEntity, (user) => user.userId, { cascade: true, onDelete: 'CASCADE' })
-  user: UserEntity[];
+  @ManyToOne(() => UserEntity, (user) => user.userId, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'userId' })
+  userId: string;
 
-  @ManyToOne(() => PostEntity, (post) => post.postId, { cascade: true, onDelete: 'CASCADE' })
-  post: PostEntity[];
+  @ManyToOne(() => PostEntity, (post) => post.postId, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'postId' })
+  postId: string;
 }

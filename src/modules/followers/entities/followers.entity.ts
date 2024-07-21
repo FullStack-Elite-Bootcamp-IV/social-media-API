@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
 
 @Entity('Followers')
@@ -6,18 +13,26 @@ export class FollowersEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  followerId: string;
-    
-  @Column()
-  followingId: string;
-
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   followDate: Date;
-  
-  @ManyToOne(() => UserEntity, user => user.userId, { nullable: false, onDelete: 'CASCADE' })
+
+  @ManyToOne(() => UserEntity, (user) => user.userId, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'followerId' })
   follower: UserEntity;
 
-  @ManyToOne(() => UserEntity, user => user.userId, { nullable: false, onDelete: 'CASCADE' })
+  @Column()
+  followerId: string;
+
+  @ManyToOne(() => UserEntity, (user) => user.userId, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'followingId' })
   following: UserEntity;
+
+  @Column()
+  followingId: string;
 }

@@ -1,8 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
-import { LikeEntity } from 'src/modules/likes/entities/like.entity';
-import { FavouritesEntity } from 'src/modules/favourites/entities/favourites.entity';
-import { CommentsEntity } from 'src/modules/comments/entities/comment.entity';
+import { LikeEntity } from '../../likes/entities/like.entity';
+import { FavouritesEntity } from '../../favourites/entities/favourites.entity';
+import { CommentsEntity } from '../../comments/entities/comment.entity';
 
 @Entity('posts')
 export class PostEntity {
@@ -36,12 +36,12 @@ export class PostEntity {
   @ManyToOne(() => UserEntity, (user) => user.posts, { cascade: true, onDelete: 'CASCADE' })
   user: UserEntity;
 
-  @OneToMany(() => LikeEntity, (like) => like.post, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => LikeEntity, (like) => like.post)
   likesPost: LikeEntity[];
 
-  @OneToMany(() => FavouritesEntity, favourites => favourites.postId, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => FavouritesEntity, favourites => favourites.postId)
   favourites: FavouritesEntity[];
 
-  @OneToMany(() => CommentsEntity, comments => comments.post, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => CommentsEntity, comments => comments.post)
   comments: CommentsEntity[];
 }

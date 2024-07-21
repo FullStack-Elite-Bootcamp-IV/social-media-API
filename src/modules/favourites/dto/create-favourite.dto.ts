@@ -11,9 +11,4 @@ userId: string;
 @IsString()
 @IsNotEmpty()
 postId: string;
-
-@ApiProperty()
-@IsDate()
-@IsNotEmpty()
-creationDate?: Date;
 }

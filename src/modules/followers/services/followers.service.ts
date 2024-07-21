@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateFollowerDto } from '../dto/create-follower.dto';
@@ -16,19 +16,29 @@ export class FollowersService {
   async createFollower(createFollowerDto: CreateFollowerDto): Promise<FollowersEntity> {
     try {
       if (!createFollowerDto) {
-        throw new HttpErrorByCode[400]('please provide all fields');
-      };
-      const follower = this.followerRepository.create(createFollowerDto);
-      if (!follower) {
-        throw new Error('Follower not created error from createFollower');
-      };
+        throw new HttpException('Please provide all fields', HttpStatus.BAD_REQUEST);
+      }
 
-      return await this.followerRepository.save(follower);
-    }
-    catch (err) {
-      throw new Error(err);
+      const { followerId, followingId } = createFollowerDto;
+
+      // Verifica si la relación específica ya existe en la tabla Followers
+      const existingFollower = await this.followerRepository.findOne({
+        where: { followerId, followingId }
+      });
+
+      if (existingFollower) {
+        throw new HttpException('Follower relationship already exists', HttpStatus.CONFLICT);
+      }
+
+      // Crea y guarda la nueva relación
+      const newFollower = this.followerRepository.create(createFollowerDto);
+
+      return await this.followerRepository.save(newFollower);
+    } catch (err) {
+      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
 
   // Function to find all followings by follower ID
   async findFollowingsById(followerId: FollowersEntity['followerId']): Promise<String[]> {

@@ -8,6 +8,7 @@ import { FollowersEntity } from '../../followers/entities/followers.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { LikeEntity } from 'src/modules/likes/entities/like.entity';
 import { CreateLikeDto } from 'src/modules/likes/dto/create-like.dto';
+import { string } from 'joi';
 
 @Injectable()
 export class PostsService {
@@ -118,46 +119,46 @@ export class PostsService {
   }
 
  // Function to find posts of a specific followed user
- async findPostsOfFollowedUser(followerId: string, followedUserId: string): Promise<PostEntity[]> {
-  try {
-    if (!followerId || !followedUserId) {
-      throw new HttpException('Invalid request', 400);
-    }
-    const isFollowing = await this.followersRepository.findOne({ where: { followerId, followingId: followedUserId } });
+  async findPostsOfFollowedUser(followerId: string, followedUserId: string): Promise<PostEntity[]> {
+    try {
+      if (!followerId || !followedUserId) {
+        throw new HttpException('Invalid request', 400);
+      }
+      const isFollowing = await this.followersRepository.findOne({ where: { followerId, followingId: followedUserId } });
 
-    if (!isFollowing) {
-      throw new HttpException('You are not following this user', 400);
-    }
+      if (!isFollowing) {
+        throw new HttpException('You are not following this user', 400);
+      }
 
-    const posts = await this.postRepository.find({ where: { postId: followedUserId, isPublic: true } });
-    return posts;
-  } catch (error) {
-    throw new HttpException('server error', 500);
-  }
+      const posts = await this.postRepository.find({ where: { postId: followedUserId, isPublic: true } });
+      return posts;
+    } catch (error) {
+      throw new HttpException('server error', 500);
+    }
 }
 
  // Function to find paginated posts of all followed users
- async findPaginatedPosts(followerId: string, page: number, limit: number): Promise<object[]> {
-  try {
-    if (!followerId || !page || !limit) {
-      throw new HttpException('Invalid request', 400);
-    }
+  async findPaginatedPosts(followerId: string, page: number, limit: number): Promise<object[]> {
+    try {
+      if (!followerId || !page || !limit) {
+        throw new HttpException('Invalid request', 400);
+      }
 
-    const followings = await this.followersRepository.find({ where: { followerId } });
+      const followings = await this.followersRepository.find({ where: { followerId } });
 
-    const followedUsersPosts = await Promise.all(followings.map(async (following) => {
-      const followedUser = await this.userRepository.findOne({ where: { userId: following.followingId } });
-      const posts = await this.postRepository.find({
-        where: { postId: following.followingId,isPublic: true},
-        order: { updateDate: 'DESC' },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-      return {
-        follower: followerId,
-        following: followedUser.userName,
-        posts,
-      };
+      const followedUsersPosts = await Promise.all(followings.map(async (following) => {
+        const followedUser = await this.userRepository.findOne({ where: { userId: following.followingId } });
+        const posts = await this.postRepository.find({
+          where: { postId: following.followingId,isPublic: true},
+          order: { updateDate: 'DESC' },
+          skip: (page - 1) * limit,
+          take: limit,
+        });
+        return {
+          follower: followerId,
+          following: followedUser.userName,
+          posts,
+        };
     }));
 
     // Sort by post date, descending
@@ -186,4 +187,28 @@ async findPostsPublicByUser(userId: string): Promise<PostEntity[]> {
   }
 }
 
+async postSearch(search: string): Promise<PostEntity[]> {
+  try {
+    if (!search) {
+      throw new HttpException('search not found', 400);
+    }
+    const subStrings = search.split(' ');
+    const posts = await this.postRepository.find({ where: { isPublic: true } });
+    const postsFiltered = posts.filter(post => {
+      if (!post.title || !post.description) {
+        return '';
+      } 
+      const titleWords = post.title.split(' ');
+      const descriptionWords = post.description.split(' ');
+      return subStrings.some(sub => titleWords.includes(sub) || descriptionWords.includes(sub));
+    });
+    if (!postsFiltered) {
+      throw new HttpException('Posts not found', 404);
+    }
+    return postsFiltered;
+  } catch (error) {
+    console.log(error);
+    throw new HttpException('server error', 500);
+  }
+}
 }

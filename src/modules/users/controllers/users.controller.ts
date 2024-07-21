@@ -78,8 +78,12 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   getUserByUserName(@Param('username') username: string): Promise<UserEntity> {
     return this.userService.getUserByUserName(username);
-  }
+  };
 
+  @Get('/profile-info/:id')
+  getProfileInfo(@Param('id') id: string) {
+    return this.userService.getProfileInfo(id);
+  }
 
   @ApiResponse({
     status: 201,

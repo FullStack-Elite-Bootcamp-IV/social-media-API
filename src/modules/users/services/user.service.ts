@@ -63,6 +63,21 @@ export class UserService {
     }
   }
 
+  async getProfileInfo (userId: string) {
+    try {
+      const user = await this.userRepository.findOne({ where: { userId: userId } })
+      if (!user) {
+        throw new Error('User not found')
+      }
+
+      const { /* profileImage, coverImage, userName, fullName, age, gender,  */posts } = user;
+      console.log(posts);
+
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
   async editProfile(userId: string, userDto: UserDto): Promise<UserEntity> {
     const user = await this.userRepository.findOne({ where: { userId: userId } });
     if(!user){

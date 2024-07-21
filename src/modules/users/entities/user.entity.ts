@@ -5,12 +5,12 @@ import {
   OneToMany,
 } from 'typeorm';
 import { PostEntity } from '../../posts/entities/post.entity';
-import { FavouritesEntity } from 'src/modules/favourites/entities/favourites.entity';
-import { ChatEntity } from 'src/modules/chats/entities/chat.entity';
-import { MessageEntity } from 'src/modules/messages/entities/message.entity';
-import { NotificationEntity } from 'src/modules/notifications/entities/notification.entity';
-import { FollowersEntity } from 'src/modules/followers/entities/followers.entity';
-import { LikeEntity } from 'src/modules/likes/entities/like.entity';
+import { FavouritesEntity } from '../../favourites/entities/favourites.entity';
+import { ChatEntity } from '../../chats/entities/chat.entity';
+import { MessageEntity } from '../../messages/entities/message.entity';
+import { NotificationEntity } from '../../notifications/entities/notification.entity';
+import { FollowersEntity } from '../../followers/entities/followers.entity';
+import { LikeEntity } from '../../likes/entities/like.entity';
 
 export enum Gender {
   MALE = 'male',
@@ -34,7 +34,7 @@ export class UserEntity {
 
   @Column({ type: 'varchar', length: 200 })
   fullName: string;
-  
+
   @Column({ type: 'int', nullable: true })
   age?: number;
 
@@ -78,27 +78,27 @@ export class UserEntity {
   @Column({ type: 'timestamp', nullable: true })
   lastLogoutDate?: string;
 
-  @OneToMany(() => PostEntity, post => post.user, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => PostEntity, post => post.user)
   posts: PostEntity[];
 
-  @OneToMany(() => FavouritesEntity, favourites => favourites.userId, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => FavouritesEntity, favourites => favourites.userId)
   favourites: FavouritesEntity[];
 
-  @OneToMany(() => ChatEntity, chat => chat.user1, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => ChatEntity, chat => chat.user1)
   chat1: ChatEntity[];
 
-  @OneToMany(() => ChatEntity, chat => chat.user2, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => ChatEntity, chat => chat.user2)
   chat2: ChatEntity[];
 
-  @OneToMany(() => MessageEntity, message => message.user, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => MessageEntity, message => message.user)
   messages: MessageEntity[];
 
-  @OneToMany(() => NotificationEntity, notification => notification.receptorUser, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => NotificationEntity, notification => notification.receptorUser)
   notifications: NotificationEntity[];
 
-  @OneToMany(() => FollowersEntity, follower => follower.follower, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => FollowersEntity, follower => follower.follower)
   followers: FollowersEntity[];
 
-  @OneToMany(() => LikeEntity, like => like.user, { cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => LikeEntity, like => like.user)
   likes: LikeEntity[];
 }

@@ -26,7 +26,7 @@ export class UserDto extends PartialType(UserEntity) {
   password: string;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   fullName: string;
 

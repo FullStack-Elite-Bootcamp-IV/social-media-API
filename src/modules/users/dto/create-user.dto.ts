@@ -1,5 +1,3 @@
-// here you must tyo create the user dto
-
 import { IsDate, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, MinLength } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { UserEntity } from '../entities/user.entity';
@@ -11,7 +9,7 @@ export class UserDto extends PartialType(UserEntity) {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  username: string;
+  userName: string;
 
   @ApiProperty()
   @IsNotEmpty()

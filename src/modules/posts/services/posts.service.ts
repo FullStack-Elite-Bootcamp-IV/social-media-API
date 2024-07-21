@@ -44,7 +44,7 @@ export class PostsService {
       }
       const post = this.postRepository.update(postId, updatePostDto)
       if (!post) throw new HttpException('Post not updated', 500)
-      return post.then(() => this.postRepository.findOneBy({ id: postId }))
+      return post.then(() => this.postRepository.findOneBy({ postId: postId }))
     } catch (error) {
       throw new HttpException('Post not updated', 500)
     }
@@ -65,7 +65,7 @@ export class PostsService {
     try {
       const like = this.likeRepository.create(createLikeDto)
       this.likeRepository.save(like);
-      await this.postRepository.increment({ id: like.postId }, 'likes', 1)
+      await this.postRepository.increment({ postId: like.postId }, 'likes', 1)
       
     } catch (error) {
       throw new HttpException('Post not liked', 500);
@@ -76,7 +76,7 @@ export class PostsService {
   async unlikePost(createLikeDto: CreateLikeDto): Promise<any> {
     try {
       const like = await this.likeRepository.findOne({where: {userId: createLikeDto.userId, postId: createLikeDto.postId}})
-      await this.postRepository.decrement({ id: like.postId }, 'likes', 1)
+      await this.postRepository.decrement({ postId: like.postId }, 'likes', 1)
       await this.likeRepository.delete(like)
     } catch (error) {
       throw new HttpException('Post not unliked', 500);
@@ -86,7 +86,7 @@ export class PostsService {
   // Function to find a post by Id
   async findPostById(postId: string): Promise<PostEntity> {
     try {
-      const post = await this.postRepository.findOneBy({ id: postId });
+      const post = await this.postRepository.findOneBy({ postId: postId });
       return post;
     } catch (error) {
       throw new HttpException('server error', 500);
@@ -97,7 +97,7 @@ export class PostsService {
   async findPostsByUser(userId: string): Promise<PostEntity[]> {
     try {
       if (!userId) throw new HttpException('Posts not found, please provide the id', 400);
-      const posts = await this.postRepository.findBy({ id: userId });
+      const posts = await this.postRepository.findBy({ postId: userId });
       if (!posts) throw new HttpException('Posts not found', 500);
       return posts;
     } catch (error) {
@@ -109,7 +109,7 @@ export class PostsService {
   async findPostsVisibleToUser(userId: string): Promise<PostEntity[]> {
     try {
       if (!userId) throw new HttpException('Posts not found, please provide the id', 400);
-      const posts = await this.postRepository.find({ where: { isPublic: true, id: userId } });
+      const posts = await this.postRepository.find({ where: { isPublic: true, postId: userId } });
       if(!posts) throw new HttpException('Posts not found', 500);
       return posts;
     } catch (error) {
@@ -129,7 +129,7 @@ export class PostsService {
       throw new HttpException('You are not following this user', 400);
     }
 
-    const posts = await this.postRepository.find({ where: { id: followedUserId, isPublic: true } });
+    const posts = await this.postRepository.find({ where: { postId: followedUserId, isPublic: true } });
     return posts;
   } catch (error) {
     throw new HttpException('server error', 500);
@@ -146,16 +146,16 @@ export class PostsService {
     const followings = await this.followersRepository.find({ where: { followerId } });
 
     const followedUsersPosts = await Promise.all(followings.map(async (following) => {
-      const followedUser = await this.userRepository.findOne({ where: { id: following.followingId } });
+      const followedUser = await this.userRepository.findOne({ where: { userId: following.followingId } });
       const posts = await this.postRepository.find({
-        where: { id: following.followingId,isPublic: true},
+        where: { postId: following.followingId,isPublic: true},
         order: { updateDate: 'DESC' },
         skip: (page - 1) * limit,
         take: limit,
       });
       return {
         follower: followerId,
-        following: followedUser.username,
+        following: followedUser.userName,
         posts,
       };
     }));
@@ -178,7 +178,7 @@ export class PostsService {
 async findPostsPublicByUser(userId: string): Promise<PostEntity[]> {
   try {
     if (!userId) throw new HttpException('Posts not found, please provide the id', 400);
-    const posts = await this.postRepository.find({ where: { isPublic: true, id: userId } });
+    const posts = await this.postRepository.find({ where: { isPublic: true, postId: userId } });
     if(!posts) throw new HttpException('Posts not found', 500);
     return posts;
   } catch (error) {

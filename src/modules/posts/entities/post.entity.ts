@@ -7,7 +7,7 @@ import { CommentsEntity } from 'src/modules/comments/entities/comment.entity';
 @Entity('posts')
 export class PostEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  postId: string;
 
   @Column()
   title: string;
@@ -29,15 +29,16 @@ export class PostEntity {
 
   @Column({ default: 0 })
   likes: number;
-
-  @ManyToOne(() => UserEntity, (user) => user.posts, { onDelete: 'CASCADE' })
-  user: UserEntity;
-
+  
   @Column()
   userId: string;
 
-  @OneToMany(() => LikeEntity, (like) => like.post)
+  @ManyToOne(() => UserEntity, (user) => user.posts, { cascade: true, onDelete: 'CASCADE' })
+  user: UserEntity;
+
+  @OneToMany(() => LikeEntity, (like) => like.post, { cascade: true, onDelete: 'CASCADE' })
   likesPost: LikeEntity[];
+
   @OneToMany(() => FavouritesEntity, favourites => favourites.postId, { cascade: true, onDelete: 'CASCADE' })
   favourites: FavouritesEntity[];
 

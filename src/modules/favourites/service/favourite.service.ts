@@ -10,9 +10,7 @@ export class FavouritesService {
     @InjectRepository(FavouritesEntity)
     private readonly favouritesRepository: Repository<FavouritesEntity>
   ) { }
-  // first add favourite
-  // IN this service i need a function to add a post in favourite
-  // the name is addFavourite and the parameter is FavouritesDto
+
   public async addFavourite(FavouritesDto: FavouritesDto): Promise<FavouritesEntity> {
     try {
       const favourite = this.favouritesRepository.create(FavouritesDto)
@@ -21,10 +19,6 @@ export class FavouritesService {
       throw new Error(error);
     }
   }
-
-
-  // second delete a Favourite post
-  // the name is deleteFavourite and the parameter is id
 
   public async deleteFavourite(id: FavouritesDto): Promise<DeleteResult | undefined> {
     try {
@@ -38,9 +32,6 @@ export class FavouritesService {
     }
   }
 
-  // third get a favourites Post
-  // the name is getFavourites 
-
   async getFavourites(userId: FavouritesDto['userId']): Promise<FavouritesEntity[]> {
     try {
       const favourites = this.favouritesRepository.find({ where: { userId: userId } })
@@ -52,5 +43,4 @@ export class FavouritesService {
       throw new Error(error);
     }
   }
-
 }

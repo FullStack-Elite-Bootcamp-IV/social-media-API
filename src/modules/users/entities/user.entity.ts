@@ -3,7 +3,6 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToMany,
-  Like,
 } from 'typeorm';
 import { PostEntity } from '../../posts/entities/post.entity';
 import { FavouritesEntity } from 'src/modules/favourites/entities/favourites.entity';
@@ -22,10 +21,10 @@ export enum Gender {
 @Entity('User')
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  userId: string;
 
   @Column({ type: 'varchar', length: 100, unique: true })
-  username: string;
+  userName: string;
 
   @Column({ type: 'varchar', length: 100, unique: true })
   email: string;

@@ -11,11 +11,6 @@ export class CreateChatDto {
     @ApiProperty()
     @IsString()
     @IsNotEmpty()
-    chatId: string;
-
-    @ApiProperty()
-    @IsString()
-    @IsNotEmpty()
     user1Id: string;
 
     @ApiProperty()

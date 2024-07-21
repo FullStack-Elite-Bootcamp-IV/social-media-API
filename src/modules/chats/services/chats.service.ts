@@ -1,10 +1,8 @@
-
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateChatDto } from '../dto/create-chat.dto';
 import { ChatEntity } from '../entities/chat.entity';
-import { UUID } from 'crypto';
 
 @Injectable()
 export class ChatService {
@@ -33,7 +31,7 @@ export class ChatService {
     try {
       if (!chatId) throw new Error('Chat not found');
 
-      const chat = this.chatRepository.findOneBy({ id: chatId });
+      const chat = this.chatRepository.findOneBy({ chatId: chatId });
 
       if (!chat) throw new Error('Chat not found');
       return chat;

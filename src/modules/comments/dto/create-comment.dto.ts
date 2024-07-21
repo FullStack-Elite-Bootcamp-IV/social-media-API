@@ -4,9 +4,6 @@ import {
   IsNotEmpty,
 } from 'class-validator';
 
- // here you must to create a post dto
-
-
 export class CreateCommentDTO  {
 
   @ApiProperty()

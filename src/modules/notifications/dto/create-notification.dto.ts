@@ -1,20 +1,18 @@
-// create a notification dto 
-
-import { IsNotEmpty, IsString, IsBoolean, IsEnum } from 'class-validator';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
+import { IsNotEmpty, IsString, IsBoolean, IsEnum, IsDateString, IsUUID } from 'class-validator';
 import { NotificationAction } from '../entities/notification.entity';
 import { ApiProperty } from '@nestjs/swagger';
+
 export class CreateNotificationDto {
+  
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsUUID()
+  emisorUser: string;
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  emisorUser: UserEntity['id']; // FK
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  receptorUser: UserEntity['id']; // FK
+  @IsUUID()
+  receptorUser: string;
 
   @ApiProperty()
   @IsBoolean()
@@ -34,4 +32,8 @@ export class CreateNotificationDto {
   @IsNotEmpty()
   @IsString()
   description: string;
+
+  @ApiProperty()
+  @IsDateString()
+  lastLogoutDate: string;
 }

@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Delete,
   Param,
   Body,
@@ -11,7 +10,7 @@ import {
 import { MessagesService } from '../services/messages.service';
 import { CreateMessageDto } from '../dto/create-message.dto';
 import { MessageEntity } from '../entities/message.entity';
-import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags('Messages')
@@ -40,7 +39,7 @@ export class MessagesController {
     return this.messagesService.createMessage(createMessageDto);
   }
 
-  // find messages by chat id
+  // Find messages by chat id
   @ApiResponse({
     status: 200,
     description: 'Get all messages.',
@@ -63,7 +62,7 @@ export class MessagesController {
     return this.messagesService.findMessagesByChat(chatId);
   }
 
-  // delete a message by id
+  // Delete a message by id
   @ApiResponse({
     status: 200,
     description: 'Message deleted.',
@@ -86,7 +85,7 @@ export class MessagesController {
     return this.messagesService.deleteMessage(messageId);
   }
 
-  //find message by user id
+  //Find message by user id
   @ApiResponse({
     status: 200,
     description: 'Get all messages.',

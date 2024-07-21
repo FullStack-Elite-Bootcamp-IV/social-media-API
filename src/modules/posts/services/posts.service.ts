@@ -14,80 +14,85 @@ import { string } from 'joi';
 export class PostsService {
   constructor(
     @InjectRepository(PostEntity)
-    private readonly postRepository: Repository<PostEntity>,
+    private readonly postRepository: Repository < PostEntity > ,
     @InjectRepository(FollowersEntity)
-    private readonly followersRepository: Repository<FollowersEntity>,
+    private readonly followersRepository: Repository < FollowersEntity > ,
     @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
+    private readonly userRepository: Repository < UserEntity > ,
     @InjectRepository(LikeEntity)
-    private readonly likeRepository: Repository<LikeEntity>
+    private readonly likeRepository: Repository < LikeEntity >
   ) {}
 
   // Function to create a new post
-  async createPost(createPostDto: CreatePostDto): Promise<PostEntity> {
+  async createPost(createPostDto: CreatePostDto): Promise < PostEntity > {
     try {
       if (!createPostDto) {
-        throw new HttpException('Post not created, please complete the form', 400)
+        throw new HttpException('Post not created, please complete the form', 400);
       }
-      const post = this.postRepository.create(createPostDto)
-      if (!post) throw new HttpException('Post not created', 500)
-      return await this.postRepository.save(post)
+      const post = this.postRepository.create(createPostDto);
+      if (!post) throw new HttpException('Post not created', 500);
+      return await this.postRepository.save(post);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   // Function to update a post by ID
-  async updatePost(postId: string, updatePostDto: UpdatePostDto): Promise<PostEntity> {
+  async updatePost(postId: string, updatePostDto: UpdatePostDto): Promise < PostEntity > {
     try {
       if (!updatePostDto) {
-        throw new HttpException('Post not updated, please complete the form', 400)
+        throw new HttpException('Post not updated, please complete the form', 400);
       }
-      const post = this.postRepository.update(postId, updatePostDto)
-      if (!post) throw new HttpException('Post not updated', 500)
-      return post.then(() => this.postRepository.findOneBy({ postId: postId }))
+      const post = this.postRepository.update(postId, updatePostDto);
+      if (!post) throw new HttpException('Post not updated', 500);
+      return post.then(() => this.postRepository.findOneBy({
+        postId: postId
+      }));
     } catch (error) {
-      throw new HttpException('Post not updated', 500)
+      throw new HttpException('Post not updated', 500);
     }
   }
 
   // Function to delete a post by ID
-  async deletePost(postId: string): Promise<any> {
+  async deletePost(postId: string): Promise < any > {
     try {
-      if (!postId) throw new HttpException('Post not deleted, please provide the id', 400)
-      return await this.postRepository.delete(postId)
+      if (!postId) throw new HttpException('Post not deleted, please provide the id', 400);
+      return await this.postRepository.delete(postId);
     } catch (error) {
-      throw new HttpException('Post not deleted', 500)
+      throw new HttpException('Post not deleted', 500);
     }
   }
 
   // Function to like a post by ID
-  async likePost(createLikeDto: CreateLikeDto): Promise<any> {
+  async likePost(createLikeDto: CreateLikeDto): Promise < any > {
     try {
-      const like = this.likeRepository.create(createLikeDto)
-      this.likeRepository.save(like);
-      await this.postRepository.increment({ postId: like.postId }, 'likes', 1)
-      
+      const like = this.likeRepository.create(createLikeDto);
+      await this.likeRepository.save(like);
+      await this.postRepository.increment({ postId: like.postId }, 'likes', 1);
     } catch (error) {
       throw new HttpException('Post not liked', 500);
     }
   }
 
   // Function to unlike a post by ID
-  async unlikePost(createLikeDto: CreateLikeDto): Promise<any> {
+  async unlikePost(createLikeDto: CreateLikeDto): Promise < any > {
     try {
-      const like = this.likeRepository.create(createLikeDto)
-      this.likeRepository.delete(like);
-      await this.postRepository.decrement({ postId: like.postId }, 'likes', 1)
+      const like = this.likeRepository.create(createLikeDto);
+      await this.likeRepository.delete(like);
+      await this.postRepository.decrement({
+        postId: like.postId
+      }, 'likes', 1);
     } catch (error) {
       throw new HttpException('Post not unliked', 500);
     }
   }
 
   // Function to find a post by Id
-  async findPostById(postId: string): Promise<PostEntity> {
+  async findPostById(postId: string): Promise < PostEntity > {
     try {
-      const post = await this.postRepository.findOneBy({ postId: postId });
+      const post = await this.postRepository.findOneBy({
+        postId: postId
+      });
       return post;
     } catch (error) {
       throw new HttpException('server error', 500);
@@ -95,10 +100,12 @@ export class PostsService {
   }
 
   // Function to find all posts by a specific user
-  async findPostsByUser(userId: string): Promise<PostEntity[]> {
+  async findPostsByUser(userId: string): Promise < PostEntity[] > {
     try {
       if (!userId) throw new HttpException('Posts not found, please provide the id', 400);
-      const posts = await this.postRepository.findBy({ postId: userId });
+      const posts = await this.postRepository.findBy({
+        userId: userId
+      });
       if (!posts) throw new HttpException('Posts not found', 500);
       return posts;
     } catch (error) {
@@ -107,11 +114,16 @@ export class PostsService {
   }
 
   // Function to find all posts visible to a specific user (public posts and posts of followed users)
-  async findPostsVisibleToUser(userId: string): Promise<PostEntity[]> {
+  async findPostsVisibleToUser(userId: string): Promise < PostEntity[] > {
     try {
       if (!userId) throw new HttpException('Posts not found, please provide the id', 400);
-      const posts = await this.postRepository.find({ where: { isPublic: true, postId: userId } });
-      if(!posts) throw new HttpException('Posts not found', 500);
+      const posts = await this.postRepository.find({
+        where: {
+          isPublic: true,
+          userId: userId
+        }
+      });
+      if (!posts) throw new HttpException('Posts not found', 500);
       return posts;
     } catch (error) {
       throw new HttpException('server error', 500);
@@ -161,19 +173,19 @@ export class PostsService {
         };
     }));
 
-    // Sort by post date, descending
-    followedUsersPosts.sort((a, b) => {
-      if (a.posts.length && b.posts.length) {
-        return b.posts[0].updateDate.getTime() - a.posts[0].updateDate.getTime();
-      }
-      return 0;
-    });
+      // Sort by post date, descending
+      followedUsersPosts.sort((a, b) => {
+        if (a.posts.length && b.posts.length) {
+          return b.posts[0].updateDate.getTime() - a.posts[0].updateDate.getTime();
+        }
+        return 0;
+      });
 
-    return followedUsersPosts;
-  } catch (error) {
-    throw new HttpException('server error', 500);
+      return followedUsersPosts;
+    } catch (error) {
+      throw new HttpException('server error', 500);
+    }
   }
-}
 
 // to find posts public that user that i am following
 async findPostsPublicByUser(userId: string): Promise<PostEntity[]> {

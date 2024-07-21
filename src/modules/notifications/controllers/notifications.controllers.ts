@@ -17,7 +17,7 @@ import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 export class NotificationsController {
   constructor(private notificationsService: NotificationsService) {}
 
-  // create a notification
+  // Create a new notification
   @ApiResponse({
     status: 201,
     description: 'Notification sent.',
@@ -35,10 +35,11 @@ export class NotificationsController {
   createNotification(
     @Body() createNotificationDto: CreateNotificationDto,
   ) {
+    // Calls the service to handle the creation of a notification
     return this.notificationsService.createNotification(createNotificationDto);
   }
 
-  //delete a notification by the notification id
+  // Delete a notification by ID
   @ApiResponse({
     status: 200,
     description: 'Notification deleted.',
@@ -58,9 +59,11 @@ export class NotificationsController {
   @Delete('/delete/:id')
   @UseGuards(JwtAuthGuard)
   deleteNotification(@Param('id') notificationId: string): Promise<void> {
+    // Calls the service to handle the deletion of a notification
     return this.notificationsService.deleteNotification(notificationId);
   }
-  // find a notification by the user id
+
+  // Find notifications by user ID
   @ApiResponse({
     status: 200,
     description: 'Get all notifications.',
@@ -82,6 +85,7 @@ export class NotificationsController {
   async findNotificationsByUser(
     @Param('userId') userId: string,
   ): Promise<void> {
+    // Calls the service to get notifications for a specific user
     await this.notificationsService.findNotificationsByUser(userId);
   }
 }

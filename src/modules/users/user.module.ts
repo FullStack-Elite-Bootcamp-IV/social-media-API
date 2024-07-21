@@ -18,4 +18,4 @@ import { FollowersModule } from '../followers/followers.module';
   providers: [UserService],
   exports: [UserService, TypeOrmModule],
 })
-export class UsersModule { }
+export class UsersModule {}

@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { UserDto } from '../dto/create-user.dto';
 import { PostEntity } from 'src/modules/posts/entities/post.entity';
-import { FollowersEntity } from 'src/modules/followers/entities/followers.entity';
 import { FollowersService } from 'src/modules/followers/services/followers.service';
 
 @Injectable()
@@ -15,19 +14,18 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(PostEntity)
     private readonly postRepository: Repository<PostEntity>,
-    @InjectRepository(FollowersEntity)
-    private readonly followersRepository: Repository<FollowersEntity>,
   ) { }
 
+  // Retrieves all users
   async getUsers() {
     try {
-      const users = await this.userRepository.find()
+      const users = await this.userRepository.find();
       if (!users) {
         throw new Error('Users not found');
       }
-      return users
+      return users;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new Error(error);
     }
   }
@@ -44,7 +42,7 @@ export class UserService {
       throw new Error(error);
     }
   }
-
+  
   async getUserByUserName(userName: string) {
     try {
       const user = await this.userRepository.findOne({ where: { userName: userName } })
@@ -138,7 +136,7 @@ export class UserService {
 
       return user;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new Error(error);
     }
   }

@@ -7,11 +7,18 @@ import { MessageEntity } from '../messages/entities/message.entity';
 import { ChatGateway } from './socket.gateway';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ChatEntity, MessageEntity])],
-  controllers: [ChatController],
-  providers: [ChatService, ChatGateway],
-  exports: [ChatService],
+  imports: [
+    TypeOrmModule.forFeature([ChatEntity, MessageEntity]), // Import TypeOrmModule with the ChatEntity and MessageEntity
+  ],
+  controllers: [
+    ChatController, // Declare the ChatController
+  ],
+  providers: [
+    ChatService, // Provide the ChatService
+    ChatGateway, // Provide the ChatGateway
+  ],
+  exports: [
+    ChatService, // Export the ChatService for use in other modules
+  ],
 })
 export class ChatModule {}
-
-

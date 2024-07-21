@@ -1,6 +1,4 @@
-// here you must tyo create the user dto
-
-import { IsDate, IsDateString, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, MinLength } from 'class-validator';
+import { IsDateString, IsEmail, IsEnum, IsNumber, IsOptional, IsPositive, IsString, MinLength } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { UserEntity } from '../entities/user.entity';
 import { Gender } from '../entities/user.entity';
@@ -9,24 +7,24 @@ import { ApiProperty } from '@nestjs/swagger';
 export class UserDto extends PartialType(UserEntity) {
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   userName: string;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsEmail()
   @IsString()
   email: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @MinLength(8)
   password: string;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   fullName: string;
 
@@ -37,6 +35,7 @@ export class UserDto extends PartialType(UserEntity) {
   age?: number;
 
   @ApiProperty()
+  @IsOptional()
   @IsEnum(Gender)
   gender?: Gender;
 

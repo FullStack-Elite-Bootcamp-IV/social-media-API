@@ -10,19 +10,6 @@ import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 export class UsersController {
   constructor(private readonly userService: UserService) { }
 
-  @ApiResponse({
-    status: 201,
-    description: 'User added.',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad request.',
-  })
-  @Post('/register')
-  async createUser(@Body() UserDto: UserDto): Promise<UserEntity | Error> {
-    return this.userService.createUser(UserDto);
-  }
-
 @ApiResponse({
     status: 200,
     description: 'Get all Users.',
@@ -41,7 +28,6 @@ export class UsersController {
 })
   @Get('/users')
   getUsers(): Promise<UserEntity[]> {
-    console.log('llega?')
     try {
       return this.userService.getUsers();
     } catch (error) {

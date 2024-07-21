@@ -1,12 +1,30 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { UserService } from 'src/modules/users/services/user.service';
+import { Repository } from 'typeorm';
+import { RegisterDTO } from '../dto/auth.dto';
+import * as bycryptjs from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) { }
+  constructor(
+    private readonly userService: UserService,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>
+  ) { }
+
+  async createUser(registerDTO: RegisterDTO): Promise<UserEntity | Error> {
+    try {      
+      registerDTO.password = await bycryptjs.hash(registerDTO.password, 10);
+      const user = this.userRepository.create(registerDTO);
+      return await this.userRepository.save(user);
+    } catch (error) {
+      return error;
+    }
+  }
 
   public async validateUser(email: string, password: string): Promise<UserEntity | null> {
     try {

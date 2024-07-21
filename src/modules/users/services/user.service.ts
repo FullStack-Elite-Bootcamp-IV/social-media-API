@@ -3,8 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm'; 
 import { UserEntity } from '../entities/user.entity';
 import { UserDto } from '../dto/create-user.dto';
-import * as bycryptjs from 'bcryptjs';
-import { HttpException, HttpStatus } from '@nestjs/common';
 
 
 @Injectable()
@@ -13,28 +11,6 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
   ) {}
-
-  async createUser(userDto: UserDto): Promise<UserEntity | Error> {
-    try {
-      const userEmail = await this.userRepository.findOne({ where: { email: userDto.email } });
-      const userName = await this.userRepository.findOne({ where: { userName: userDto.userName } });
-      if (userEmail || userName) {
-
-      const error = new HttpException(
-          'User already exists',
-          HttpStatus.BAD_REQUEST
-        );
-
-        return error;
-      }
-      
-      userDto.password = await bycryptjs.hash(userDto.password, 10);
-      const user = this.userRepository.create(userDto);
-      return await this.userRepository.save(user);
-    } catch (error) {
-      return error;
-    }
-  }
 
  async getUsers () {
    try {

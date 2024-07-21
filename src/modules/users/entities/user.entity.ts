@@ -76,7 +76,7 @@ export class UserEntity {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updateDate?: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   lastLogoutDate?: string;
 
   @OneToMany(() => PostEntity, post => post.user, { cascade: true, onDelete: 'CASCADE' })

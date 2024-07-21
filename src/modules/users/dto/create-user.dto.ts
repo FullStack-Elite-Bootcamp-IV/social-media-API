@@ -21,6 +21,7 @@ export class UserDto extends PartialType(UserEntity) {
 
   @ApiProperty()
   @IsString()
+  @IsNotEmpty()
   @MinLength(8)
   password: string;
 
@@ -32,6 +33,7 @@ export class UserDto extends PartialType(UserEntity) {
   @ApiProperty()
   @IsNumber()
   @IsPositive()
+  @IsOptional()
   age?: number;
 
   @ApiProperty()
@@ -39,30 +41,37 @@ export class UserDto extends PartialType(UserEntity) {
   gender?: Gender;
 
   @ApiProperty()
+  @IsOptional()
   @IsString()
   profileImage?: string;
 
   @ApiProperty()
+  @IsOptional()
   @IsString()
   coverImage?: string;
 
   @ApiProperty()
+  @IsOptional()
   @IsString()
   description?: string;
 
   @ApiProperty()
+  @IsOptional()
   @IsString()
   college?: string;
 
   @ApiProperty()
+  @IsOptional()
   @IsString()
   workPlace?: string;
 
   @ApiProperty()
+  @IsOptional()
   @IsString()
   location?: string;
 
   @ApiProperty()
+  @IsOptional()
   @IsString()
   personalWebSite?: string;
 }

@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Delete, Param, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Param,
+  Body,
+  UseGuards,
+} from '@nestjs/common';
 import { LikesService } from '../services/likes.service';
 import { CreateLikeDto } from '../dto/create-like.dto';
 import { LikeEntity } from '../entities/like.entity';
@@ -7,10 +15,10 @@ import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
-@ApiTags("Likes")
+@ApiTags('Likes')
 @Controller('likes')
 export class LikesController {
-  constructor(private readonly likesService: LikesService) { }
+  constructor(private readonly likesService: LikesService) {}
 
   @ApiResponse({
     status: 201,
@@ -18,11 +26,11 @@ export class LikesController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.'
+    description: 'Bad request.',
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized'
+    description: 'Unauthorized',
   })
   @Post('/create')
   @UseGuards(JwtAuthGuard)
@@ -36,15 +44,15 @@ export class LikesController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.'
+    description: 'Bad request.',
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized'
+    description: 'Unauthorized',
   })
   @ApiResponse({
     status: 404,
-    description: 'Likes not found.'
+    description: 'Likes not found.',
   })
   @Get('all')
   @UseGuards(JwtAuthGuard)
@@ -58,15 +66,15 @@ export class LikesController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.'
+    description: 'Bad request.',
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized'
+    description: 'Unauthorized',
   })
   @ApiResponse({
     status: 404,
-    description: 'Like not found.'
+    description: 'Like not found.',
   })
   @Delete('/delete/:id')
   @UseGuards(JwtAuthGuard)
@@ -80,19 +88,19 @@ export class LikesController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.'
+    description: 'Bad request.',
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized'
+    description: 'Unauthorized',
   })
   @ApiResponse({
     status: 404,
-    description: 'Likes not found.'
+    description: 'Likes not found.',
   })
   @Get('/post/:postId')
   @UseGuards(JwtAuthGuard)
-  findLikesByPost(@Param('postId') postId: PostEntity): Promise<LikeEntity[]> {
+  findLikesByPost(@Param('postId') postId: string): Promise<LikeEntity[]> {
     return this.likesService.findLikesByPost(postId);
   }
 
@@ -102,19 +110,19 @@ export class LikesController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.'
+    description: 'Bad request.',
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized'
+    description: 'Unauthorized',
   })
   @ApiResponse({
     status: 404,
-    description: 'Likes not found.'
+    description: 'Likes not found.',
   })
   @Get('/user/:userId')
   @UseGuards(JwtAuthGuard)
-  findLikesByUser(@Param('userId') userId: UserEntity): Promise<LikeEntity[]> {
+  findLikesByUser(@Param('userId') userId: string): Promise<LikeEntity[]> {
     return this.likesService.findLikesByUser(userId);
   }
 }

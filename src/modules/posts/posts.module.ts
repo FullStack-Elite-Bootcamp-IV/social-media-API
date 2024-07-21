@@ -6,12 +6,16 @@ import { PostEntity } from './entities/post.entity';
 import { FollowersModule } from '../followers/followers.module';
 import { UserEntity } from '../users/entities/user.entity';
 import { AuthModule } from '../auth/auth.module';
+import { LikesModule } from '../likes/likes.module';
+import { LikeEntity } from '../likes/entities/like.entity';
+
 
 @Module({
   imports: [TypeOrmModule.forFeature([PostEntity]),
     FollowersModule,
     TypeOrmModule.forFeature([UserEntity]),
-    AuthModule,
+    AuthModule, LikesModule, 
+    TypeOrmModule.forFeature([LikeEntity])
    ],
   controllers: [PostsController],
   providers: [PostsService],

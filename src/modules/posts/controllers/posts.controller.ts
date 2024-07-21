@@ -6,11 +6,16 @@ import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { ApiResponse, ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
+import { LikesService } from 'src/modules/likes/services/likes.service';
+import { LikeEntity } from 'src/modules/likes/entities/like.entity';
+import { CreateLikeDto } from 'src/modules/likes/dto/create-like.dto';
 
 @ApiTags('Posts')
 @Controller('posts')
 export class PostsController {
-  constructor(private readonly postsService: PostsService) { }
+  constructor(private readonly postsService: PostsService, 
+              private readonly likesService: LikesService
+  ) { }
 
   // Documentation whit swagger the service posts
   @ApiOperation({ summary: 'Create a new post' })
@@ -102,10 +107,10 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Like a post'
   })
-  @Post(':id/like')
+  @Post('like')
   @UseGuards(JwtAuthGuard)
-  likePost(@Param('id') postId: string, @Body('userId') userId: string): Promise<void> {
-    return this.postsService.likePost(postId, userId)
+  likePost( @Body()  createLikeDto: CreateLikeDto): Promise<void> {
+    return this.postsService.likePost(createLikeDto)
   }
 
   @ApiOperation({ summary: 'Unlike a post' })
@@ -124,10 +129,10 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Unlike a post'
   })
-  @Post(':id/unlike')
+  @Post('unlike')
   @UseGuards(JwtAuthGuard)
-  unlikePost(@Param('id') postId: string, @Body('userId') userId: string): Promise<void> {
-    return this.postsService.unlikePost(postId, userId)
+  unlikePost(@Body()  createLikeDto: CreateLikeDto): Promise<any> {
+    return this.postsService.unlikePost(createLikeDto)
   }
 
   @ApiOperation({ summary: 'Find posts by user' })

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { FavouritesEntity } from '../entities/favourites.entity';
@@ -11,12 +11,24 @@ export class FavouritesService {
     private readonly favouritesRepository: Repository<FavouritesEntity>
   ) { }
 
-  public async addFavourite(FavouritesDto: FavouritesDto): Promise<FavouritesEntity> {
+  public async addFavourite(favouritesDto: FavouritesDto): Promise<FavouritesEntity> {
     try {
-      const favourite = this.favouritesRepository.create(FavouritesDto)
-      return this.favouritesRepository.save(favourite)
+      const { userId, postId } = favouritesDto;
+
+      // Verifica si el favorito ya existe
+      const existingFavourite = await this.favouritesRepository.findOne({
+        where: { userId, postId },
+      });
+
+      if (existingFavourite) {
+        throw new HttpException('Item already added to favourites', HttpStatus.CONFLICT);
+      }
+
+      // Crea y guarda el nuevo favorito
+      const favourite = this.favouritesRepository.create(favouritesDto);
+      return await this.favouritesRepository.save(favourite);
     } catch (error) {
-      throw new Error(error);
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

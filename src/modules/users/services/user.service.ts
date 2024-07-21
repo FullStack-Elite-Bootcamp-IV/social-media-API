@@ -120,16 +120,22 @@ export class UserService {
     }
   }
 
-  async updateUserLastLogin(email: string): Promise<void> { 
-    try{
+  async updateLastLogout (email: string, date: string): Promise<UserEntity> {
+    try {
       const user = await this.userRepository.findOne({ where: { email: email } });
       if(!user){
-        throw new Error('User not found')
+        throw new Error('User not found');
       }
-      user.lastLoginDate = new Date();
+      if(!date){
+        throw new Error('Invalid date');
+      }
+      user.lastLogoutDate = date;
+      
       await this.userRepository.save(user);
-    }
-    catch(error){
+
+      return user;
+    } catch (error) {
+      console.log(error)
       throw new Error(error);
     }
   }

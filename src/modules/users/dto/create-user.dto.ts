@@ -1,6 +1,6 @@
 // here you must tyo create the user dto
 
-import { IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, MinLength } from 'class-validator';
+import { IsDate, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, MinLength } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { UserEntity } from '../entities/user.entity';
 import { Gender } from '../entities/user.entity';
@@ -74,4 +74,8 @@ export class UserDto extends PartialType(UserEntity) {
   @IsOptional()
   @IsString()
   personalWebSite?: string;
+
+  @ApiProperty()
+  @IsDate()
+  lastLogoutDate?: string;
 }

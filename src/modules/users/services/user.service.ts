@@ -15,11 +15,19 @@ export class UserService {
   ) {}
 
   async createUser(userDto: UserDto): Promise<UserEntity | Error> {
+
+
+    
+    console.log("In createUser: userDto")
     try {
+      console.log("Using repository to find -")
       const userEmail = await this.userRepository.findOne({ where: { email: userDto.email } });
+      console.log("userEmail: ", userEmail)
       const userName = await this.userRepository.findOne({ where: { userName: userDto.userName } });
+      console.log("userName: ", userName)
       if (userEmail || userName) {
 
+      console.log("Reach exception")
       const error = new HttpException(
           'User already exists',
           HttpStatus.BAD_REQUEST
@@ -28,10 +36,19 @@ export class UserService {
         return error;
       }
       
+      console.log("Hashing passwd")
       userDto.password = await bycryptjs.hash(userDto.password, 10);
-      
-      const user = this.userRepository.create(userDto);
-      return await this.userRepository.save(user);
+
+      const user = new UserEntity();
+      user.userName = userDto.userName;
+      user.email = userDto.email;
+      user.password = userDto.password;
+      user.fullName = userDto.fullName ?? '';
+      user.age = userDto.age ?? 0;
+      console.log("User Created")
+      const result = await this.userRepository.save(user);
+      delete result.password;
+      return result
     } catch (error) {
       return error;
     }
@@ -56,6 +73,7 @@ export class UserService {
       if(!user){
         throw new Error('User not found')
       }
+      delete user.password;
       return user
     } catch (error) {
       console.log(error)

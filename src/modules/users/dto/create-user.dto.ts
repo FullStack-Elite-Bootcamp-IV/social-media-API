@@ -28,13 +28,13 @@ export class UserDto extends PartialType(UserEntity) {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  fullName: string;
+  fullName: string = '';
 
   @ApiProperty()
   @IsNumber()
   @IsPositive()
   @IsOptional()
-  age?: number;
+  age?: number = 1; // pequeño hack mientras intento probar el register, cambiar en produccion
 
   @ApiProperty()
   @IsOptional()

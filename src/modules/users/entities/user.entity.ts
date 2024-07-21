@@ -3,6 +3,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToMany,
+  Like,
 } from 'typeorm';
 import { PostEntity } from '../../posts/entities/post.entity';
 import { FavouritesEntity } from 'src/modules/favourites/entities/favourites.entity';
@@ -10,6 +11,7 @@ import { ChatEntity } from 'src/modules/chats/entities/chat.entity';
 import { MessageEntity } from 'src/modules/messages/entities/message.entity';
 import { NotificationEntity } from 'src/modules/notifications/entities/notification.entity';
 import { FollowersEntity } from 'src/modules/followers/entities/followers.entity';
+import { LikeEntity } from 'src/modules/likes/entities/like.entity';
 
 export enum Gender {
   MALE = 'male',
@@ -97,4 +99,7 @@ export class UserEntity {
 
   @OneToMany(() => FollowersEntity, follower => follower.follower, { cascade: true, onDelete: 'CASCADE' })
   followers: FollowersEntity[];
+
+  @OneToMany(() => LikeEntity, like => like.user, { cascade: true, onDelete: 'CASCADE' })
+  likes: LikeEntity[];
 }

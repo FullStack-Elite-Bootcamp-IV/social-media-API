@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
+import { LikeEntity } from 'src/modules/likes/entities/like.entity';
 import { FavouritesEntity } from 'src/modules/favourites/entities/favourites.entity';
 import { CommentsEntity } from 'src/modules/comments/entities/comment.entity';
 
@@ -32,6 +33,11 @@ export class PostEntity {
   @ManyToOne(() => UserEntity, (user) => user.posts, { onDelete: 'CASCADE' })
   user: UserEntity;
 
+  @Column()
+  userId: string;
+
+  @OneToMany(() => LikeEntity, (like) => like.post)
+  likesPost: LikeEntity[];
   @OneToMany(() => FavouritesEntity, favourites => favourites.postId, { cascade: true, onDelete: 'CASCADE' })
   favourites: FavouritesEntity[];
 

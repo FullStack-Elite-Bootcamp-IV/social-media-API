@@ -41,6 +41,7 @@ export class UsersController {
 })
   @Get('/users')
   getUsers(): Promise<UserEntity[]> {
+    console.log('llega?')
     try {
       return this.userService.getUsers();
     } catch (error) {

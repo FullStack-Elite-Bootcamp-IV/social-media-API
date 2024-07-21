@@ -2,7 +2,7 @@ import { Controller, Get, Post, Delete, Param, Body, UseGuards } from '@nestjs/c
 import { FollowersService } from '../services/followers.service';
 import { CreateFollowerDto } from '../dto/create-follower.dto';
 import { FollowersEntity } from '../entities/followers.entity';
-import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags("Followers")
@@ -68,7 +68,7 @@ export class FollowersController {
     status: 404,
     description: 'Followers not found.'
   })
-  @Get('followers/:followingId')
+  @Get('/user/:followingId')
   @UseGuards(JwtAuthGuard)
   findFollowersByUser(@Param('followingId') followingId: string): Promise<String[]> {
     return this.followersService.findFollowersByUser(followingId);
@@ -90,7 +90,7 @@ export class FollowersController {
     status: 404,
     description: 'Follow not found.'
   })
-  @Delete(':followerId')
+  @Delete('/delete/:followerId')
   @UseGuards(JwtAuthGuard) 
   deleteFollower(@Param('followerId') followerId: string): Promise<String> {
     return this.followersService.deleteFollower(followerId);

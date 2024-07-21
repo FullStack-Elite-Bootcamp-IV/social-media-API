@@ -5,15 +5,21 @@ import { PostEntity } from '../../posts/entities/post.entity';
 
 @Entity('likes')
 export class LikeEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-    
-    @Column({type: 'timestamp', default: ()=> 'CURRENT_TIMESTAMP'})
-    creationDate: Date;
-    
-    @ManyToOne(() => PostEntity, post => post.id, { onDelete: 'CASCADE' })
-    postId : PostEntity;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @ManyToOne(() => UserEntity, user => user.id, { onDelete: 'CASCADE' })
-    userId : UserEntity;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  creationDate: Date;
+
+  @ManyToOne(() => PostEntity, (post) => post.id, { onDelete: 'CASCADE' })
+  post: PostEntity;
+
+  @Column()
+  postId: string;
+
+  @ManyToOne(() => UserEntity, (user) => user.id, { onDelete: 'CASCADE' })
+  user: UserEntity;
+
+  @Column()
+  userId: string;
 }

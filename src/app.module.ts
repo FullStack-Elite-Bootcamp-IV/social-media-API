@@ -10,6 +10,8 @@ import { MessagesModule } from './modules/messages/messages.module';
 import { FollowersModule } from './modules/followers/followers.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { ChatModule } from './modules/chats/chats.module';
+import { CommentsModule } from './modules/comments/comments.module';
 
 
 
@@ -51,6 +53,8 @@ import { AuthModule } from './modules/auth/auth.module';
     MessagesModule,
     FollowersModule,
     NotificationsModule,
+    ChatModule,
+    CommentsModule
   ],
   
 })

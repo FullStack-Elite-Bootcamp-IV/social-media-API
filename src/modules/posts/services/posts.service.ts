@@ -6,6 +6,8 @@ import { PostEntity } from '../entities/post.entity';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { FollowersEntity } from '../../followers/entities/followers.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
+import { LikeEntity } from 'src/modules/likes/entities/like.entity';
+import { CreateLikeDto } from 'src/modules/likes/dto/create-like.dto';
 
 @Injectable()
 export class PostsService {
@@ -16,6 +18,8 @@ export class PostsService {
     private readonly followersRepository: Repository<FollowersEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(LikeEntity)
+    private readonly likeRepository: Repository<LikeEntity>
   ) {}
 
   // Function to create a new post
@@ -57,20 +61,23 @@ export class PostsService {
   }
 
   // Function to like a post by ID
-  async likePost(postId: string, userId: string): Promise<any> {
+  async likePost(createLikeDto: CreateLikeDto): Promise<any> {
     try {
-      if (!postId || !userId) throw new HttpException('Post not liked, please provide the id', 400);
-      await this.postRepository.increment({ id: postId }, 'likes', 1);
+      const like = this.likeRepository.create(createLikeDto)
+      this.likeRepository.save(like);
+      await this.postRepository.increment({ id: like.postId }, 'likes', 1)
+      
     } catch (error) {
       throw new HttpException('Post not liked', 500);
     }
   }
 
   // Function to unlike a post by ID
-  async unlikePost(postId: string, userId: string): Promise<any> {
+  async unlikePost(createLikeDto: CreateLikeDto): Promise<any> {
     try {
-      if (!postId || !userId) throw new HttpException('Post not unliked, please provide the id', 400);
-      return await this.postRepository.decrement({ id: postId }, 'likes', 1)
+      const like = await this.likeRepository.findOne({where: {userId: createLikeDto.userId, postId: createLikeDto.postId}})
+      await this.postRepository.decrement({ id: like.postId }, 'likes', 1)
+      await this.likeRepository.delete(like)
     } catch (error) {
       throw new HttpException('Post not unliked', 500);
     }

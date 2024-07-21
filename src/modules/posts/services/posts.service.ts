@@ -200,9 +200,11 @@ async postSearch(search: string): Promise<PostEntity[]> {
       } 
       const titleWords = post.title.split(' ');
       const descriptionWords = post.description.split(' ');
-      console.log(post.description);
       return subStrings.some(sub => titleWords.includes(sub) || descriptionWords.includes(sub));
     });
+    if (!postsFiltered) {
+      throw new HttpException('Posts not found', 404);
+    }
     return postsFiltered;
   } catch (error) {
     console.log(error);

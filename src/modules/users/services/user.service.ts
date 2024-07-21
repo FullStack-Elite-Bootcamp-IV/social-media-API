@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
@@ -117,21 +117,23 @@ export class UserService {
   async searchUser(search: string): Promise<UserEntity[]> {
     try {
       if (!search) {
-        throw new Error('Search not found');
+        throw new HttpException('search not found', 400);
       }
       const subStrings = search.split(' ');
       const users = await this.userRepository.find();
       const usersFiltered = users.filter(user => {
         const userNameWords = user.userName.split(' ');
-        console.log(user.userName);
         return subStrings.every(subString => {
           return userNameWords.some(word => word.toLowerCase().includes(subString.toLowerCase()));
         });
       });
+      if (!usersFiltered) {
+        throw new HttpException('Users not found', 404);
+      }
       return usersFiltered;
     } catch (error) {
       console.log(error)
-      throw new Error(error);
+      throw new HttpException('server error', 500);
     }
   }
 };

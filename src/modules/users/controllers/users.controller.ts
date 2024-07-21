@@ -143,6 +143,31 @@ async modifyDarkMode(@Param('id') userId: string): Promise<void> {
     return "Usuario eliminado exitosamente";
   }
 
+
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Search user.',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request.'
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found.'
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error.'
+  })
   @Get('search/:search')
   @UseGuards(JwtAuthGuard)
   async searchUser(@Param('search') search: string): Promise<UserEntity[]> {

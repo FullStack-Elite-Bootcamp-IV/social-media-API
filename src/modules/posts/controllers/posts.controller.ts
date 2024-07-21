@@ -247,6 +247,16 @@ export class PostsController {
     type: CreatePostDto,
     description: 'BAD REQUEST: Find all posts'
   })
+  @ApiResponse({
+    status: 404,
+    type: CreatePostDto,
+    description: 'Posts not found'
+  })
+  @ApiResponse({
+    status: 500,
+    type: CreatePostDto,
+    description: 'INTERNAL SERVER ERROR: Find all posts'
+  })
   @Get('search/:search')
   async searchPosts(@Param('search') search: string): Promise<PostEntity[]> {
     return this.postsService.postSearch(search);

@@ -57,7 +57,7 @@ export class CommentsController {
     status: 404,
     description: 'Favorite not found.'
   })
-  @Delete('/delete:id')
+  @Delete('/delete/:id')
   @UseGuards(JwtAuthGuard)
   async deleteComment(@Param('id') id: string): Promise<void> {
     return this.CommentsService.deleteComment(id);

@@ -17,3 +17,15 @@ export class CreateFollowerDto {
   @IsOptional()
   followDate?: Date;
 }
+
+export class DeleteFollowerDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  followerId: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  followingId: string;
+}

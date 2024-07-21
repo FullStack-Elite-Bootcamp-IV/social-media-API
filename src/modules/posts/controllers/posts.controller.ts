@@ -107,10 +107,10 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Like a post'
   })
-  @Post(':id/like')
+  @Post('like')
   @UseGuards(JwtAuthGuard)
-  likePost(@Param('id') postId: string, @Body('userId') userId: string, createLikeDto: CreateLikeDto): Promise<void> {
-    return this.postsService.likePost(postId, userId, createLikeDto)
+  likePost( @Body()  createLikeDto: CreateLikeDto): Promise<void> {
+    return this.postsService.likePost(createLikeDto)
   }
 
   @ApiOperation({ summary: 'Unlike a post' })
@@ -129,10 +129,10 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Unlike a post'
   })
-  @Post(':id/unlike')
+  @Post('unlike')
   @UseGuards(JwtAuthGuard)
-  unlikePost(@Param('id') postId: string, @Body('userId') userId: string, ): Promise<any> {
-    return this.postsService.unlikePost(postId, userId)
+  unlikePost(@Body()  createLikeDto: CreateLikeDto): Promise<any> {
+    return this.postsService.unlikePost(createLikeDto)
   }
 
   @ApiOperation({ summary: 'Find posts by user' })

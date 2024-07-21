@@ -61,23 +61,23 @@ export class PostsService {
   }
 
   // Function to like a post by ID
-  async likePost(postId: string, userId: string, createLikeDto: CreateLikeDto): Promise<any> {
+  async likePost(createLikeDto: CreateLikeDto): Promise<any> {
     try {
-      if (!postId || !userId) throw new HttpException('Post not liked, please provide the id', 400);
-      await this.postRepository.increment({ id: postId }, 'likes', 1);
-      await this.likeRepository.save(createLikeDto)
+      const like = this.likeRepository.create(createLikeDto)
+      this.likeRepository.save(like);
+      await this.postRepository.increment({ id: like.postId }, 'likes', 1)
+      
     } catch (error) {
       throw new HttpException('Post not liked', 500);
     }
   }
 
   // Function to unlike a post by ID
-  async unlikePost(postId: any, userId: any): Promise<any> {
+  async unlikePost(createLikeDto: CreateLikeDto): Promise<any> {
     try {
-      if (!postId || !userId) throw new HttpException('Post not unliked, please provide the id', 400);
-      const like = await this.likeRepository.find({where: {userId: userId, postId: postId}})
-      const likeId = like[0].id 
-      return await this.postRepository.decrement({ id: postId }, 'likes', 1), this.likeRepository.delete(likeId)
+      const like = await this.likeRepository.findOne({where: {userId: createLikeDto.userId, postId: createLikeDto.postId}})
+      await this.postRepository.decrement({ id: like.postId }, 'likes', 1)
+      await this.likeRepository.delete(like)
     } catch (error) {
       throw new HttpException('Post not unliked', 500);
     }

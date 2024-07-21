@@ -5,7 +5,7 @@ import {
   Post,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AuthDTO } from '../dto/auth.dto';
+import { AuthDTO, LogoutDTO } from '../dto/auth.dto';
 import { AuthService } from '../services/auth.service';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -14,6 +14,7 @@ import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
+  @Post('login')
   @ApiHeader({
     name: 'Token',
     description: 'Token de autenticación',
@@ -27,7 +28,7 @@ export class AuthController {
     status: 401,
     description: 'Datos no válidos.',
   })
-  @Post('login')
+  
   async login(@Body() { email, password }: AuthDTO) {
     const userValidate = await this.authService.validateUser(
       email,
@@ -36,9 +37,31 @@ export class AuthController {
     if (!userValidate) {
       throw new UnauthorizedException('Data not valid');
     }
-
     const jwt = await this.authService.generateJWT(userValidate);
 
     return jwt;
+  }
+
+  @Post('logout')
+  @ApiResponse({
+    status: 200,
+    description: 'Cierre de sesión exitoso.',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Fecha no válida.',
+  })
+  async logout(@Body() {date, email}: LogoutDTO) {
+    
+    const userLogout = await this.authService.logout(
+      date,
+      email,
+    );
+
+    if (!userLogout) {
+      throw new UnauthorizedException('Invalid date');
+    }
+    return userLogout;
+
   }
 }

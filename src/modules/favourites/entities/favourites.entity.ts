@@ -11,9 +11,9 @@ export class FavouritesEntity {
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
   creationDate: Date;
 
-  @ManyToOne(() => UserEntity, (user) => user.id)
+  @ManyToOne(() => UserEntity, (user) => user.id, { onDelete: 'CASCADE' })
   userId: string;
 
-  @ManyToOne(() => PostEntity, (post) => post.id)
+  @ManyToOne(() => PostEntity, (post) => post.id, { onDelete: 'CASCADE' })
   postId: string
 }

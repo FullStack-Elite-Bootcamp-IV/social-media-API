@@ -6,13 +6,13 @@ export class FollowersEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @ManyToOne(() => UserEntity, user => user.id, { nullable: false })
+    @ManyToOne(() => UserEntity, user => user.id, { nullable: false, onDelete: 'CASCADE' })
     follower: UserEntity;
 
     @Column()
     followerId: string;
 
-    @ManyToOne(() => UserEntity, user => user.id, { nullable: false })
+    @ManyToOne(() => UserEntity, user => user.id, { nullable: false, onDelete: 'CASCADE' })
     following: UserEntity;
 
     @Column()

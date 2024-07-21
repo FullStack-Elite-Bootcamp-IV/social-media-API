@@ -1,4 +1,4 @@
-// create a notification dto
+// create a notification dto 
 
 import { IsNotEmpty, IsString, IsBoolean, IsEnum } from 'class-validator';
 import { UserEntity } from 'src/modules/users/entities/user.entity';

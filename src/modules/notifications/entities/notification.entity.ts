@@ -1,13 +1,14 @@
 // src/modules/notifications/entities/notification.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';// if need more entity you can add here
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm'; // if need more entity you can add here
 import { UserEntity } from '../../users/entities/user.entity';
 
 export enum NotificationAction {
-    MESSAGES = 'messages',
-    LIKES = 'likes',
-    COMMENTS = 'comments',
-    FOLLOWS = 'follows',
-  }
+  MESSAGES = 'messages',
+  LIKES = 'likes',
+  COMMENTS = 'comments',
+  NEW_FOLLOW_REQUEST = 'new_follow_resquest',
+  FOLLOW_REQUEST_ACCEPTED = 'follow_request_acepted',
+}
 
 @Entity('notifications')
 export class NotificationEntity {
@@ -18,7 +19,7 @@ export class NotificationEntity {
   @Column({ type: 'varchar', length: 100, nullable: false })
   emisorUser: UserEntity['id'];
 
-  @ManyToOne(() => UserEntity, (user) => user.id)
+  @ManyToOne(() => UserEntity, (user) => user.id, { onDelete: 'CASCADE' })
   receptorUser: UserEntity['id'];
 
   @Column({ type: 'boolean', default: false })

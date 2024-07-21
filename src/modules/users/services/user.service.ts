@@ -107,13 +107,33 @@ export class UserService {
     await this.userRepository.save(user);
   }
   
-  async deleteUser(id: string) {
+  async deleteUser(id: string): Promise <object>{
     try {
       const user = await this.userRepository.delete(id)
       if (!user) {
         throw new Error('User not found');
     }
     return user
+    } catch (error) {
+      console.log(error)
+      throw new Error(error);
+    }
+  }
+
+  async updateLastLogout (email: string, date: string): Promise<UserEntity> {
+    try {
+      const user = await this.userRepository.findOne({ where: { email: email } });
+      if(!user){
+        throw new Error('User not found');
+      }
+      if(!date){
+        throw new Error('Invalid date');
+      }
+      user.lastLogoutDate = date;
+      
+      await this.userRepository.save(user);
+
+      return user;
     } catch (error) {
       console.log(error)
       throw new Error(error);

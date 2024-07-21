@@ -57,4 +57,21 @@ export class AuthService {
       throw new UnauthorizedException('Failed to generate JWT');
     }
   }
+
+  public async logout(date: string, email: string): Promise<UserEntity | null> {
+    try{
+      if (!date) {
+        throw new UnauthorizedException('Invalid date');
+      }
+      const user = await this.userService.getByEmail(email);
+
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      return await this.userService.updateLastLogout(email, date);
+    } catch (error) {
+      throw new UnauthorizedException('Failed to logout');
+    }
+  }
 }

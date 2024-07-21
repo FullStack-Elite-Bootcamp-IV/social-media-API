@@ -22,8 +22,8 @@ async function bootstrap() {
   }));
 
   const config = new DocumentBuilder()
-  .setTitle('API')
-  .setDescription('CRUD application')
+  .setTitle('API (read the description)')
+  .setDescription('CRUD application, Please note: the examples do not have real IDs, they are invented')
   .setVersion('3.0')
   .build();
   const document = SwaggerModule.createDocument(app, config);

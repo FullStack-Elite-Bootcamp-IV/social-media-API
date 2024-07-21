@@ -2,115 +2,123 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { UserService } from '../services/user.service';
 import { UserDto } from '../dto/create-user.dto';
 import { UserEntity } from '../entities/user.entity';
-import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags("User")
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
-@ApiResponse({
+  // Get all users
+  @ApiResponse({
     status: 200,
     description: 'Get all Users.',
-})
-@ApiResponse({
+    type: [UserEntity]
+  })
+  @ApiResponse({
     status: 400,
     description: 'Bad request.'
-})  
-@ApiResponse({
-  status: 401,
-  description: 'Unauthorized'
-})
-@ApiResponse({
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
+  })
+  @ApiResponse({
     status: 404,
     description: 'Users not found.'
-})
-  @Get('/users')
+  })
+  @Get()
   getUsers(): Promise<UserEntity[]> {
     try {
       return this.userService.getUsers();
     } catch (error) {
-      console.error(error)
-      throw new Error
+      console.error(error);
+      throw new Error(); // Consider replacing with a more descriptive error message
     }
   }
 
-@ApiResponse({
+  // Get user by ID
+  @ApiResponse({
     status: 200,
-    description: 'Get user by id.',
-})
-@ApiResponse({
+    description: 'Get user by ID.',
+    type: UserEntity
+  })
+  @ApiResponse({
     status: 400,
     description: 'Bad request.'
-})  
-@ApiResponse({
-  status: 401,
-  description: 'Unauthorized'
-})
-@ApiResponse({
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
+  })
+  @ApiResponse({
     status: 404,
     description: 'User not found.'
-})
+  })
   @Get('/by-id/:id')
   @UseGuards(JwtAuthGuard)
   getUserById(@Param('id') id: string): Promise<UserEntity> {
     return this.userService.getUserById(id);
   }
 
-@ApiResponse({
+  // Get user by username
+  @ApiResponse({
     status: 200,
-    description: 'Get all User.',
-})
-@ApiResponse({
+    description: 'Get user by username.',
+    type: UserEntity
+  })
+  @ApiResponse({
     status: 400,
     description: 'Bad request.'
-})  
-@ApiResponse({
-  status: 401,
-  description: 'Unauthorized'
-})
-@ApiResponse({
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
+  })
+  @ApiResponse({
     status: 404,
     description: 'User not found.'
-})
+  })
   @Get('/by-username/:username')
   @UseGuards(JwtAuthGuard)
   getUserByUserName(@Param('username') username: string): Promise<UserEntity> {
     return this.userService.getUserByUserName(username);
   }
 
-
+  // Set dark mode for the user
   @ApiResponse({
     status: 201,
     description: 'Set Dark mode.',
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.',
+    description: 'Bad request.'
   })
   @Post('/setDarkMode/:id')
   @UseGuards(JwtAuthGuard)
-async modifyDarkMode(@Param('id') userId: string): Promise<void> {
-  return await this.userService.setDarkMode(userId);
-}
+  async modifyDarkMode(@Param('id') userId: string): Promise<void> {
+    return await this.userService.setDarkMode(userId);
+  }
 
-@ApiResponse({
+  // Update user information
+  @ApiResponse({
     status: 200,
-    description: 'User modify.',
-})
-@ApiResponse({
+    description: 'User modified.',
+    type: UserEntity
+  })
+  @ApiResponse({
     status: 400,
     description: 'Bad request.'
-})  
-@ApiResponse({
-  status: 401,
-  description: 'Unauthorized'
-})
-@ApiResponse({
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized'
+  })
+  @ApiResponse({
     status: 404,
     description: 'User not found.'
-})  
+  })
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   async modifyUser(
@@ -120,6 +128,7 @@ async modifyDarkMode(@Param('id') userId: string): Promise<void> {
     return await this.userService.editProfile(userId, userDto);
   }
 
+  // Delete a user
   @ApiResponse({
     status: 200,
     description: 'User deleted.',

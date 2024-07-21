@@ -10,9 +10,7 @@ import {
 import { LikesService } from '../services/likes.service';
 import { CreateLikeDto } from '../dto/create-like.dto';
 import { LikeEntity } from '../entities/like.entity';
-import { PostEntity } from 'src/modules/posts/entities/post.entity';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
-import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags('Likes')
@@ -20,24 +18,7 @@ import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 export class LikesController {
   constructor(private readonly likesService: LikesService) {}
 
-  @ApiResponse({
-    status: 201,
-    description: 'Like added.',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad request.',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized',
-  })
-  @Post('/create')
-  @UseGuards(JwtAuthGuard)
-  createLike(@Body() createLikeDto: CreateLikeDto): Promise<LikeEntity> {
-    return this.likesService.createLike(createLikeDto);
-  }
-
+  // Endpoint to get all likes
   @ApiResponse({
     status: 200,
     description: 'Get all likes.',
@@ -60,28 +41,7 @@ export class LikesController {
     return this.likesService.findAllLikes();
   }
 
-  @ApiResponse({
-    status: 200,
-    description: 'Like deleted.',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad request.',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Like not found.',
-  })
-  @Delete('/delete/:id')
-  @UseGuards(JwtAuthGuard)
-  deleteLike(@Param('id') likeId: string): Promise<void> {
-    return this.likesService.deleteLike(likeId);
-  }
-
+  // Endpoint to get likes by post ID
   @ApiResponse({
     status: 200,
     description: 'Get likes by post.',
@@ -104,6 +64,7 @@ export class LikesController {
     return this.likesService.findLikesByPost(postId);
   }
 
+  // Endpoint to get likes by user ID
   @ApiResponse({
     status: 200,
     description: 'Get likes by user.',

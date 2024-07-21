@@ -9,21 +9,21 @@ import { JwtAuthGuard } from './guards/jwt.guard';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    ConfigModule, // Importa ConfigModule aquí, para asegurarte de que esté disponible
-    forwardRef(() => UsersModule), // Usa forwardRef si hay una dependencia circular
-    PassportModule,
+    ConfigModule.forRoot(), // Load the configuration module
+    ConfigModule, // Ensure ConfigModule is available
+    forwardRef(() => UsersModule), // Use forwardRef to handle circular dependency
+    PassportModule, // Import PassportModule for authentication
     JwtModule.registerAsync({
-      imports: [ConfigModule], // Importa ConfigModule aquí
-      inject: [ConfigService],
+      imports: [ConfigModule], // Import ConfigModule here
+      inject: [ConfigService], // Inject ConfigService
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('AUTH_SECRET'), 
-        signOptions: { expiresIn: '60m' },
+        secret: configService.get<string>('AUTH_SECRET'), // Use the secret from config
+        signOptions: { expiresIn: '240m' }, // Set token expiration to 60 minutes
       }),
     }),
   ],
-  controllers: [AuthController],
-  providers: [AuthService, JwtAuthGuard], 
-  exports: [AuthService, JwtAuthGuard, JwtModule], 
+  controllers: [AuthController], // Declare the controllers
+  providers: [AuthService, JwtAuthGuard], // Provide the AuthService and JwtAuthGuard
+  exports: [AuthService, JwtAuthGuard, JwtModule], // Export the services and modules
 })
 export class AuthModule {}

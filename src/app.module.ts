@@ -13,38 +13,41 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ChatModule } from './modules/chats/chats.module';
 import { CommentsModule } from './modules/comments/comments.module';
 
-
-
 @Module({
   imports: [
+    // Configure and load environment variables globally
     ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
+      isGlobal: true,  // Make configuration available across the app
+      envFilePath: '.env',  // Path to the environment file
       validationSchema: Joi.object({
+        // Define validation rules for environment variables
         DB_HOST: Joi.string().required(),
         DB_PORT: Joi.number().required(),
         DB_USER: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
+        // Uncomment and add validation for JWT variables if needed
         /* JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.string().required(), */
-        PORT: Joi.number(),
+        PORT: Joi.number(),  // Optional PORT variable
       }),
     }),
+    // Configure TypeORM to connect to the PostgreSQL database
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
+      imports: [ConfigModule],  // Import ConfigModule for configuration
+      inject: [ConfigService],  // Inject ConfigService to access environment variables
       useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
+        type: 'postgres',  // Use PostgreSQL database
         host: configService.get<string>('DB_HOST'),
         port: configService.get<number>('DB_PORT'),
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true, // Cambia esto a false en producción
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],  // Path to entity files
+        synchronize: true,  // Synchronize database schema with entities (false in production)
       }),
     }),
+    // Import application modules
     UsersModule,
     AuthModule,
     PostsModule,
@@ -56,6 +59,5 @@ import { CommentsModule } from './modules/comments/comments.module';
     ChatModule,
     CommentsModule
   ],
-  
 })
 export class AppModule {}

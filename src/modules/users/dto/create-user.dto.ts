@@ -35,6 +35,7 @@ export class UserDto extends PartialType(UserEntity) {
   age?: number;
 
   @ApiProperty()
+  @IsOptional()
   @IsEnum(Gender)
   gender?: Gender;
 

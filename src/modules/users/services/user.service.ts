@@ -15,7 +15,7 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(PostEntity)
     private readonly postRepository: Repository<PostEntity>,
-  ) { }
+  ) {}
 
   // Retrieves all users
   async getUsers() {
@@ -33,35 +33,41 @@ export class UserService {
 
   async getUserById(userId: string) {
     try {
-      const user = await this.userRepository.findOne({ where: { userId: userId } })
+      const user = await this.userRepository.findOne({
+        where: { userId: userId },
+      });
       if (!user) {
-        throw new Error('User not found')
-      }
-      return user
-    } catch (error) {
-      console.log(error)
-      throw new Error(error);
-    }
-  }
-  
-  async getUserByUserName(userName: string) {
-    try {
-      const user = await this.userRepository.findOne({ where: { userName: userName } })
-      if (!user) {
-        throw new Error('User not found')
+        throw new Error('User not found');
       }
       return user;
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      throw new Error(error);
+    }
+  }
+
+  async getUserByUserName(userName: string) {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { userName: userName },
+      });
+      if (!user) {
+        throw new Error('User not found');
+      }
+      return user;
+    } catch (error) {
+      console.log(error);
       throw new Error(error);
     }
   }
 
   async getByEmail(email: string) {
     try {
-      const user = await this.userRepository.findOne({ where: { email: email } })
+      const user = await this.userRepository.findOne({
+        where: { email: email },
+      });
       if (!user) {
-        throw new Error('User not found')
+        throw new Error('User not found');
       }
       return user;
     } catch (error) {
@@ -69,81 +75,99 @@ export class UserService {
     }
   }
 
-  async getProfileInfo (userId: string) {
+  async getProfileInfoByUserName(username: string) {
     try {
-      const user = await this.userRepository.findOne({ where: { userId: userId } })
+      const user = await this.userRepository.findOne({
+        where: { userName: username },
+      });
       if (!user) {
-        throw new Error('User not found')
+        throw new Error('User not found');
       }
-
-      const { profileImage, coverImage, userName, fullName, age, gender } = user;
-      const userPost = await this.postRepository.find({ where: { userId: userId } })
+      const { profileImage, coverImage, userName, fullName, age, gender } =
+        user;
+      const userPost = await this.postRepository.find({
+        where: { userId: user.userId },
+      });
       const posts = userPost.length;
-      console.log('1')
-      const follower = await this.followerService.findFollowersByUser(userId)
-      console.log('2')
-      const following = await this.followerService.findFollowingsById(userId)
-      console.log('3')
+      const follower = await this.followerService.findFollowersByUser(
+        user.userId,
+      );
+      const following = await this.followerService.findFollowingsById(
+        user.userId,
+      );
       const followers = follower.length;
-      console.log('4')
       const followings = following.length;
 
-      return { profileImage, coverImage, userName, fullName, age, gender, posts, followers, followings, userPost }
-
+      return {
+        profileImage,
+        coverImage,
+        userName,
+        fullName,
+        age,
+        gender,
+        posts,
+        followers,
+        followings,
+        userPost,
+      };
     } catch (error) {
-      throw new Error(error)
+      throw new Error(error);
     }
   }
 
   async editProfile(userId: string, userDto: UserDto): Promise<UserEntity> {
-    const user = await this.userRepository.findOne({ where: { userId: userId } });
+    const user = await this.userRepository.findOne({
+      where: { userId: userId },
+    });
     if (!user) {
-      throw new Error('User not found')
+      throw new Error('User not found');
     }
-    if(userDto.userName) {
+    if (userDto.userName) {
       user.userName = userDto.userName;
     }
-    if(userDto.fullName) {
+    if (userDto.fullName) {
       user.fullName = userDto.fullName;
     }
-    if(userDto.age) {
+    if (userDto.age) {
       user.age = userDto.age;
     }
-    if(userDto.email) {
+    if (userDto.email) {
       user.email = userDto.email;
     }
-    if(userDto.password) {
+    if (userDto.password) {
       user.password = bycrypt.hashSync(userDto.password, 8);
     }
-    if(userDto.gender) {
+    if (userDto.gender) {
       user.gender = userDto.gender;
     }
-    if(userDto.profileImage) {
+    if (userDto.profileImage) {
       user.profileImage = userDto.profileImage;
     }
-    if(userDto.coverImage) {
+    if (userDto.coverImage) {
       user.coverImage = userDto.coverImage;
     }
-    if(userDto.description) {
-      user.description= userDto.description;
+    if (userDto.description) {
+      user.description = userDto.description;
     }
-    if(userDto.workPlace) {
+    if (userDto.workPlace) {
       user.workPlace = userDto.workPlace;
     }
-    if(userDto.personalWebSite){
+    if (userDto.personalWebSite) {
       user.personalWebSite = userDto.personalWebSite;
     }
-    if(userDto.location){
+    if (userDto.location) {
       user.location = userDto.location;
     }
-    if(userDto.college){
+    if (userDto.college) {
       user.college = userDto.college;
     }
     return await this.userRepository.save(user);
   }
 
   async setDarkMode(userId: string): Promise<void> {
-    const user = await this.userRepository.findOne({ where: { userId: userId } });
+    const user = await this.userRepository.findOne({
+      where: { userId: userId },
+    });
     if (!user) {
       throw new Error('User Not found');
     }
@@ -153,20 +177,22 @@ export class UserService {
 
   async deleteUser(id: string): Promise<object> {
     try {
-      const user = await this.userRepository.delete(id)
+      const user = await this.userRepository.delete(id);
       if (!user) {
         throw new Error('User not found');
       }
-      return user
+      return user;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new Error(error);
     }
   }
 
   async updateLastLogout(email: string, date: string): Promise<UserEntity> {
     try {
-      const user = await this.userRepository.findOne({ where: { email: email } });
+      const user = await this.userRepository.findOne({
+        where: { email: email },
+      });
       if (!user) {
         throw new Error('User not found');
       }
@@ -191,10 +217,12 @@ export class UserService {
       }
       const subStrings = search.split(' ');
       const users = await this.userRepository.find();
-      const usersFiltered = users.filter(user => {
+      const usersFiltered = users.filter((user) => {
         const userNameWords = user.userName.split(' ');
-        return subStrings.every(subString => {
-          return userNameWords.some(word => word.toLowerCase().includes(subString.toLowerCase()));
+        return subStrings.every((subString) => {
+          return userNameWords.some((word) =>
+            word.toLowerCase().includes(subString.toLowerCase()),
+          );
         });
       });
       if (!usersFiltered) {
@@ -202,8 +230,8 @@ export class UserService {
       }
       return usersFiltered;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new HttpException('server error', 500);
     }
   }
-};
+}

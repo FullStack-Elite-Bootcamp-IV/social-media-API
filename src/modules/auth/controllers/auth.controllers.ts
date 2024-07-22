@@ -87,6 +87,6 @@ export class AuthController {
     description: 'Unauthorized',
   })
   async me(@Req() req) {
-    return this.authService.getUser(req.user); // Return the current user
+    return this.authService.getUser(req.user.id); // Return the current user
   }
 }

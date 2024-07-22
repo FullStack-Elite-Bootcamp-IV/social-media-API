@@ -42,7 +42,6 @@ export class CreatePostDto {
   })
   @IsString()
   @IsOptional()
-  @IsUrl()
   media?: string;
 
   @ApiProperty({

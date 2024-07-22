@@ -25,7 +25,7 @@ export class PostsService {
     private readonly favouritesRepository: Repository <FavouritesEntity>
   ) {}
 
-  async getAllFavouritesPosts(): Promise <PostEntity[]> {
+  async getAllPublicsPosts(): Promise <PostEntity[]> {
     try {
       const posts = await this.postRepository.find();
       return posts.filter((post) => post.isPublic == true);

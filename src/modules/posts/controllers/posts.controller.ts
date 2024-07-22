@@ -25,8 +25,8 @@ export class PostsController {
   ) {}
 
   @Get()
-  getAllFavouritesPosts(): Promise<PostEntity[]> {
-    return this.postsService.getAllFavouritesPosts();
+  getAllPublicsPosts(): Promise<PostEntity[]> {
+    return this.postsService.getAllPublicsPosts();
   };
 
   @Post()

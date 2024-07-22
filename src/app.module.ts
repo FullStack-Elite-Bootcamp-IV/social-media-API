@@ -51,8 +51,6 @@ import { UploadModule } from './modules/aws/upload.module';
     // Import application modules
     UsersModule,
     AuthModule,
-    PostsModule,
-    LikesModule,
     FavouritesModule,
     MessagesModule,
     FollowersModule,

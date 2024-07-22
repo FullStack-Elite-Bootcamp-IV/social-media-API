@@ -10,13 +10,15 @@ import {
 import { Socket } from "socket.io";
 import { Server } from "socket.io";
 import { ChatService } from "./services/chats.service";
+import { JwtService } from "@nestjs/jwt";
 
 @WebSocketGateway(5002, {namespace: '/chat', cors: true} )
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   constructor(
-    private readonly chatService: ChatService, // Inject the ChatService
+    private readonly chatService: ChatService,
+    private readonly jwtService: JwtService
   ) {}
 
   private readonly logger = new Logger(ChatGateway.name); // Initialize the logger
@@ -29,33 +31,45 @@ export class ChatGateway
 
   // Handle new client connections
   async handleConnection(socket: Socket) {
-    const userId = socket.handshake.auth.token; // Get the user ID from the token
 
-    // TO DO: Process the user ID from the token
-
-    // TO PRODUCTION: Fetch all chat IDs for the user from the database
-    // const userChats = await this.chatService.findChatsByUser(userId);
-
-    // IN DEV: Dummy data for user chats
-    const userChats = [{id: "1"}, {id: "3"}, {id: "5"}];
-
-    // Join the user to specific chat rooms
-    userChats.forEach(chat => {
-      socket.join(chat.id);
+   const token = socket.handshake.auth.token 
+   
+    try {
+    const user = await this.jwtService.verifyAsync(token, {
+      secret: process.env.AUTH_SECRET,
     });
+      // TO PRODUCTION Buscar en la base de datos todos los chats (chatid)
+    const userChats = await this.chatService.findChatsByUser(user.id)
+    userChats.forEach(chat => { 
+      socket.join(chat.chatId)
+    });
+    }
+  catch(e){
+    socket.emit("error", "JwtInvalid")
+  }
+    // Unir al usuario a las rooms (chatid) especificas
 
     this.logger.log(`Client id: ${socket.id} connected`); // Log the connection
   }
 
   // Handle client disconnections
   handleDisconnect(socket: Socket) {
-    this.logger.log(`Client id: ${socket.id} disconnected`); // Log the disconnection
+
+    this.logger.log(`Cliend id:${socket.id} disconnected`);
   }
 
   // Handle incoming messages
   @SubscribeMessage("message")
-  handleMessage(socket: Socket, data: any) {
-    this.io.to(data[1]).emit("receiveMessage", { "message": data[0], "chatId": data[1] }); // Emit the message to the specified chat room
+  async handleMessage(socket: Socket, data: any) {
+    try {
+      const user = await this.jwtService.verifyAsync(socket.handshake.auth.token, {
+        secret: process.env.AUTH_SECRET,
+      });
+      this.io.to(data[1]).emit("receiveMessage", {"message": data[0], "chatId": data[1], "userId": user.id } )
+    }catch(e){
+        socket.emit("error", "JwtInvalid")
+      }
+
   }
 
   // Handle received messages

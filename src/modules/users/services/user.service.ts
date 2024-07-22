@@ -5,6 +5,7 @@ import { UserEntity } from '../entities/user.entity';
 import { UserDto } from '../dto/create-user.dto';
 import { PostEntity } from 'src/modules/posts/entities/post.entity';
 import { FollowersService } from 'src/modules/followers/services/followers.service';
+import * as bycrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -95,6 +96,7 @@ export class UserService {
     if (!user) {
       throw new Error('User not found')
     }
+    user.password = bycrypt.hashSync(userDto.password, 8);
     Object.assign(user, userDto);
     return await this.userRepository.save(user);
   }

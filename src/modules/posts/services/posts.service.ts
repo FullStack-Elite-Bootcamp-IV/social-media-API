@@ -8,7 +8,6 @@ import { FollowersEntity } from '../../followers/entities/followers.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { LikeEntity } from 'src/modules/likes/entities/like.entity';
 import { CreateLikeDto } from 'src/modules/likes/dto/create-like.dto';
-import { string } from 'joi';
 
 @Injectable()
 export class PostsService {
@@ -199,28 +198,55 @@ async findPostsPublicByUser(userId: string): Promise<PostEntity[]> {
   }
 }
 
-async postSearch(search: string): Promise<PostEntity[]> {
-  try {
-    if (!search) {
-      throw new HttpException('search not found', 400);
+  async postSearch(search: string): Promise<PostEntity[]> {
+    try {
+      if (!search) {
+        throw new HttpException('search not found', 400);
+      }
+      const subStrings = search.split(' ');
+      const posts = await this.postRepository.find({ where: { isPublic: true } });
+      const postsFiltered = posts.filter(post => {
+        if (!post.title || !post.description) {
+          return '';
+        } 
+        const titleWords = post.title.split(' ');
+        const descriptionWords = post.description.split(' ');
+        return subStrings.some(sub => titleWords.includes(sub) || descriptionWords.includes(sub));
+      });
+      if (!postsFiltered) {
+        throw new HttpException('Posts not found', 404);
+      }
+      return postsFiltered;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException('server error', 500);
     }
-    const subStrings = search.split(' ');
-    const posts = await this.postRepository.find({ where: { isPublic: true } });
-    const postsFiltered = posts.filter(post => {
-      if (!post.title || !post.description) {
-        return '';
-      } 
-      const titleWords = post.title.split(' ');
-      const descriptionWords = post.description.split(' ');
-      return subStrings.some(sub => titleWords.includes(sub) || descriptionWords.includes(sub));
-    });
-    if (!postsFiltered) {
-      throw new HttpException('Posts not found', 404);
-    }
-    return postsFiltered;
-  } catch (error) {
-    console.log(error);
-    throw new HttpException('server error', 500);
   }
-}
+
+  async postByUserLike(userId: string): Promise<PostEntity[]> {
+    try{
+      
+      const likes = await this.likeRepository.find({ where: { userId: userId } });
+
+      if (!userId) {
+        throw new HttpException('userId not found', 400);
+      }
+
+      if (!likes) {
+        throw new HttpException('Likes not found', 404);
+      }
+      const post = [];
+      likes.map((like) => {
+        post.push(() => this.postRepository.findOne({ where: { postId: like.postId } }));
+      });
+      if (!post) {
+        throw new HttpException('Posts not found', 404);
+      }
+      return post;
+      }
+      catch (error) {
+        console.log(error);
+        throw new HttpException('server error', 500);
+      }
+  }
 }

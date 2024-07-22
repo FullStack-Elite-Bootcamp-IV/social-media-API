@@ -17,6 +17,7 @@ export class ChatService {
       if (!createChatDto) {
         throw new Error('Chat not created, please complete the form'); // Check if createChatDto is provided
       }
+      
       const chat = this.chatRepository.create(createChatDto); // Create a new chat entity
       if (!chat) throw new Error('Chat not created'); // Check if chat creation was successful
       return await this.chatRepository.save(chat); // Save the chat entity and return it
@@ -62,7 +63,7 @@ export class ChatService {
         ],
       }); // Find all chats where the user is either user1 or user2
       if (!chats.length) {
-        throw new Error('Chats not found'); // Check if any chats were found
+        return []; // Check if any chats were found
       }
       return chats; // Return the found chats
     } catch (error) {

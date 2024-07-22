@@ -4,29 +4,23 @@ import { FollowersService } from './services/followers.service';
 import { FollowersController } from './controllers/followers.controllers';
 import { FollowersEntity } from './entities/followers.entity';
 import { AuthModule } from '../auth/auth.module';
+import { ChatModule } from '../chats/chats.module'; // Importa ChatModule
 
 @Module({
   imports: [
-    // Import TypeOrmModule and configure it to use FollowersEntity
-    TypeOrmModule.forFeature([FollowersEntity]),
-
-    // Import AuthModule for authentication-related functionalities
-    AuthModule,
+    TypeOrmModule.forFeature([FollowersEntity]), // Importa el módulo TypeOrm con FollowersEntity
+    AuthModule, // Importa AuthModule para funcionalidades relacionadas con autenticación
+    ChatModule, // Importa ChatModule para acceso a ChatService
   ],
   controllers: [
-    // Register the FollowersController
-    FollowersController,
+    FollowersController, // Registra el FollowersController
   ],
   providers: [
-    // Register the FollowersService
-    FollowersService,
+    FollowersService, // Registra el FollowersService
   ],
   exports: [
-    // Export FollowersService for use in other modules
-    FollowersService,
-    
-    // Export TypeOrmModule to allow other modules to use it
-    TypeOrmModule,
+    FollowersService, // Exporta FollowersService para su uso en otros módulos
+    TypeOrmModule, // Exporta TypeOrmModule para que otros módulos puedan utilizarlo
   ],
 })
 export class FollowersModule {}

@@ -54,17 +54,14 @@ export class FollowersService {
   ): Promise<string[]> {
     try {
       if (!followerId) {
-        throw new HttpException(
-          'Please provide followerId',
-          HttpStatus.BAD_REQUEST,
-        );
+        return [];
       }
       const followings = await this.followerRepository.find({
         where: { followerId },
       });
 
       if (!followings || followings.length === 0) {
-        throw new HttpException('No followings found', HttpStatus.NOT_FOUND);
+        return [];
       }
 
       return followings.map((following) => following.followingId);
@@ -79,17 +76,14 @@ export class FollowersService {
   ): Promise<string[]> {
     try {
       if (!followingId) {
-        throw new HttpException(
-          'Please provide followingId',
-          HttpStatus.BAD_REQUEST,
-        );
+        return [];
       }
       const followers = await this.followerRepository.find({
         where: { followingId },
       });
 
       if (!followers || followers.length === 0) {
-        throw new HttpException('No followers found', HttpStatus.NOT_FOUND);
+        return [];
       }
 
       return followers.map((follower) => follower.followerId);

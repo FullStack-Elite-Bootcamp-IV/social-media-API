@@ -6,42 +6,43 @@ import {
 } from '@nestjs/common';
 import { AuthDTO, LogoutDTO, RegisterDTO } from '../dto/auth.dto';
 import { AuthService } from '../services/auth.service';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@ApiTags("Auth") // Tag for grouping related API endpoints in Swagger
+@ApiTags('Auth') // Tag for grouping related API endpoints in Swagger
 @Controller() // Marks this class as a NestJS controller
 export class AuthController {
   constructor(private readonly authService: AuthService) {} // Inject the AuthService
 
   @Post('register') // Define the route for user registration
+  @ApiOperation({ summary: 'Register a new user' }) // Brief description of the operation
   @ApiResponse({
-    status: 200,
-    description: 'Usuario registrado exitosamente.', // Description for successful registration
+    status: 201,
+    description: 'User successfully registered. Returns the registered user.', // Description for a successful registration
+    type: RegisterDTO, // Data type returned
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request.', // Description for error in registration
+    description: 'Bad request. Check the provided data.', // Description for an error in registration
   })
   async register(@Body() registerDto: RegisterDTO) {
     return this.authService.createUser(registerDto); // Call the AuthService to create a new user
   }
 
   @Post('login') // Define the route for user login
+  @ApiOperation({ summary: 'User login' }) // Brief description of the operation
   @ApiResponse({
     status: 200,
-    description: 'Successful login.', // Description for successful login
+    description: 'Login successful. Returns a JWT token.', // Description for a successful login
+    type: String, // Data type returned
   })
   @ApiResponse({
     status: 401,
-    description: 'Invalid data.', // Description for invalid login credentials
+    description: 'Invalid credentials. Check your email and password.', // Description for invalid login credentials
   })
   async login(@Body() { email, password }: AuthDTO) {
-    const userValidate = await this.authService.validateUser(
-      email,
-      password,
-    ); // Validate the user credentials
+    const userValidate = await this.authService.validateUser(email, password); // Validate the user credentials
     if (!userValidate) {
-      throw new UnauthorizedException('Data not valid'); // Throw an exception if validation fails
+      throw new UnauthorizedException('Invalid credentials'); // Throw an exception if validation fails
     }
     const jwt = await this.authService.generateJWT(userValidate); // Generate a JWT token
 
@@ -49,19 +50,18 @@ export class AuthController {
   }
 
   @Post('logout') // Define the route for user logout
+  @ApiOperation({ summary: 'User logout' }) // Brief description of the operation
   @ApiResponse({
     status: 200,
-    description: 'Successful logout.', // Description for successful logout
+    description: 'Logout successful. Returns a boolean indicating success.', // Description for a successful logout
+    type: Boolean, // Data type returned
   })
   @ApiResponse({
     status: 401,
-    description: 'Invalid logout date.', // Description for invalid logout date
+    description: 'Invalid logout date. Check the provided date.', // Description for an invalid logout date
   })
   async logout(@Body() { date, email }: LogoutDTO) {
-    const userLogout = await this.authService.logout(
-      date,
-      email,
-    ); // Perform the logout action
+    const userLogout = await this.authService.logout(date, email); // Perform the logout action
 
     if (!userLogout) {
       throw new UnauthorizedException('Invalid date'); // Throw an exception if logout fails

@@ -79,9 +79,13 @@ export class UserService {
       const { profileImage, coverImage, userName, fullName, age, gender } = user;
       const userPost = await this.postRepository.find({ where: { userId: userId } })
       const posts = userPost.length;
+      console.log('1')
       const follower = await this.followerService.findFollowersByUser(userId)
+      console.log('2')
       const following = await this.followerService.findFollowingsById(userId)
+      console.log('3')
       const followers = follower.length;
+      console.log('4')
       const followings = following.length;
 
       return { profileImage, coverImage, userName, fullName, age, gender, posts, followers, followings, userPost }

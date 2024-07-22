@@ -8,6 +8,7 @@ import { FollowersEntity } from '../../followers/entities/followers.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { LikeEntity } from 'src/modules/likes/entities/like.entity';
 import { CreateLikeDto } from 'src/modules/likes/dto/create-like.dto';
+import { FavouritesEntity } from 'src/modules/favourites/entities/favourites.entity';
 
 @Injectable()
 export class PostsService {
@@ -19,7 +20,9 @@ export class PostsService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository < UserEntity > ,
     @InjectRepository(LikeEntity)
-    private readonly likeRepository: Repository < LikeEntity >
+    private readonly likeRepository: Repository < LikeEntity >,
+    @InjectRepository(FavouritesEntity)
+    private readonly favouritesRepository: Repository <FavouritesEntity>
   ) {}
 
   // Function to create a new post
@@ -229,7 +232,7 @@ async findPostsPublicByUser(userId: string): Promise<PostEntity[]> {
       const likes = await this.likeRepository.find({ where: { userId: userId } });
 
       if (!userId) {
-        throw new HttpException('userId not found', 400);
+        throw new HttpException('userId not valid', 400);
       }
 
       if (!likes) {
@@ -250,5 +253,36 @@ async findPostsPublicByUser(userId: string): Promise<PostEntity[]> {
         console.log(error);
         throw new HttpException('server error', 500);
       }
+  }
+
+  async getFavouritesPost(userId: string): Promise <PostEntity[]>{
+    
+    try{
+        if(!userId){
+        throw new HttpException('userdId not valid',400);
+      }
+
+      const favourites = await this.favouritesRepository.find({where: { userId: userId}});
+
+      if(!favourites){
+        throw new HttpException('Likes not found',400)
+      }
+
+      const posts = [];
+
+      for (const favourite of favourites){
+        const postFavourite = this.favouritesRepository.findOne({where: { postId: favourite.postId}})
+        posts.push(postFavourite);
+      }
+
+      if(!posts){
+        throw new HttpException('posts not found',404)
+      }
+      return posts;
+    }catch (error){
+      console.log(error);
+      throw new HttpException('internal server error',500);
+    }
+
   }
 }

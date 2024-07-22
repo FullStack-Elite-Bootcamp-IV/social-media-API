@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { CreateNotificationDto } from '../dto/create-notification.dto';
 import { NotificationEntity } from '../entities/notification.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
+import { UserService } from 'src/modules/users/services/user.service';
+import { string } from 'joi';
 
 @Injectable()
 export class NotificationsService {
@@ -44,13 +46,18 @@ export class NotificationsService {
   }
 
   // Function to find notifications by user ID
-  async findNotificationsByUser(userId: string): Promise<NotificationEntity[]> {
+  async findNotificationsByUser(userId: string) {
     try {
       const user = await this.userRepository.findOne({ where: { userId: userId } });
       if (!user) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }
-      return await this.notificationRepository.find({ where: { receptorUser: userId } })
+/*       let { id, status, action, title, description, notificationDate, receptorUser, emisorUser }: any = await this.notificationRepository.find({ where: { receptorUser: userId } })
+      emisorUser = await this.userService.getUserById(emisorUser);
+      const username = user.userName;
+      return { id, status, action, title, description, notificationDate, receptorUser, emisorUser } */
+
+      return await this.notificationRepository.find({where: { receptorUser: userId } })
 
     } catch (error) {
       console.error('Error finding notifications:', error);

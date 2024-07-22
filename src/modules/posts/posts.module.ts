@@ -28,6 +28,12 @@ import {
 import {
   LikeEntity
 } from '../likes/entities/like.entity';
+import{
+  FavouritesEntity
+}from '../favourites/entities/favourites.entity'
+import{
+  FavouritesModule
+}from '../favourites/favourites.module'
 
 @Module({
   imports: [
@@ -35,13 +41,15 @@ import {
     TypeOrmModule.forFeature([
       PostEntity,
       UserEntity,
-      LikeEntity
+      LikeEntity,
+      FavouritesEntity
     ]),
 
     // Import other modules
     FollowersModule,
     AuthModule,
-    LikesModule
+    LikesModule,
+    FavouritesModule
   ],
   controllers: [
     PostsController

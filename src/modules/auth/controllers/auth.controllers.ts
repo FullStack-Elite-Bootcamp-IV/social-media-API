@@ -1,12 +1,16 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
+  Req,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthDTO, LogoutDTO, RegisterDTO } from '../dto/auth.dto';
 import { AuthService } from '../services/auth.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../guards/jwt.guard';
 
 @ApiTags('Auth') // Tag for grouping related API endpoints in Swagger
 @Controller() // Marks this class as a NestJS controller
@@ -67,5 +71,22 @@ export class AuthController {
       throw new UnauthorizedException('Invalid date'); // Throw an exception if logout fails
     }
     return userLogout; // Return the result of the logout action
+  }
+
+  // Quiero un endpoint para obtener el usuario actual (GET /me) desde el token
+  @Get('me') // Define the route for getting the current user
+  @UseGuards(JwtAuthGuard) // Protect the route with the JWT guard
+  @ApiOperation({ summary: 'Get the current user' }) // Brief description of the operation
+  @ApiResponse({
+    status: 200,
+    description: 'User found',
+    type: RegisterDTO, // Data type returned
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  async me(@Req() req) {
+    return this.authService.getUser(req.user); // Return the current user
   }
 }

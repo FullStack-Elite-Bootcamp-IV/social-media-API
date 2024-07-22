@@ -96,8 +96,45 @@ export class UserService {
     if (!user) {
       throw new Error('User not found')
     }
-    user.password = bycrypt.hashSync(userDto.password, 8);
-    Object.assign(user, userDto);
+    if(userDto.userName) {
+      user.userName = userDto.userName;
+    }
+    if(userDto.fullName) {
+      user.fullName = userDto.fullName;
+    }
+    if(userDto.age) {
+      user.age = userDto.age;
+    }
+    if(userDto.email) {
+      user.email = userDto.email;
+    }
+    if(userDto.password) {
+      user.password = bycrypt.hashSync(userDto.password, 8);
+    }
+    if(userDto.gender) {
+      user.gender = userDto.gender;
+    }
+    if(userDto.profileImage) {
+      user.profileImage = userDto.profileImage;
+    }
+    if(userDto.coverImage) {
+      user.coverImage = userDto.coverImage;
+    }
+    if(userDto.description) {
+      user.description= userDto.description;
+    }
+    if(userDto.workPlace) {
+      user.workPlace = userDto.workPlace;
+    }
+    if(userDto.personalWebSite){
+      user.personalWebSite = userDto.personalWebSite;
+    }
+    if(userDto.location){
+      user.location = userDto.location;
+    }
+    if(userDto.college){
+      user.college = userDto.college;
+    }
     return await this.userRepository.save(user);
   }
 

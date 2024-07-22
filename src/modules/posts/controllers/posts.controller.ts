@@ -293,7 +293,7 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Find all posts'
   })
-  @Get('user/:id')
+  @Get('like/:id')
   findPostsByUserId(@Param('id') userId: string): Promise<PostEntity[]> {
     return this.postsService.postByUserLike(userId);
   }

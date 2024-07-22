@@ -235,10 +235,13 @@ async findPostsPublicByUser(userId: string): Promise<PostEntity[]> {
       if (!likes) {
         throw new HttpException('Likes not found', 404);
       }
+      console.log(likes);
       const post = [];
       likes.map((like) => {
         post.push(() => this.postRepository.findOne({ where: { postId: like.postId } }));
       });
+
+      console.log(post);
       if (!post) {
         throw new HttpException('Posts not found', 404);
       }

@@ -10,12 +10,14 @@ import {
 import { Socket } from "socket.io";
 import { Server } from "socket.io";
 import { ChatService } from "./services/chats.service";
+import { JwtService } from "@nestjs/jwt";
 @WebSocketGateway(5003, {namespace: '/chat', cors: true} )
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   constructor(
     private readonly chatService: ChatService,
+    private readonly jwtService: JwtService
   ) {}
   private readonly logger = new Logger(ChatGateway.name);
 
@@ -27,21 +29,27 @@ export class ChatGateway
   
   async handleConnection(socket: Socket) {
 
-   const userId = socket.handshake.auth.token  
-
+   const token = socket.handshake.auth.token 
+   
+    try {
     // TO DO procesar la userid apartir del token
+    const user = await this.jwtService.verifyAsync(token, {
+      secret: process.env.AUTH_SECRET,
+    });
+      // TO PRODUCTION Buscar en la base de datos todos los chats (chatid)
+    const userChats = await this.chatService.findChatsByUser(user.id)
+    console.log(userChats)  
+    userChats.forEach(chat => {
+      socket.join(chat.chatId)
+    });
+    }
+  catch(e){
+    socket.emit("error", "JwtInvalid")
+  }
 
-    // TO PRODUCTION Buscar en la base de datos todos los chats (chatid)
-   // const userChats = await this.chatService.findChatsByUser(userId)  
-    
-   // IN DEV
-   const userChats = [{id: "1"}, {id: "3"}, {id: "5"}] 
 
 
     // Unir al usuario a las rooms (chatid) especificas
-    userChats.forEach(chat => {
-      socket.join(chat.id)
-    });
 
     this.logger.log(`Client id: ${socket.id} connected`);
   }

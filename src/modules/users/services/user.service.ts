@@ -16,17 +16,11 @@ export class UserService {
   async createUser(userDto: UserDto): Promise<UserEntity | Error> {
 
 
-    
-    console.log("In createUser: userDto")
     try {
-      console.log("Using repository to find -")
       const userEmail = await this.userRepository.findOne({ where: { email: userDto.email } });
-      console.log("userEmail: ", userEmail)
       const userName = await this.userRepository.findOne({ where: { userName: userDto.userName } });
-      console.log("userName: ", userName)
       if (userEmail || userName) {
 
-      console.log("Reach exception")
       const error = new HttpException(
           'User already exists',
           HttpStatus.BAD_REQUEST

@@ -25,11 +25,18 @@ export class AuthService {
   // Method to create a new user
   async createUser(registerDTO: RegisterDTO): Promise<UserEntity | Error> {
     try {
+      const username = await this.userRepository.findOne({where: { userName: registerDTO.userName } })
+      const email = await this.userRepository.findOne({where: { email: registerDTO.email } })
+
+      if (username || email) {
+        throw new UnauthorizedException('Email or UserName already exist')
+      }
+      
       registerDTO.password = await bcryptjs.hash(registerDTO.password, 10); // Hash the user's password
       const user = this.userRepository.create(registerDTO); // Create a new user entity
       return await this.userRepository.save(user); // Save the user to the database
     } catch (error) {
-      return error; // Return the error if something goes wrong
+      throw new Error(error)
     }
   }
 

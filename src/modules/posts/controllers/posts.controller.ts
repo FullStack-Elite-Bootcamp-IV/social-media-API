@@ -249,4 +249,30 @@ export class PostsController {
   async searchPosts(@Param('search') search: string): Promise<PostEntity[]> {
     return this.postsService.postSearch(search);
   }
+
+  @ApiOperation({ summary: 'Find all posts' })
+  @ApiResponse({
+    status: 200,
+    type: [CreatePostDto],
+    description: 'Find all posts'
+  })
+  @ApiResponse({
+    status: 400,
+    type: CreatePostDto,
+    description: 'BAD REQUEST: Find all posts'
+  })
+  @ApiResponse({
+    status: 404,
+    type: CreatePostDto,
+    description: 'Posts not found'
+  })
+  @ApiResponse({
+    status: 500,
+    type: CreatePostDto,
+    description: 'INTERNAL SERVER ERROR: Find all posts'
+  })
+  @Get('like/:id')
+  findPostsByUserId(@Param('id') userId: string): Promise<PostEntity[]> {
+    return this.postsService.postByUserLike(userId);
+  }
 }

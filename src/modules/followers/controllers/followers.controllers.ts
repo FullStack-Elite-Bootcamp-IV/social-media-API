@@ -31,13 +31,10 @@ export class FollowersController {
     try{
       const followerFollowers = await this.followersService.findFollowersByUser(createFollowerDto.followerId);
       if(followerFollowers.includes(follower.followingId) ){
-        console.log(followerFollowers)
-        console.log(follower.followerId)
-        console.log(follower.followingId)
         await this.chatService.createChat({ user1Id: follower.followingId,  user2Id: follower.followerId});
       }
     }catch{
-      
+
     }
     
     return follower;

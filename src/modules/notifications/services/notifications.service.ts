@@ -33,8 +33,8 @@ export class NotificationsService {
 
       // Create the notification
       const notification = this.notificationRepository.create({
-        emisorUser: emisor,
-        receptorUser: receptor,
+        emisor: emisor,
+        receptor: receptor,
         ...rest,
       });
 
@@ -74,7 +74,7 @@ export class NotificationsService {
       if (!user) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }
-      return await this.notificationRepository.find({ where: { receptorUser: user } });
+      return await this.notificationRepository.find({ where: { receptor: user } });
     } catch (error) {
       console.error('Error finding notifications:', error);
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);

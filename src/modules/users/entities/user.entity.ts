@@ -96,9 +96,13 @@ export class UserEntity {
   @OneToMany(() => MessageEntity, (message) => message.user)
   messages: MessageEntity[];
 
-  // One-to-many relationship with notifications (receptorUser)
-  @OneToMany(() => NotificationEntity, (notification) => notification.receptorUser)
-  notifications: NotificationEntity[];
+  // One-to-many relationship with notifications (receptor)
+  @OneToMany(() => NotificationEntity, (notification) => notification.receptor)
+  notificationReceptor: NotificationEntity[];
+
+  // One-to-many relationship whit notifications (emisor)
+  @OneToMany(() => NotificationEntity, (notification) => notification.emisor)
+  notificationEmisor: NotificationEntity[];
 
   // One-to-many relationship with followers (as follower)
   @OneToMany(() => FollowersEntity, (follower) => follower.follower)

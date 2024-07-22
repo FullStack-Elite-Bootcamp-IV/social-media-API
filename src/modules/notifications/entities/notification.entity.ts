@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
 
 // Enum for different types of notification actions
@@ -29,10 +29,18 @@ export class NotificationEntity {
   
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   notificationDate: Date; // Timestamp when the notification was created
+
+  @Column()
+  receptorUser: string;
   
   @ManyToOne(() => UserEntity, (user) => user.userId, { cascade: true, onDelete: 'CASCADE' })
-  receptorUser: UserEntity; // User who receives the notification
+  @JoinColumn({ name: 'receptorUser' })
+  receptor: UserEntity; // User who receives the notification
   
+  @Column()
+  emisorUser: string;
+
   @ManyToOne(() => UserEntity, (user) => user.userId, { cascade: true, onDelete: 'CASCADE' })
-  emisorUser: UserEntity; // User who sends the notification
+  @JoinColumn({ name: 'emisorUser' })
+  emisor: UserEntity; // User who sends the notification
 }

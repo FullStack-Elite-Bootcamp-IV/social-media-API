@@ -11,6 +11,7 @@ import { NotificationsService } from '../services/notifications.service';
 import { CreateNotificationDto } from '../dto/create-notification.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
+import { NotificationEntity } from '../entities/notification.entity';
 
 @ApiTags('Notifications')
 @Controller('notifications')
@@ -93,7 +94,7 @@ export class NotificationsController {
   })
   async findNotificationsByUser(
     @Param('userId') userId: string,
-  ): Promise<void> {
-    await this.notificationsService.findNotificationsByUser(userId);
+  ): Promise<NotificationEntity[]> {
+    return this.notificationsService.findNotificationsByUser(userId);
   }
 }

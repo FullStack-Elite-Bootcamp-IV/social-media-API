@@ -1,11 +1,11 @@
-import { HttpException, Injectable, Post } from '@nestjs/common';
+import { HttpException, Injectable, Post, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { UserDto } from '../dto/create-user.dto';
 import { PostEntity } from 'src/modules/posts/entities/post.entity';
 import { FollowersService } from 'src/modules/followers/services/followers.service';
-import * as bycrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -15,21 +15,48 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(PostEntity)
     private readonly postRepository: Repository<PostEntity>,
-  ) {}
+  ) { }
 
-  // Retrieves all users
-  async getUsers() {
+  async createUser(userDto: UserDto): Promise<UserEntity | Error> {
+
+
     try {
-      const users = await this.userRepository.find();
-      if (!users) {
-        throw new Error('Users not found');
+      const userEmail = await this.userRepository.findOne({ where: { email: userDto.email } });
+      const userName = await this.userRepository.findOne({ where: { userName: userDto.userName } });
+      if (userEmail || userName) {
+
+      const error = new HttpException(
+          'User already exists',
+          HttpStatus.BAD_REQUEST
+        );
+
+        return error;
       }
-      return users;
+      
+      userDto.password = await bcrypt.hash(userDto.password, 10);
+
+      // Hacemos la entidad manualmente
+      const user = this.userRepository.create(userDto);
+      const result = await this.userRepository.save(user);
+      delete result.password;
+      return result
     } catch (error) {
-      console.log(error);
-      throw new Error(error);
+      return error;
     }
   }
+
+ async getUsers () {
+   try {
+     const users = await this.userRepository.find()
+     if(!users){
+      throw new Error('Users not found');
+     }
+     return users
+   } catch (error) {
+     console.log(error)
+     throw new Error(error);
+   }
+ }
 
   async getUserById(userId: string) {
     try {
@@ -37,14 +64,16 @@ export class UserService {
         where: { userId: userId },
       });
       if (!user) {
-        throw new Error('User not found');
+        throw new Error('User not found')
       }
-      return user;
+      delete user.password;
+      return user
     } catch (error) {
-      console.log(error);
+      console.log(error)
       throw new Error(error);
     }
   }
+  
 
   async getUserByUserName(userName: string) {
     try {
@@ -134,8 +163,8 @@ export class UserService {
     if (userDto.email) {
       user.email = userDto.email;
     }
-    if (userDto.password) {
-      user.password = bycrypt.hashSync(userDto.password, 8);
+    if(userDto.password) {
+      user.password = bcrypt.hashSync(userDto.password, 8);
     }
     if (userDto.gender) {
       user.gender = userDto.gender;

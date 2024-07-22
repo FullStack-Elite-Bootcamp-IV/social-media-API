@@ -7,9 +7,10 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  //const jwtService = app.get(JwtService);
-  //app.useGlobalGuards(new JwtAuthGuard(jwtService));
+  app.enableCors({
+    origin: '*',
+    credentials: true,
+  });
 
   // Configuración global de prefijos de rutas
   app.setGlobalPrefix('api');

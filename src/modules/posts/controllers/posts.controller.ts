@@ -12,12 +12,9 @@ import {
 import { PostsService } from '../services/posts.service';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { PostEntity } from '../entities/post.entity';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
-import { ApiResponse, ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
-import { LikesService } from 'src/modules/likes/services/likes.service';
-import { LikeEntity } from 'src/modules/likes/entities/like.entity';
 import { CreateLikeDto } from 'src/modules/likes/dto/create-like.dto';
 
 @ApiTags('Posts')
@@ -25,8 +22,12 @@ import { CreateLikeDto } from 'src/modules/likes/dto/create-like.dto';
 export class PostsController {
   constructor(
     private readonly postsService: PostsService, 
-    private readonly likesService: LikesService
   ) {}
+
+  @Get()
+  getAllPublicsPosts(): Promise<PostEntity[]> {
+    return this.postsService.getAllPublicsPosts();
+  };
 
   @Post()
   @UseGuards(JwtAuthGuard)
@@ -273,6 +274,31 @@ export class PostsController {
   })
   @Get('like/:id')
   findPostsByUserId(@Param('id') userId: string): Promise<PostEntity[]> {
+    return this.postsService.postByUserLike(userId);
+  }
+  @ApiOperation({ summary: 'Find all posts' })
+  @ApiResponse({
+    status: 200,
+    type: [CreatePostDto],
+    description: 'Find all posts'
+  })
+  @ApiResponse({
+    status: 400,
+    type: CreatePostDto,
+    description: 'BAD REQUEST: Find all posts'
+  })
+  @ApiResponse({
+    status: 404,
+    type: CreatePostDto,
+    description: 'Posts not found'
+  })
+  @ApiResponse({
+    status: 500,
+    type: CreatePostDto,
+    description: 'INTERNAL SERVER ERROR: Find all posts'
+  })
+  @Get('favourites/:id')
+  getFavouritesPost(@Param('id') userId: string): Promise<PostEntity[]> {
     return this.postsService.postByUserLike(userId);
   }
 }

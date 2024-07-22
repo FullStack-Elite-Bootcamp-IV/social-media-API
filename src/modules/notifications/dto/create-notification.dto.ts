@@ -9,7 +9,7 @@ export class CreateNotificationDto {
     example: 'e8c9f6c6-4a43-4e7b-8c79-0e70b1d473f0',
   })
   @IsNotEmpty()
-  @IsUUID()
+  @IsString()
   emisorUser: string;
 
   @ApiProperty({
@@ -17,7 +17,7 @@ export class CreateNotificationDto {
     example: '1d80c5d4-5cf5-4b0e-9b9b-7b2b4a9c3f20',
   })
   @IsNotEmpty()
-  @IsUUID()
+  @IsString()
   receptorUser: string;
 
   @ApiProperty({

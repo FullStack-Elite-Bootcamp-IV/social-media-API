@@ -29,7 +29,7 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 255 })
   password: string;
 
-  @Column({ type: 'varchar', length: 200, nullable: true })
+  @Column({ type: 'varchar', length: 200, nullable:true })
   fullName: string;
 
   @Column({ type: 'int', nullable: true })
@@ -96,9 +96,13 @@ export class UserEntity {
   @OneToMany(() => MessageEntity, (message) => message.user)
   messages: MessageEntity[];
 
-  // One-to-many relationship with notifications (receptorUser)
-  @OneToMany(() => NotificationEntity, (notification) => notification.receptorUser)
-  notifications: NotificationEntity[];
+  // One-to-many relationship with notifications (receptor)
+  @OneToMany(() => NotificationEntity, (notification) => notification.receptor)
+  notificationReceptor: NotificationEntity[];
+
+  // One-to-many relationship whit notifications (emisor)
+  @OneToMany(() => NotificationEntity, (notification) => notification.emisor)
+  notificationEmisor: NotificationEntity[];
 
   // One-to-many relationship with followers (as follower)
   @OneToMany(() => FollowersEntity, (follower) => follower.follower)

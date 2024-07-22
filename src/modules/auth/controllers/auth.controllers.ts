@@ -11,6 +11,7 @@ import { AuthDTO, LogoutDTO, RegisterDTO } from '../dto/auth.dto';
 import { AuthService } from '../services/auth.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../guards/jwt.guard';
+import { UserEntity } from 'src/modules/users/entities/user.entity';
 
 @ApiTags('Auth') // Tag for grouping related API endpoints in Swagger
 @Controller() // Marks this class as a NestJS controller
@@ -37,7 +38,7 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'Login successful. Returns a JWT token.', // Description for a successful login
-    type: String, // Data type returned
+    type: UserEntity, // Data type returned
   })
   @ApiResponse({
     status: 401,

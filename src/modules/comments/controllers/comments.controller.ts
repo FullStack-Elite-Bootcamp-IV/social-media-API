@@ -67,13 +67,8 @@ export class CommentsController {
     status: 404,
     description: 'Comment not found.', // Description when the comment with the given ID is not found
   })
-<<<<<<< HEAD
   @Delete('/delete/:id')
   @UseGuards(JwtAuthGuard)
-=======
-  @Delete('/delete/:id') // HTTP DELETE method to delete a comment by its ID
-  @UseGuards(JwtAuthGuard) // Use JwtAuthGuard to protect this route
->>>>>>> f23df33e2a97274925d41c86d7b73fa8482179c5
   async deleteComment(@Param('id') id: string): Promise<void> {
     return this.CommentsService.deleteComment(id); // Call the service to delete the comment
   }

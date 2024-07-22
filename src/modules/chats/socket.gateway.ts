@@ -31,28 +31,22 @@ export class ChatGateway
 
   // Handle new client connections
   async handleConnection(socket: Socket) {
-    const userId = socket.handshake.auth.token; // Get the user ID from the token
 
    const token = socket.handshake.auth.token 
    
     try {
-    // TO DO procesar la userid apartir del token
     const user = await this.jwtService.verifyAsync(token, {
       secret: process.env.AUTH_SECRET,
     });
       // TO PRODUCTION Buscar en la base de datos todos los chats (chatid)
     const userChats = await this.chatService.findChatsByUser(user.id)
-    console.log(userChats)  
-    userChats.forEach(chat => {
+    userChats.forEach(chat => { 
       socket.join(chat.chatId)
     });
     }
   catch(e){
     socket.emit("error", "JwtInvalid")
   }
-
-
-
     // Unir al usuario a las rooms (chatid) especificas
 
     this.logger.log(`Client id: ${socket.id} connected`); // Log the connection
@@ -66,9 +60,15 @@ export class ChatGateway
 
   // Handle incoming messages
   @SubscribeMessage("message")
-  handleMessage(socket: Socket, data: any) {
-    const userId = socket.handshake.auth.token
-    this.io.to(data[1]).emit("receiveMessage", {"message": data[0], "chatId": data[1], "userId": userId } )
+  async handleMessage(socket: Socket, data: any) {
+    try {
+      const user = await this.jwtService.verifyAsync(socket.handshake.auth.token, {
+        secret: process.env.AUTH_SECRET,
+      });
+      this.io.to(data[1]).emit("receiveMessage", {"message": data[0], "chatId": data[1], "userId": user.id } )
+    }catch(e){
+        socket.emit("error", "JwtInvalid")
+      }
 
   }
 

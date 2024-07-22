@@ -1,16 +1,11 @@
-import { HttpException, Injectable, Post } from '@nestjs/common';
+import { HttpException, Injectable, Post, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { UserDto } from '../dto/create-user.dto';
-<<<<<<< HEAD
-import { HttpException, HttpStatus } from '@nestjs/common';
-import bcrypt from "bcrypt";
-=======
 import { PostEntity } from 'src/modules/posts/entities/post.entity';
 import { FollowersService } from 'src/modules/followers/services/followers.service';
-import * as bycrypt from 'bcryptjs';
->>>>>>> f23df33e2a97274925d41c86d7b73fa8482179c5
+import bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -22,7 +17,6 @@ export class UserService {
     private readonly postRepository: Repository<PostEntity>,
   ) { }
 
-<<<<<<< HEAD
   async createUser(userDto: UserDto): Promise<UserEntity | Error> {
 
 
@@ -63,21 +57,6 @@ export class UserService {
      throw new Error(error);
    }
  }
-=======
-  // Retrieves all users
-  async getUsers() {
-    try {
-      const users = await this.userRepository.find();
-      if (!users) {
-        throw new Error('Users not found');
-      }
-      return users;
-    } catch (error) {
-      console.log(error);
-      throw new Error(error);
-    }
-  }
->>>>>>> f23df33e2a97274925d41c86d7b73fa8482179c5
 
   async getUserById(userId: string) {
     try {
@@ -149,10 +128,6 @@ export class UserService {
     if (!user) {
       throw new Error('User not found')
     }
-<<<<<<< HEAD
-    userDto.password = await bcrypt.hash(userDto.password, 10);
-    Object.assign(user, userDto);
-=======
     if(userDto.userName) {
       user.userName = userDto.userName;
     }
@@ -166,7 +141,7 @@ export class UserService {
       user.email = userDto.email;
     }
     if(userDto.password) {
-      user.password = bycrypt.hashSync(userDto.password, 8);
+      user.password = bcrypt.hashSync(userDto.password, 8);
     }
     if(userDto.gender) {
       user.gender = userDto.gender;
@@ -192,7 +167,6 @@ export class UserService {
     if(userDto.college){
       user.college = userDto.college;
     }
->>>>>>> f23df33e2a97274925d41c86d7b73fa8482179c5
     return await this.userRepository.save(user);
   }
 

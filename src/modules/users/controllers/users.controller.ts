@@ -2,19 +2,19 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { UserService } from '../services/user.service';
 import { UserDto } from '../dto/create-user.dto';
 import { UserEntity } from '../entities/user.entity';
-import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiParam, ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
-import { PostsService } from 'src/modules/posts/services/posts.service';
 
-@ApiTags("User")
+@ApiTags('User')
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UserService) {}
 
-  // Get all users
+  @Get()
+  @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({
     status: 200,
-    description: 'Get all Users.',
+    description: 'Get all users.',
     type: [UserEntity]
   })
   @ApiResponse({
@@ -29,7 +29,6 @@ export class UsersController {
     status: 404,
     description: 'Users not found.'
   })
-  @Get()
   getUsers(): Promise<UserEntity[]> {
     try {
       return this.userService.getUsers();
@@ -39,7 +38,9 @@ export class UsersController {
     }
   }
 
-  // Get user by username
+  @Get('/by-username/:username')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get user by username' })
   @ApiResponse({
     status: 200,
     description: 'Get user by username.',
@@ -57,43 +58,48 @@ export class UsersController {
     status: 404,
     description: 'User not found.'
   })
-  @Get('/by-username/:username')
-  @UseGuards(JwtAuthGuard)
   getUserByUserName(@Param('username') username: string): Promise<UserEntity> {
     return this.userService.getUserByUserName(username);
-  };
+  }
 
+  @Get('/profile-info/:id')
   @ApiParam({ 
     name: 'id', 
     type: 'string', 
     description: 'User ID'
-   })
+  })
+  @ApiOperation({ summary: 'Get user profile information by ID' })
   @ApiResponse({ 
     status: 200,
     description: 'User profile information retrieved successfully',
+    type: UserEntity
   })
-  @ApiResponse({ status: 404, description: 'User not found' })
-  @Get('/profile-info/:id')
+  @ApiResponse({ 
+    status: 404, 
+    description: 'User not found' 
+  })
   getProfileInfo(@Param('id') id: string) {
     return this.userService.getProfileInfo(id);
   }
 
-  // Set dark mode for the user
+  @Post('/setDarkMode/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Set dark mode for user' })
   @ApiResponse({
     status: 201,
-    description: 'Set Dark mode.',
+    description: 'Set dark mode.'
   })
   @ApiResponse({
     status: 400,
     description: 'Bad request.'
   })
-  @Post('/setDarkMode/:id')
-  @UseGuards(JwtAuthGuard)
   async modifyDarkMode(@Param('id') userId: string): Promise<void> {
     return await this.userService.setDarkMode(userId);
   }
 
-  // Update user information
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Update user information' })
   @ApiResponse({
     status: 200,
     description: 'User modified.',
@@ -111,8 +117,6 @@ export class UsersController {
     status: 404,
     description: 'User not found.'
   })
-  @Patch(':id')
-  @UseGuards(JwtAuthGuard)
   async modifyUser(
     @Param('id') userId: string,
     @Body() userDto: UserDto,
@@ -120,10 +124,12 @@ export class UsersController {
     return await this.userService.editProfile(userId, userDto);
   }
 
-  // Delete a user
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Delete a user' })
   @ApiResponse({
     status: 200,
-    description: 'User deleted.',
+    description: 'User deleted.'
   })
   @ApiResponse({
     status: 400,
@@ -137,21 +143,22 @@ export class UsersController {
     status: 404,
     description: 'User not found.'
   })
-  @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   async deleteUser(@Param('id') userId: string): Promise<string> {
     await this.userService.deleteUser(userId);
     return "Usuario eliminado exitosamente";
   }
 
-
+  @Get('search/:search')
+  @UseGuards(JwtAuthGuard)
   @ApiHeader({
     name: 'Authorization',
     description: 'Bearer token',
   })
+  @ApiOperation({ summary: 'Search user' })
   @ApiResponse({
     status: 200,
     description: 'Search user.',
+    type: [UserEntity]
   })
   @ApiResponse({
     status: 400,
@@ -169,8 +176,6 @@ export class UsersController {
     status: 500,
     description: 'Internal server error.'
   })
-  @Get('search/:search')
-  @UseGuards(JwtAuthGuard)
   async searchUser(@Param('search') search: string): Promise<UserEntity[]> {
     return await this.userService.searchUser(search);
   }

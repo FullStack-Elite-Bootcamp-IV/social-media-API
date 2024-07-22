@@ -101,7 +101,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Set dark mode for user' })
   @ApiResponse({
-    status: 201,
+    status: 200,
     description: 'Set dark mode.',
   })
   @ApiResponse({

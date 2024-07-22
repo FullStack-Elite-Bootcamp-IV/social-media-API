@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { NotificationsService } from '../services/notifications.service';
 import { CreateNotificationDto } from '../dto/create-notification.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags('Notifications')
@@ -17,10 +17,16 @@ import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 export class NotificationsController {
   constructor(private notificationsService: NotificationsService) {}
 
-  // create a notification
+  @Post('/create')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Create a new notification',
+    description: 'Sends a new notification and returns the created notification.',
+  })
   @ApiResponse({
     status: 201,
     description: 'Notification sent.',
+    type: CreateNotificationDto,
   })
   @ApiResponse({
     status: 400,
@@ -30,15 +36,18 @@ export class NotificationsController {
     status: 401,
     description: 'Unauthorized',
   })
-  @Post('/create')
-  @UseGuards(JwtAuthGuard)
   createNotification(
     @Body() createNotificationDto: CreateNotificationDto,
   ) {
     return this.notificationsService.createNotification(createNotificationDto);
   }
 
-  //delete a notification by the notification id
+  @Delete('/delete/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Delete a notification by ID',
+    description: 'Deletes a notification specified by its ID.',
+  })
   @ApiResponse({
     status: 200,
     description: 'Notification deleted.',
@@ -55,15 +64,20 @@ export class NotificationsController {
     status: 404,
     description: 'Notification not found.',
   })
-  @Delete('/delete/:id')
-  @UseGuards(JwtAuthGuard)
   deleteNotification(@Param('id') notificationId: string): Promise<void> {
     return this.notificationsService.deleteNotification(notificationId);
   }
-  // find a notification by the user id
+
+  @Get('/user/:userId')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Find notifications by user ID',
+    description: 'Retrieves all notifications for a specific user identified by their ID.',
+  })
   @ApiResponse({
     status: 200,
     description: 'Get all notifications.',
+    type: [CreateNotificationDto],
   })
   @ApiResponse({
     status: 400,
@@ -77,8 +91,6 @@ export class NotificationsController {
     status: 404,
     description: 'Notifications not found.',
   })
-  @Get('/user/:userId')
-  @UseGuards(JwtAuthGuard)
   async findNotificationsByUser(
     @Param('userId') userId: string,
   ): Promise<void> {

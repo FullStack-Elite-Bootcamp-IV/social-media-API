@@ -6,7 +6,6 @@ import {
   DeleteFollowerDto,
 } from '../dto/create-follower.dto';
 import { FollowersEntity } from '../entities/followers.entity';
-import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 
 @Injectable()
 export class FollowersService {
@@ -15,7 +14,7 @@ export class FollowersService {
     private readonly followerRepository: Repository<FollowersEntity>,
   ) {}
 
-  // Function to create a new follower
+  // Function to create a new follower relationship
   async createFollower(
     createFollowerDto: CreateFollowerDto,
   ): Promise<FollowersEntity> {
@@ -29,7 +28,7 @@ export class FollowersService {
 
       const { followerId, followingId } = createFollowerDto;
 
-      // Verifica si la relación específica ya existe en la tabla Followers
+      // Check if the follower relationship already exists
       const existingFollower = await this.followerRepository.findOne({
         where: { followerId, followingId },
       });
@@ -41,9 +40,8 @@ export class FollowersService {
         );
       }
 
-      // Crea y guarda la nueva relación
+      // Create and save the new follower relationship
       const newFollower = this.followerRepository.create(createFollowerDto);
-
       return await this.followerRepository.save(newFollower);
     } catch (err) {
       throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -53,51 +51,48 @@ export class FollowersService {
   // Function to find all followings by follower ID
   async findFollowingsById(
     followerId: FollowersEntity['followerId'],
-  ): Promise<String[]> {
+  ): Promise<string[]> {
     try {
       if (!followerId) {
-        throw new HttpErrorByCode[400]('please provide all fields');
+        return [];
       }
       const followings = await this.followerRepository.find({
-        where: { followerId: followerId },
+        where: { followerId },
       });
 
       if (!followings || followings.length === 0) {
-        throw new Error('No followings found for the provided followerId');
+        return [];
       }
 
-      const result = followings.map((following) => following.followingId);
-
-      return result;
+      return followings.map((following) => following.followingId);
     } catch (err) {
-      throw new Error(err);
+      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   // Function to find followers by user ID
   async findFollowersByUser(
-    followingID: FollowersEntity['followingId'],
-  ): Promise<String[]> {
+    followingId: FollowersEntity['followingId'],
+  ): Promise<string[]> {
     try {
-      if (!followingID) {
-        throw new HttpErrorByCode[400]('please provide all fields');
+      if (!followingId) {
+        return [];
       }
       const followers = await this.followerRepository.find({
-        where: { followingId: followingID },
+        where: { followingId },
       });
-      if (!followers) {
-        throw new Error('No followers found for the provided userId');
+
+      if (!followers || followers.length === 0) {
+        return [];
       }
 
-      const result = followers.map((follower) => follower.followerId);
-
-      return result;
+      return followers.map((follower) => follower.followerId);
     } catch (err) {
-      throw new Error(err);
+      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  // Function to delete a follower by ID
+  // Function to delete a follower relationship
   async deleteFollower(deleteFollowerDto: DeleteFollowerDto): Promise<string> {
     try {
       if (!deleteFollowerDto) {
@@ -109,7 +104,7 @@ export class FollowersService {
 
       const { followerId, followingId } = deleteFollowerDto;
 
-      // Encuentra la relación específica en la tabla Followers
+      // Find the specific follower relationship
       const follower = await this.followerRepository.findOne({
         where: { followerId, followingId },
       });
@@ -118,7 +113,7 @@ export class FollowersService {
         throw new HttpException('Follower not found', HttpStatus.NOT_FOUND);
       }
 
-      // Elimina la relación
+      // Remove the follower relationship
       await this.followerRepository.remove(follower);
 
       return 'Follower deleted';

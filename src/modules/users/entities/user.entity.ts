@@ -7,6 +7,7 @@ import { NotificationEntity } from '../../notifications/entities/notification.en
 import { FollowersEntity } from '../../followers/entities/followers.entity';
 import { LikeEntity } from '../../likes/entities/like.entity';
 
+// Enumeration for Gender
 export enum Gender {
   MALE = 'male',
   FEMALE = 'female',
@@ -75,30 +76,35 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 100, nullable: true })
   lastLogoutDate?: string;
 
+  // One-to-many relationship with posts
   @OneToMany(() => PostEntity, (post) => post.userId)
   posts: PostEntity[];
 
-  @OneToMany(() => FavouritesEntity, (favourites) => favourites.userId)
+  // One-to-many relationship with favourites
+  @OneToMany(() => FavouritesEntity, (favourites) => favourites.user)
   favourites: FavouritesEntity[];
 
+  // One-to-many relationship with chats (as user1)
   @OneToMany(() => ChatEntity, (chat) => chat.user1)
   chat1: ChatEntity[];
 
+  // One-to-many relationship with chats (as user2)
   @OneToMany(() => ChatEntity, (chat) => chat.user2)
   chat2: ChatEntity[];
 
+  // One-to-many relationship with messages
   @OneToMany(() => MessageEntity, (message) => message.user)
   messages: MessageEntity[];
 
-  @OneToMany(
-    () => NotificationEntity,
-    (notification) => notification.receptorUser,
-  )
+  // One-to-many relationship with notifications (receptorUser)
+  @OneToMany(() => NotificationEntity, (notification) => notification.receptorUser)
   notifications: NotificationEntity[];
 
+  // One-to-many relationship with followers (as follower)
   @OneToMany(() => FollowersEntity, (follower) => follower.follower)
   follower: FollowersEntity[];
 
+  // One-to-many relationship with followers (as following)
   @OneToMany(() => FollowersEntity, (follower) => follower.following)
   following: FollowersEntity[];
 

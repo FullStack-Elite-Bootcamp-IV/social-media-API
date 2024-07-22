@@ -11,7 +11,8 @@ import { Socket } from "socket.io";
 import { Server } from "socket.io";
 import { ChatService } from "./services/chats.service";
 import { JwtService } from "@nestjs/jwt";
-@WebSocketGateway(5003, {namespace: '/chat', cors: true} )
+
+@WebSocketGateway(5002, {namespace: '/chat', cors: true} )
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -19,15 +20,18 @@ export class ChatGateway
     private readonly chatService: ChatService,
     private readonly jwtService: JwtService
   ) {}
-  private readonly logger = new Logger(ChatGateway.name);
 
-  @WebSocketServer() io: Server;
+  private readonly logger = new Logger(ChatGateway.name); // Initialize the logger
+
+  @WebSocketServer() io: Server; // Declare the WebSocket server
 
   afterInit() {
-    this.logger.log("Initialized");
+    this.logger.log("Initialized"); // Log when the gateway is initialized
   }
-  
+
+  // Handle new client connections
   async handleConnection(socket: Socket) {
+    const userId = socket.handshake.auth.token; // Get the user ID from the token
 
    const token = socket.handshake.auth.token 
    
@@ -51,14 +55,16 @@ export class ChatGateway
 
     // Unir al usuario a las rooms (chatid) especificas
 
-    this.logger.log(`Client id: ${socket.id} connected`);
+    this.logger.log(`Client id: ${socket.id} connected`); // Log the connection
   }
 
+  // Handle client disconnections
   handleDisconnect(socket: Socket) {
 
     this.logger.log(`Cliend id:${socket.id} disconnected`);
   }
 
+  // Handle incoming messages
   @SubscribeMessage("message")
   handleMessage(socket: Socket, data: any) {
     const userId = socket.handshake.auth.token
@@ -66,9 +72,9 @@ export class ChatGateway
 
   }
 
-  @SubscribeMessage("recieveMessage")
-  handleRecieve(client: any, data: any) {
-    console.log("aaaa")
+  // Handle received messages
+  @SubscribeMessage("receiveMessage")
+  handleReceive(client: any, data: any) {
+    console.log("Message received"); // Log when a message is received
   }
 }
-

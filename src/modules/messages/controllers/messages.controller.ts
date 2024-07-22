@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Delete,
   Param,
   Body,
@@ -11,7 +10,7 @@ import {
 import { MessagesService } from '../services/messages.service';
 import { CreateMessageDto } from '../dto/create-message.dto';
 import { MessageEntity } from '../entities/message.entity';
-import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags('Messages')
@@ -19,10 +18,16 @@ import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
-  // create a message
+  @Post('/create')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Create a message',
+    description: 'Sends a new message and returns the created message.',
+  })
   @ApiResponse({
     status: 201,
     description: 'Message sent.',
+    type: MessageEntity,
   })
   @ApiResponse({
     status: 400,
@@ -32,18 +37,22 @@ export class MessagesController {
     status: 401,
     description: 'Unauthorized',
   })
-  @Post('/create')
-  @UseGuards(JwtAuthGuard)
   createMessage(
     @Body() createMessageDto: CreateMessageDto,
   ): Promise<MessageEntity> {
     return this.messagesService.createMessage(createMessageDto);
   }
 
-  // find messages by chat id
+  @Get('/chat/:chatId')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Find messages by chat ID',
+    description: 'Retrieves all messages associated with the given chat ID.',
+  })
   @ApiResponse({
     status: 200,
     description: 'Get all messages.',
+    type: [MessageEntity],
   })
   @ApiResponse({
     status: 400,
@@ -57,13 +66,16 @@ export class MessagesController {
     status: 404,
     description: 'Messages not found.',
   })
-  @Get('/chat/:chatId')
-  @UseGuards(JwtAuthGuard)
   findMessagesByChat(@Param('chatId') chatId: string): Promise<void> {
     return this.messagesService.findMessagesByChat(chatId);
   }
 
-  // delete a message by id
+  @Delete('/delete/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Delete a message',
+    description: 'Deletes a message specified by its ID.',
+  })
   @ApiResponse({
     status: 200,
     description: 'Message deleted.',
@@ -80,16 +92,20 @@ export class MessagesController {
     status: 404,
     description: 'Message not found.',
   })
-  @Delete('/delete/:id')
-  @UseGuards(JwtAuthGuard)
   deleteMessage(@Param('id') messageId: string): Promise<void> {
     return this.messagesService.deleteMessage(messageId);
   }
 
-  //find message by user id
+  @Get('/user/:userId')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Find messages by user ID',
+    description: 'Retrieves all messages sent by the user with the given ID.',
+  })
   @ApiResponse({
     status: 200,
     description: 'Get all messages.',
+    type: [MessageEntity],
   })
   @ApiResponse({
     status: 400,
@@ -103,8 +119,6 @@ export class MessagesController {
     status: 404,
     description: 'Messages not found.',
   })
-  @Get('/user/:userId')
-  @UseGuards(JwtAuthGuard)
   async findMessagesByUser(@Param('userId') userId: string): Promise<void> {
     return this.messagesService.findMessagesByUser(userId);
   }

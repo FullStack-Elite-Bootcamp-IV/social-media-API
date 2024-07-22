@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, Patch, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { PostsService } from '../services/posts.service';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { PostEntity } from '../entities/post.entity';
@@ -13,18 +23,19 @@ import { CreateLikeDto } from 'src/modules/likes/dto/create-like.dto';
 @ApiTags('Posts')
 @Controller('posts')
 export class PostsController {
-  constructor(private readonly postsService: PostsService, 
-              private readonly likesService: LikesService
-  ) { }
+  constructor(
+    private readonly postsService: PostsService, 
+    private readonly likesService: LikesService
+  ) {}
 
-  // Documentation whit swagger the service posts
+  @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a new post' })
   @ApiResponse({
     status: 200,
     type: CreatePostDto,
     description: 'Create a new post'
   })
-  // now the respose error
   @ApiResponse({
     status: 400,
     type: CreatePostDto,
@@ -35,204 +46,233 @@ export class PostsController {
     type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Create a new post'
   })
-
-  @Post()
-  @UseGuards(JwtAuthGuard)
   createPost(@Body() createPostDto: CreatePostDto): Promise<PostEntity> {
     return this.postsService.createPost(createPostDto);
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Find a post by its ID' })
+  @ApiResponse({
+    status: 200,
+    type: PostEntity,
+    description: 'Find a post by its ID'
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Post not found.'
+  })
   findPostById(@Param('id') postId: string): Promise<PostEntity> {
     return this.postsService.findPostById(postId);
   }
 
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a post' })
   @ApiResponse({
     status: 200,
-    type: CreatePostDto,
+    type: PostEntity,
     description: 'Update a post'
   })
   @ApiResponse({
     status: 400,
-    type: CreatePostDto,
     description: 'BAD REQUEST: Update a post'
   })
   @ApiResponse({
     status: 500,
-    type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Update a post'
   })
-  @Patch(':id')
-  @UseGuards(JwtAuthGuard)
   updatePost(@Param('id') postId: string, @Body() updatePostDto: UpdatePostDto): Promise<PostEntity> {
     return this.postsService.updatePost(postId, updatePostDto);
   }
 
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a post' })
   @ApiResponse({
     status: 200,
-    type: CreatePostDto,
     description: 'Delete a post'
   })
   @ApiResponse({
     status: 400,
-    type: CreatePostDto,
     description: 'BAD REQUEST: Delete a post'
   })
   @ApiResponse({
     status: 500,
-    type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Delete a post'
   })
-  @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   deletePost(@Param('id') postId: string): Promise<void> {
     return this.postsService.deletePost(postId);
   }
 
+  @Post('like')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Like a post' })
   @ApiResponse({
     status: 200,
-    type: CreatePostDto,
     description: 'Like a post'
   })
   @ApiResponse({
     status: 400,
-    type: CreatePostDto,
     description: 'BAD REQUEST: Like a post'
   })
   @ApiResponse({
     status: 500,
-    type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Like a post'
   })
-  @Post('like')
-  @UseGuards(JwtAuthGuard)
-  likePost( @Body()  createLikeDto: CreateLikeDto): Promise<void> {
-    return this.postsService.likePost(createLikeDto)
+  likePost(@Body() createLikeDto: CreateLikeDto): Promise<void> {
+    return this.postsService.likePost(createLikeDto);
   }
 
+  @Post('unlike')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Unlike a post' })
   @ApiResponse({
     status: 200,
-    type: CreatePostDto,
     description: 'Unlike a post'
   })
   @ApiResponse({
     status: 400,
-    type: CreatePostDto,
     description: 'BAD REQUEST: Unlike a post'
   })
   @ApiResponse({
     status: 500,
-    type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Unlike a post'
   })
-  @Post('unlike')
-  @UseGuards(JwtAuthGuard)
-  unlikePost(@Body()  createLikeDto: CreateLikeDto): Promise<any> {
-    return this.postsService.unlikePost(createLikeDto)
+  unlikePost(@Body() createLikeDto: CreateLikeDto): Promise<any> {
+    return this.postsService.unlikePost(createLikeDto);
   }
 
+  @Get('user/:userId')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Find posts by user' })
   @ApiResponse({
     status: 200,
-    type: [CreatePostDto],
+    type: [PostEntity],
     description: 'Find posts by user'
   })
   @ApiResponse({
     status: 400,
-    type: CreatePostDto,
     description: 'BAD REQUEST: Find posts by user'
   })
   @ApiResponse({
     status: 500,
-    type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Find posts by user'
   })
-  @Get('user/:userId')
-  @UseGuards(JwtAuthGuard)
   findPostsByUser(@Param('userId') userId: string): Promise<PostEntity[]> {
-    return this.postsService.findPostsByUser(userId)
+    return this.postsService.findPostsByUser(userId);
   }
 
+  @Get('user/:userId/visible')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Find posts visible to user' })
   @ApiResponse({
     status: 200,
-    type: [CreatePostDto],
+    type: [PostEntity],
     description: 'Find posts visible to user'
   })
   @ApiResponse({
     status: 400,
-    type: CreatePostDto,
     description: 'BAD REQUEST: Find posts visible to user'
   })
   @ApiResponse({
     status: 500,
-    type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Find posts visible to user'
   })
-  @Get('user/:userId/visible')
-  @UseGuards(JwtAuthGuard)
   findPostsVisibleToUser(@Param('userId') userId: string): Promise<PostEntity[]> {
-    return this.postsService.findPostsVisibleToUser(userId)
+    return this.postsService.findPostsVisibleToUser(userId);
   }
 
-  // Function to find posts of a specific followed user
-  // have two parametres followersId and followingId
+  @Get('followed/:followerId/:followedUserId')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Find posts of followed user' })
   @ApiResponse({
     status: 200,
-    type: [CreatePostDto],
+    type: [PostEntity],
     description: 'Find posts of followed user'
   })
   @ApiResponse({
     status: 400,
-    type: CreatePostDto,
     description: 'BAD REQUEST: Find posts of followed user'
   })
   @ApiResponse({
     status: 500,
-    type: CreatePostDto,
     description: 'INTERNAL SERVER ERROR: Find posts of followed user'
   })
-  // Endpoint to find posts of a specific followed user
-  @Get('followed/:followerId/:followedUserId')
-  @UseGuards(JwtAuthGuard)
   async findPostsOfFollowedUser(
     @Param('followerId') followerId: string,
     @Param('followedUserId') followedUserId: string,
   ): Promise<PostEntity[]> {
-    console.log(followerId, followedUserId);
-      return await this.postsService.findPostsOfFollowedUser(followerId, followedUserId);
+    return await this.postsService.findPostsOfFollowedUser(followerId, followedUserId);
   }
 
-  // Endpoint para obtener todos los post de los usuarios con los que sigues
-  @ApiOperation({ summary: 'Find posts of followed users' })
+  @Get('followed-post/:followerId/:page/:limit')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Find paginated posts of followed users' })
+  @ApiResponse({
+    status: 200,
+    type: [PostEntity],
+    description: 'Find paginated posts of followed users'
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'BAD REQUEST: Find paginated posts of followed users'
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'INTERNAL SERVER ERROR: Find paginated posts of followed users'
+  })
+  async findPaginatedPosts(
+    @Param() { followerId, page, limit }: { followerId: string; page: number; limit: number }
+  ): Promise<object[]> {
+    return await this.postsService.findPaginatedPosts(followerId, page, limit);
+  }
+
+  @Get('search/:search')
+  @ApiOperation({ summary: 'Find all posts' })
+  @ApiResponse({
+    status: 200,
+    type: [PostEntity],
+    description: 'Find all posts'
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'BAD REQUEST: Find all posts'
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Posts not found'
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'INTERNAL SERVER ERROR: Find all posts'
+  })
+  async searchPosts(@Param('search') search: string): Promise<PostEntity[]> {
+    return this.postsService.postSearch(search);
+  }
+
+  @ApiOperation({ summary: 'Find all posts' })
   @ApiResponse({
     status: 200,
     type: [CreatePostDto],
-    description: 'Find posts of followed users'
+    description: 'Find all posts'
   })
   @ApiResponse({
     status: 400,
     type: CreatePostDto,
-    description: 'BAD REQUEST: Find posts of followed users'
+    description: 'BAD REQUEST: Find all posts'
+  })
+  @ApiResponse({
+    status: 404,
+    type: CreatePostDto,
+    description: 'Posts not found'
   })
   @ApiResponse({
     status: 500,
     type: CreatePostDto,
-    description: 'INTERNAL SERVER ERROR: Find posts of followed users'
+    description: 'INTERNAL SERVER ERROR: Find all posts'
   })
-  @UseGuards(JwtAuthGuard)
-  @Get('followed-post/:followerId/:page/:limit')
-  async findPaginatedPosts(@Param() { followerId, page, limit } ): Promise<object[]> {
-    console.log({
-      followerId,
-      page,
-      limit
-    });
-    return await this.postsService.findPaginatedPosts(followerId, page, limit);
+  @Get('like/:id')
+  findPostsByUserId(@Param('id') userId: string): Promise<PostEntity[]> {
+    return this.postsService.postByUserLike(userId);
   }
 }

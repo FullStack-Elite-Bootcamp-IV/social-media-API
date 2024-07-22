@@ -4,11 +4,11 @@ import { CreateFollowerDto, DeleteFollowerDto } from '../dto/create-follower.dto
 import { FollowersEntity } from '../entities/followers.entity';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
-
+import { ChatService } from '../../chats/services/chats.service';
 @ApiTags("Followers")
 @Controller('followers')
 export class FollowersController {
-  constructor(private readonly followersService: FollowersService) { }
+  constructor(private readonly followersService: FollowersService, private readonly chatService: ChatService) { }
 
   @ApiResponse({
     status: 201,
@@ -24,9 +24,23 @@ export class FollowersController {
   })
   @Post()
   @UseGuards(JwtAuthGuard)
-  createFollower(@Body() createFollowerDto: CreateFollowerDto): Promise<FollowersEntity> {
+  async createFollower(@Body() createFollowerDto: CreateFollowerDto): Promise<FollowersEntity> {
     // Handles the creation of a new follower relationship
-    return this.followersService.createFollower(createFollowerDto);
+    
+    const follower = await  this.followersService.createFollower(createFollowerDto);
+    try{
+      const followerFollowers = await this.followersService.findFollowersByUser(createFollowerDto.followerId);
+      if(followerFollowers.includes(follower.followingId) ){
+        console.log(followerFollowers)
+        console.log(follower.followerId)
+        console.log(follower.followingId)
+        await this.chatService.createChat({ user1Id: follower.followingId,  user2Id: follower.followerId});
+      }
+    }catch{
+      
+    }
+    
+    return follower;
   }
 
   @ApiResponse({

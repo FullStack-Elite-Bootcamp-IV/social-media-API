@@ -48,17 +48,19 @@ export class NotificationsService {
 
   // Function to delete a notification by ID
   async deleteNotification(notificationId: string): Promise<void> {
+    if (!notificationId) {
+      throw new HttpException('Notification ID not provided', HttpStatus.BAD_REQUEST);
+    }
+    
     try {
-      if (!notificationId) {
-        throw new HttpException('Notification ID not provided', HttpStatus.BAD_REQUEST);
-      }
       const result = await this.notificationRepository.delete(notificationId);
+      
       if (result.affected === 0) {
         throw new HttpException('Notification not found', HttpStatus.NOT_FOUND);
       }
     } catch (error) {
       console.error('Error deleting notification:', error);
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Notification not found', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

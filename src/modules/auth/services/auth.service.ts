@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
@@ -7,18 +12,19 @@ import { UserService } from 'src/modules/users/services/user.service';
 import { Repository } from 'typeorm';
 import { RegisterDTO } from '../dto/auth.dto';
 import * as bcryptjs from 'bcryptjs';
+import { UserDto } from 'src/modules/users/dto/create-user.dto';
 
 @Injectable() // Mark the class as a provider that can be injected
 export class AuthService {
   constructor(
     private readonly userService: UserService, // Inject the UserService
     @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity> // Inject the UserRepository
+    private readonly userRepository: Repository<UserEntity>, // Inject the UserRepository
   ) {}
 
   // Method to create a new user
   async createUser(registerDTO: RegisterDTO): Promise<UserEntity | Error> {
-    try {      
+    try {
       registerDTO.password = await bcryptjs.hash(registerDTO.password, 10); // Hash the user's password
       const user = this.userRepository.create(registerDTO); // Create a new user entity
       return await this.userRepository.save(user); // Save the user to the database
@@ -28,7 +34,10 @@ export class AuthService {
   }
 
   // Method to validate a user's credentials
-  public async validateUser(email: string, password: string): Promise<UserEntity | null> {
+  public async validateUser(
+    email: string,
+    password: string,
+  ): Promise<UserEntity | null> {
     try {
       const userByEmail = await this.userService.getByEmail(email); // Get the user by email
 
@@ -57,7 +66,9 @@ export class AuthService {
   }
 
   // Method to generate a JWT token for a user
-  public async generateJWT(user: UserEntity): Promise<{ accessToken: string; user: UserEntity }> {
+  public async generateJWT(
+    user: UserEntity,
+  ): Promise<{ accessToken: string; user: UserEntity }> {
     try {
       const getUser = await this.userService.getUserById(user.userId); // Get the user by ID
       if (!getUser) {
@@ -82,7 +93,7 @@ export class AuthService {
 
   // Method to log out a user
   public async logout(date: string, email: string): Promise<UserEntity | null> {
-    try{
+    try {
       if (!date) {
         throw new UnauthorizedException('Invalid date'); // Throw an exception if the date is invalid
       }
@@ -95,6 +106,18 @@ export class AuthService {
       return await this.userService.updateLastLogout(email, date); // Update the user's last logout date
     } catch (error) {
       throw new UnauthorizedException('Failed to logout'); // Throw an exception if logout fails
+    }
+  }
+
+  // Method to get the current user
+  public async getUser(user: any): Promise<any> {
+    try {
+      const res = await this.userService.getUserById(user.id);
+      // Return the current user without the password
+      const { password, ...userWithoutPassword } = res;
+      return userWithoutPassword;
+    } catch (error) {
+      throw new UnauthorizedException('Failed to get current user'); // Throw an exception if user retrieval fails
     }
   }
 }

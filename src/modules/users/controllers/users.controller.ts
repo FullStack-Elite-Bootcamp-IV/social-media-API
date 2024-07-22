@@ -2,8 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { UserService } from '../services/user.service';
 import { UserDto } from '../dto/create-user.dto';
 import { UserEntity } from '../entities/user.entity';
-import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
+import { PostsService } from 'src/modules/posts/services/posts.service';
 
 @ApiTags("User")
 @Controller('users')
@@ -60,6 +61,21 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   getUserByUserName(@Param('username') username: string): Promise<UserEntity> {
     return this.userService.getUserByUserName(username);
+  };
+
+  @ApiParam({ 
+    name: 'id', 
+    type: 'string', 
+    description: 'User ID'
+   })
+  @ApiResponse({ 
+    status: 200,
+    description: 'User profile information retrieved successfully',
+  })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  @Get('/profile-info/:id')
+  getProfileInfo(@Param('id') id: string) {
+    return this.userService.getProfileInfo(id);
   }
 
   // Set dark mode for the user

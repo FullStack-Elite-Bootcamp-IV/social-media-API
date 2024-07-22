@@ -1,14 +1,19 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { UserDto } from '../dto/create-user.dto';
+import { PostEntity } from 'src/modules/posts/entities/post.entity';
+import { FollowersService } from 'src/modules/followers/services/followers.service';
 
 @Injectable()
 export class UserService {
   constructor(
+    private readonly followerService: FollowersService,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(PostEntity)
+    private readonly postRepository: Repository<PostEntity>,
   ) { }
 
   // Retrieves all users
@@ -60,6 +65,28 @@ export class UserService {
       return user;
     } catch (error) {
       throw new Error(error);
+    }
+  }
+
+  async getProfileInfo (userId: string) {
+    try {
+      const user = await this.userRepository.findOne({ where: { userId: userId } })
+      if (!user) {
+        throw new Error('User not found')
+      }
+
+      const { profileImage, coverImage, userName, fullName, age, gender } = user;
+      const userPost = await this.postRepository.find({ where: { userId: userId } })
+      const posts = userPost.length;
+      const follower = await this.followerService.findFollowersByUser(userId)
+      const following = await this.followerService.findFollowingsById(userId)
+      const followers = follower.length;
+      const followings = following.length;
+
+      return { profileImage, coverImage, userName, fullName, age, gender, posts, followers, followings, userPost }
+
+    } catch (error) {
+      throw new Error(error)
     }
   }
 

@@ -28,6 +28,9 @@ export class LikeEntity {
   })
   creationDate: Date;
 
+  @Column()
+  userId: string;
+
   // User who liked the post
   @ManyToOne(() => UserEntity, (user) => user.userId, {
     cascade: true,
@@ -38,7 +41,10 @@ export class LikeEntity {
     description: 'User who liked the post.',
     example: '987e6543-e21b-32d4-a567-426614174001',
   })
-  userId: string;
+  user: string;
+
+  @Column()
+  postId: string;
 
   // Post that was liked
   @ManyToOne(() => PostEntity, (post) => post.postId, {
@@ -50,5 +56,5 @@ export class LikeEntity {
     description: 'Post that was liked.',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  postId: string;
+  post: string;
 }

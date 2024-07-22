@@ -64,15 +64,16 @@ export class UserService {
         where: { userId: userId },
       });
       if (!user) {
-        throw new Error('User not found');
+        throw new Error('User not found')
       }
       delete user.password;
       return user
     } catch (error) {
-      console.log(error);
+      console.log(error)
       throw new Error(error);
     }
   }
+  
 
   async getUserByUserName(userName: string) {
     try {

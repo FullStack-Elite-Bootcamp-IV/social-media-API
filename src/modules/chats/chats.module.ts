@@ -6,6 +6,7 @@ import { ChatEntity } from './entities/chat.entity';
 import { MessageEntity } from '../messages/entities/message.entity';
 import { ChatGateway } from './socket.gateway';
 import { JwtService } from '@nestjs/jwt';
+import { MessagesService } from '../messages/services/messages.service';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { JwtService } from '@nestjs/jwt';
   providers: [
     ChatService, // Provide the ChatService
     ChatGateway, // Provide the ChatGateway
-    JwtService
+    JwtService,
+    MessagesService
   ],
   exports: [
     ChatService, // Export the ChatService for use in other modules

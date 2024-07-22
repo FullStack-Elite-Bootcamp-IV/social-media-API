@@ -12,6 +12,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
 import { AuthModule } from './modules/auth/auth.module';
 import { ChatModule } from './modules/chats/chats.module';
 import { CommentsModule } from './modules/comments/comments.module';
+import { UploadModule } from './modules/aws/upload.module';
 
 @Module({
   imports: [
@@ -57,7 +58,8 @@ import { CommentsModule } from './modules/comments/comments.module';
     FollowersModule,
     NotificationsModule,
     ChatModule,
-    CommentsModule
+    CommentsModule,
+    UploadModule
   ],
 })
 export class AppModule {}

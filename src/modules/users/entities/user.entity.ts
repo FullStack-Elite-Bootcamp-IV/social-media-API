@@ -81,7 +81,7 @@ export class UserEntity {
   posts: PostEntity[];
 
   // One-to-many relationship with favourites
-  @OneToMany(() => FavouritesEntity, (favourites) => favourites.userId)
+  @OneToMany(() => FavouritesEntity, (favourites) => favourites.user)
   favourites: FavouritesEntity[];
 
   // One-to-many relationship with chats (as user1)

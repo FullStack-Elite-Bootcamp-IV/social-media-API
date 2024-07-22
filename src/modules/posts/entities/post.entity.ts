@@ -56,7 +56,7 @@ export class PostEntity {
   // List of likes associated with the post.
   likesPost: LikeEntity[]; */
 
-  @OneToMany(() => FavouritesEntity, (favourites) => favourites.postId)
+  @OneToMany(() => FavouritesEntity, (favourites) => favourites.post)
   // List of favorites associated with the post.
   favourites: FavouritesEntity[];
 

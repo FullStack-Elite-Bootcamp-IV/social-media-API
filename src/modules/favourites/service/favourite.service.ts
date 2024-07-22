@@ -52,7 +52,7 @@ export class FavouritesService {
   }
 
   // Method to get all favourites for a specific user
-  async getFavourites(userId: FavouritesDto['userId']): Promise<FavouritesEntity[]> {
+  async getFavourites(userId: string): Promise<FavouritesEntity[]> {
     try {
       // Find favourites by userId
       const favourites = await this.favouritesRepository.find({ where: { userId: userId } });
@@ -60,6 +60,7 @@ export class FavouritesService {
         // Throws an error if no favourites are found
         throw new Error('Favourites not found');
       }
+      console.log(favourites)
       return favourites;
     } catch (error) {
       // Throws a generic error if something goes wrong

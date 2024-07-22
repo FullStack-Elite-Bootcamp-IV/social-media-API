@@ -16,12 +16,12 @@ export class FavouritesEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.userId, { cascade: true, onDelete: 'CASCADE' }) // Defines a many-to-one relationship with UserEntity
   @JoinColumn({ name: 'userId' })
-  user: string;
+  user: UserEntity;
 
   @Column()
   postId: string;
 
   @ManyToOne(() => PostEntity, (post) => post.postId, { cascade: true, onDelete: 'CASCADE' }) // Defines a many-to-one relationship with PostEntity
   @JoinColumn({ name: 'postId' })
-  post: string;
+  post: PostEntity;
 }

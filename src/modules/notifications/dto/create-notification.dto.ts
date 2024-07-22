@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsBoolean, IsEnum, IsDateString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsString, IsBoolean, IsEnum, IsDateString, IsUUID, IsOptional } from 'class-validator';
 import { NotificationAction } from '../entities/notification.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -57,5 +57,6 @@ export class CreateNotificationDto {
     example: '2024-07-20T18:30:00Z',
   })
   @IsDateString()
+  @IsOptional()
   lastLogoutDate: string;
 }

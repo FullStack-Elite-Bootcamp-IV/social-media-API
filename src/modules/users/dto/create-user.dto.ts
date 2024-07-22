@@ -1,4 +1,4 @@
-import { IsDateString, IsEmail, IsEnum, IsNumber, IsOptional, IsPositive, IsString, MinLength } from 'class-validator';
+import { IsBoolean, IsDateString, IsEmail, IsEnum, IsNumber, IsOptional, IsPositive, IsString, MinLength } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { UserEntity } from '../entities/user.entity';
 import { Gender } from '../entities/user.entity';
@@ -126,6 +126,15 @@ export class UserDto extends PartialType(UserEntity) {
   @IsOptional()
   @IsString()
   personalWebSite?: string;
+
+  @ApiProperty({
+    description: 'Dark mode boolean',
+    example: 'true',
+    required: false
+  })
+  @IsOptional()
+  @IsBoolean()
+  darkMode: boolean
 
   @ApiProperty({
     description: 'Date when the user last logged out.',

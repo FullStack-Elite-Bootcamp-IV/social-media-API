@@ -50,6 +50,7 @@ import { UploadModule } from './modules/aws/upload.module';
     }),
     // Import application modules
     UsersModule,
+    PostsModule,
     AuthModule,
     FavouritesModule,
     MessagesModule,

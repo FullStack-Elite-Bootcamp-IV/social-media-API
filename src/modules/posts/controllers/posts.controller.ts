@@ -12,12 +12,9 @@ import {
 import { PostsService } from '../services/posts.service';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { PostEntity } from '../entities/post.entity';
-import { UserEntity } from 'src/modules/users/entities/user.entity';
-import { ApiResponse, ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
-import { LikesService } from 'src/modules/likes/services/likes.service';
-import { LikeEntity } from 'src/modules/likes/entities/like.entity';
 import { CreateLikeDto } from 'src/modules/likes/dto/create-like.dto';
 
 @ApiTags('Posts')
@@ -25,8 +22,12 @@ import { CreateLikeDto } from 'src/modules/likes/dto/create-like.dto';
 export class PostsController {
   constructor(
     private readonly postsService: PostsService, 
-    private readonly likesService: LikesService
   ) {}
+
+  @Get()
+  getAllFavouritesPosts(): Promise<PostEntity[]> {
+    return this.postsService.getAllFavouritesPosts();
+  };
 
   @Post()
   @UseGuards(JwtAuthGuard)

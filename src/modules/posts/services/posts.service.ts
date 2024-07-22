@@ -25,6 +25,15 @@ export class PostsService {
     private readonly favouritesRepository: Repository <FavouritesEntity>
   ) {}
 
+  async getAllFavouritesPosts(): Promise <PostEntity[]> {
+    try {
+      const posts = await this.postRepository.find();
+      return posts.filter((post) => post.isPublic == true);
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
   // Function to create a new post
   async createPost(createPostDto: CreatePostDto): Promise < PostEntity > {
     try {

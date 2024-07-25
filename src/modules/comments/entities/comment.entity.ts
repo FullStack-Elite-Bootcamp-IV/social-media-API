@@ -1,41 +1,56 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
 import { PostEntity } from '../../posts/entities/post.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
-// Entity representing a comment in the database
 @Entity('comments')
 export class CommentsEntity {
-  // Unique identifier for the comment, generated as a UUID
+  
   @PrimaryGeneratedColumn('uuid')
+  @ApiProperty({
+    description: 'Unique identifier for the comment.',
+    example: 'e3b0c442-98fc-1c14-9c0c-4c3b7c8d67d8',
+    required: true
+  })
   id: string;
 
-  // Content of the comment
   @Column({ type: 'text' })
+  @ApiProperty({
+    description: 'Content of the comment.',
+    example: 'This is a great post!',
+    required: true
+  })
   content: string;
 
-  // Timestamp indicating when the comment was created, defaults to the current timestamp
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @ApiProperty({
+    description: 'Timestamp indicating when the comment was created.',
+    example: '2024-07-21T15:30:00Z',
+    required: true
+  })
   createdAt: Date;
 
-  // Many-to-One relationship with the User entity (the user who made the comment)
   @ManyToOne(() => UserEntity, (user) => user.userId, {
-    cascade: true, // Allows cascading operations like save or remove
-    onDelete: 'CASCADE', // Deletes comments if the associated user is deleted
+    cascade: true,
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'userId' })
-  userId: string; // User ID of the user who made the comment
+  @ApiProperty({
+    description: 'User who made the comment.',
+    type: () => UserEntity,
+    required: true
+  })
+  userId: string;
 
-  // Many-to-One relationship with the Post entity (the post the comment is associated with)
   @ManyToOne(() => PostEntity, (post) => post.postId, {
-    cascade: true, // Allows cascading operations like save or remove
-    onDelete: 'CASCADE', // Deletes comments if the associated post is deleted
+    cascade: true,
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'postId' })
-  postId: string; // Post ID of the post where the comment is made
+  @ApiProperty({
+    description: 'Post to which the comment belongs.',
+    type: () => PostEntity,
+    required: true
+  })
+  postId: string;
 }

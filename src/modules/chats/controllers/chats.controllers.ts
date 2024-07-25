@@ -2,8 +2,9 @@ import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common'
 import { ChatService } from '../services/chats.service';
 import { CreateChatDto } from '../dto/create-chat.dto';
 import { ChatEntity } from '../entities/chat.entity';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Chats')
 @Controller('chat') // Define the base route for the chat controller
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}

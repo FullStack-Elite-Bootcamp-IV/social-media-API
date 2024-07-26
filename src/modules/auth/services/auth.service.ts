@@ -117,9 +117,9 @@ export class AuthService {
   }
 
   // Method to get the current user
-  public async getUser(user: any): Promise<any> {
+  public async getUser(id: string): Promise<any> {
     try {
-      const res = await this.userService.getUserById(user.id);
+      const res = await this.userService.getUserById(id);
       // Return the current user without the password
       const { password, ...userWithoutPassword } = res;
       return userWithoutPassword;

@@ -41,7 +41,7 @@ export class UserService {
       delete result.password;
       return result
     } catch (error) {
-      return error;
+      throw new Error(error);
     }
   }
 
@@ -53,8 +53,7 @@ export class UserService {
      }
      return users
    } catch (error) {
-     console.log(error)
-     throw new Error(error);
+    throw new Error(error);
    }
  }
 
@@ -69,7 +68,6 @@ export class UserService {
       delete user.password;
       return user
     } catch (error) {
-      console.log(error)
       throw new Error(error);
     }
   }
@@ -85,7 +83,6 @@ export class UserService {
       }
       return user;
     } catch (error) {
-      console.log(error);
       throw new Error(error);
     }
   }
@@ -212,7 +209,6 @@ export class UserService {
       }
       return user;
     } catch (error) {
-      console.log(error);
       throw new Error(error);
     }
   }
@@ -234,7 +230,6 @@ export class UserService {
 
       return user;
     } catch (error) {
-      console.log(error);
       throw new Error(error);
     }
   }
@@ -259,7 +254,6 @@ export class UserService {
       }
       return usersFiltered;
     } catch (error) {
-      console.log(error);
       throw new HttpException('server error', 500);
     }
   }

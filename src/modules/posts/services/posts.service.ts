@@ -230,7 +230,6 @@ async findPostsPublicByUser(userId: string): Promise<PostEntity[]> {
       }
       return postsFiltered;
     } catch (error) {
-      console.log(error);
       throw new HttpException('server error', 500);
     }
   }
@@ -259,7 +258,6 @@ async findPostsPublicByUser(userId: string): Promise<PostEntity[]> {
       return post;
       }
       catch (error) {
-        console.log(error);
         throw new HttpException('server error', 500);
       }
   }
@@ -289,7 +287,6 @@ async findPostsPublicByUser(userId: string): Promise<PostEntity[]> {
       }
       return posts;
     }catch (error){
-      console.log(error);
       throw new HttpException('internal server error',500);
     }
 

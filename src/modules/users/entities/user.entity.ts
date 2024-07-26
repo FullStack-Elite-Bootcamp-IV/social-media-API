@@ -5,8 +5,7 @@ import { ChatEntity } from '../../chats/entities/chat.entity';
 import { MessageEntity } from '../../messages/entities/message.entity';
 import { NotificationEntity } from '../../notifications/entities/notification.entity';
 import { FollowersEntity } from '../../followers/entities/followers.entity';
-import { LikeEntity } from '../../likes/entities/like.entity';
-import { ApiProperty } from '@nestjs/swagger'; // Importar ApiProperty desde NestJS Swagger
+import { ApiProperty } from '@nestjs/swagger'; 
 
 export enum Gender {
   MALE = 'male',

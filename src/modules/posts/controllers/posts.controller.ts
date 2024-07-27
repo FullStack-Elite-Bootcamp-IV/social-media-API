@@ -25,6 +25,7 @@ export class PostsController {
   ) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   getAllPublicsPosts(): Promise<PostEntity[]> {
     return this.postsService.getAllPublicsPosts();
   };

@@ -81,6 +81,13 @@ export class PostEntity {
     type: () => UserEntity,
     required: true
   })
+  user: UserEntity;
+
+  @Column()
+  @ApiProperty({
+    description: 'ID of the user who created the post.',
+    required: true
+  })
   userId: string;
 
   @OneToMany(() => FavouritesEntity, (favourites) => favourites.post)

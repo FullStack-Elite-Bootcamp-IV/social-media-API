@@ -77,6 +77,30 @@ export class UsersController {
     return this.userService.getUserByUserName(username);
   }
 
+  @Get('/by-id/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get user by ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Get user by ID.',
+    type: UserEntity,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request.',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found.',
+  })
+  getUserById(@Param('id') id: string): Promise<UserEntity> {
+    return this.userService.getUserById(id);
+  }
+
   @Get('/profile-info/:userName')
   @ApiParam({
     name: 'id',

@@ -25,10 +25,11 @@ export class PostsService {
     private readonly favouritesRepository: Repository <FavouritesEntity>
   ) {}
 
-  async getAllPublicsPosts(): Promise <PostEntity[]> {
+  async getAllPublicsPosts(): Promise < PostEntity[] > {
     try {
-      const posts = await this.postRepository.find();
-      return posts.filter((post) => post.isPublic == true);
+      const posts = await this.postRepository.find({ where: { isPublic: true } });
+      if (!posts) throw new HttpException('Posts not found', 500);
+      return posts;
     } catch (error) {
       throw new Error(error)
     }

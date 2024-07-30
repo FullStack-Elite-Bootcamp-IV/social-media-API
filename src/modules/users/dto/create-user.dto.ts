@@ -43,7 +43,7 @@ export class UserDto extends PartialType(UserEntity) {
   })
   @IsOptional()
   @IsString()
-  fullName: string = '';
+  fullName: string;
 
   @ApiProperty({
     description: 'Age of the user. Must be a positive number.',

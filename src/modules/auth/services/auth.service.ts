@@ -1,6 +1,4 @@
 import {
-  HttpException,
-  HttpStatus,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -12,7 +10,6 @@ import { UserService } from 'src/modules/users/services/user.service';
 import { Repository } from 'typeorm';
 import { RegisterDTO } from '../dto/auth.dto';
 import * as bcryptjs from 'bcryptjs';
-import { UserDto } from 'src/modules/users/dto/create-user.dto';
 
 @Injectable() // Mark the class as a provider that can be injected
 export class AuthService {

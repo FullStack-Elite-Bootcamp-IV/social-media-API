@@ -5,7 +5,7 @@ import { UserEntity } from '../entities/user.entity';
 import { UserDto } from '../dto/create-user.dto';
 import { PostEntity } from 'src/modules/posts/entities/post.entity';
 import { FollowersService } from 'src/modules/followers/services/followers.service';
-import bcrypt from 'bcryptjs';
+import * as bcryptjs from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -16,34 +16,6 @@ export class UserService {
     @InjectRepository(PostEntity)
     private readonly postRepository: Repository<PostEntity>,
   ) { }
-
-  async createUser(userDto: UserDto): Promise<UserEntity | Error> {
-
-
-    try {
-      const userEmail = await this.userRepository.findOne({ where: { email: userDto.email } });
-      const userName = await this.userRepository.findOne({ where: { userName: userDto.userName } });
-      if (userEmail || userName) {
-
-      const error = new HttpException(
-          'User already exists',
-          HttpStatus.BAD_REQUEST
-        );
-
-        return error;
-      }
-      
-      userDto.password = await bcrypt.hash(userDto.password, 10);
-
-      // Hacemos la entidad manualmente
-      const user = this.userRepository.create(userDto);
-      const result = await this.userRepository.save(user);
-      delete result.password;
-      return result
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
 
  async getUsers () {
    try {
@@ -161,7 +133,7 @@ export class UserService {
       user.email = userDto.email;
     }
     if(userDto.password) {
-      user.password = bcrypt.hashSync(userDto.password, 8);
+      user.password = await bcryptjs.hash(userDto.password, 10);
     }
     if (userDto.gender) {
       user.gender = userDto.gender;

@@ -81,7 +81,7 @@ export class UserService {
       if (!user) {
         throw new Error('User not found');
       }
-      const { profileImage, coverImage, userName, fullName, age, gender } =
+      const { userId, profileImage, coverImage, userName, fullName, age, gender } =
         user;
       const userPost = await this.postRepository.find({
         where: { userId: user.userId },
@@ -97,6 +97,7 @@ export class UserService {
       const followings = following.length;
 
       return {
+        userId,
         profileImage,
         coverImage,
         userName,

@@ -53,7 +53,7 @@ export class UserDto extends PartialType(UserEntity) {
   @IsNumber()
   @IsPositive()
   @IsOptional()
-  age?: number = 1; // pequeño hack mientras intento probar el register, cambiar en produccion
+  age?: number; 
 
   @ApiProperty({
     description: 'Gender of the user.',

@@ -16,10 +16,13 @@ export class UploadController {
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<{ imageUrl: string }> {
-    const imageUrl = await this.uploadService.upload(
-      file.originalname,
-      file.buffer,
-    );
-    return { imageUrl };
+    if (file) {
+      const imageUrl = await this.uploadService.upload(
+        file.originalname,
+        file.buffer,
+      );
+      return { imageUrl };
+    }
+    return undefined;
   }
 }

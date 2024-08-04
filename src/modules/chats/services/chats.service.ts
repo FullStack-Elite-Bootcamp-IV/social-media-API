@@ -14,6 +14,17 @@ export class ChatService {
   // Function to create a new chat
   async createChat(createChatDto: CreateChatDto): Promise<ChatEntity> {
     try {
+      const existingChat = await this.chatRepository.findOne({
+        where: [
+          { user1Id: createChatDto.user1Id, user2Id: createChatDto.user2Id },
+          { user1Id: createChatDto.user2Id, user2Id: createChatDto.user1Id },
+        ],
+      });
+
+      if (existingChat) {
+        throw new Error('The chat already exists');
+      }
+
       if (!createChatDto) {
         throw new Error('Chat not created, please complete the form'); // Check if createChatDto is provided
       }

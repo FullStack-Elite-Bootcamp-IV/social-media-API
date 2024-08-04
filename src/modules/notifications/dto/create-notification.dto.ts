@@ -25,6 +25,7 @@ export class CreateNotificationDto {
     example: true,
   })
   @IsBoolean()
+  @IsOptional()
   status: boolean;
 
   @ApiProperty({

@@ -31,13 +31,14 @@ export class LikesService {
   async findLikesByPost(postId: string): Promise<LikeEntity[]> {
     try {
       // Retrieve likes associated with the specified post ID
-      const likes = await this.likeRepository.find({ where: { postId } });
+      const likes = await this.likeRepository.find({ where: { postId: postId } });
       
       // Check if any likes are found
-      if (!likes || likes.length === 0) {
+      if (likes) {
+        return likes;
+      } else {
         throw new Error('Likes not found');
       }
-      return likes;
     } catch (error) {
       // Handle errors and throw a new error with the message
       throw new Error(error.message);

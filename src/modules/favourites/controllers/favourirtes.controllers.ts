@@ -12,13 +12,13 @@ import { FavouritesDto } from '../dto/create-favourite.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 
-@ApiTags('Favourites') // Tags for Swagger documentation
+@ApiTags('Favorites') // Tags for Swagger documentation
 @Controller('favorites') // Base route for this controller
 export class FavouritesController {
   constructor(private readonly FavouritesService: FavouritesService) {}
 
   @ApiOperation({
-    summary: 'Add a favourite', // Brief description of the operation
+    summary: 'Add a favorite', // Brief description of the operation
     description: 'Adds a new favourite and returns the added favourite.', // Detailed description
   })
   @ApiResponse({
@@ -61,11 +61,11 @@ export class FavouritesController {
     status: 404,
     description: 'Favourite not found.', // Description for a not found response
   })
-  @Delete('/delete/:id') // Route for deleting a favourite by ID
+  @Delete('/delete') // Route for deleting a favourite by ID
   @UseGuards(JwtAuthGuard) // Protects this route with JWT authentication guard
-  public async deleteFavourite(@Param('id') id: any) {
+  public async deleteFavourite(@Body() body: FavouritesDto) {
     // Calls the service to delete a favourite and returns the result
-    return await this.FavouritesService.deleteFavourite(id);
+    return await this.FavouritesService.deleteFavourite(body);
   }
 
   @ApiOperation({

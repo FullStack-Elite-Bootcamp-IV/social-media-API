@@ -36,7 +36,12 @@ export class FavouritesService {
   }
 
   // Method to delete a favourite by ID
-  public async deleteFavourite(id: string): Promise<DeleteResult> {
+  public async deleteFavourite(favouritesDto: FavouritesDto): Promise<DeleteResult> {
+    const favourite = await this.favouritesRepository.findOne({
+      where: {userId: favouritesDto.userId, postId: favouritesDto.postId}
+    })
+    const { id } = favourite;
+
     // Delete the favourite from the repository
     const result = await this.favouritesRepository.delete(id);
 
@@ -51,13 +56,12 @@ export class FavouritesService {
   // Method to get all favourites for a specific user
   async getFavourites(userId: string): Promise<FavouritesEntity[]> {
     // Find favourites by userId
-    const favourites = await this.favouritesRepository.find({ where: { userId } });
+    const favourites = await this.favouritesRepository.find({ where: { userId: userId } });
 
-    if (!favourites.length) {
-      // Throws an error if no favourites are found
-      throw new HttpException('Favourites not found', HttpStatus.NOT_FOUND);
+    if (favourites) {
+      return favourites;
+    } else {
+    throw new HttpException('Favourites not found', HttpStatus.NOT_FOUND);
     }
-
-    return favourites;
   }
 }

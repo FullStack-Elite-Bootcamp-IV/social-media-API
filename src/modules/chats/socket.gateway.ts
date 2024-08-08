@@ -34,6 +34,7 @@ export class ChatGateway
   // Handle new client connections
   async handleConnection(socket: Socket) {
     const token = socket.handshake.auth.token;
+    console.log(token)
 
     try {
       const user = await this.jwtService.verifyAsync(token, {
@@ -61,6 +62,7 @@ export class ChatGateway
   @SubscribeMessage('message')
   async handleMessage(socket: Socket, data: any) {
     try {
+      console.log(socket.handshake.auth.token);
       const user = await this.jwtService.verifyAsync(
         socket.handshake.auth.token,
         {
@@ -73,7 +75,7 @@ export class ChatGateway
         user: user.id,
         chatId: data[1],
       };
-      
+
       this.messageService.createMessage(message);
       this.io
         .to(data[1])

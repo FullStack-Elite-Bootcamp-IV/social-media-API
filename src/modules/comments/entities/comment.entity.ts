@@ -20,6 +20,22 @@ export class CommentsEntity {
     example: 'This is a great post!',
     required: true
   })
+  userId: string;
+
+  @Column({ type: 'text' })
+  @ApiProperty({
+    description: 'Content of the comment.',
+    example: 'This is a great post!',
+    required: true
+  })
+  postId: string;
+
+  @Column({ type: 'text' })
+  @ApiProperty({
+    description: 'Content of the comment.',
+    example: 'This is a great post!',
+    required: true
+  })
   content: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
@@ -40,7 +56,7 @@ export class CommentsEntity {
     type: () => UserEntity,
     required: true
   })
-  userId: string;
+  user: UserEntity;
 
   @ManyToOne(() => PostEntity, (post) => post.postId, {
     cascade: true,
@@ -52,5 +68,5 @@ export class CommentsEntity {
     type: () => PostEntity,
     required: true
   })
-  postId: string;
+  post: PostEntity;
 }

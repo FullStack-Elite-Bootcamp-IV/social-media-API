@@ -55,7 +55,7 @@ export class CommentsService {
         throw new HttpException('Not found', HttpStatus.NOT_FOUND);
       }
       // Find and return comments related to the specified post ID
-      return await this.commentsRepository.find({ where: { postId } });
+      return await this.commentsRepository.find({ where: { postId: postId } });
     } catch (e) {
       // Handle errors and throw a Bad Request exception
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);

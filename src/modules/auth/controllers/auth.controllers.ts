@@ -88,6 +88,12 @@ export class AuthController {
     description: 'Unauthorized',
   })
   async me(@Req() req) {
-    return this.authService.getUser(req.user.id); // Return the current user
+    const userToken = req.get('Authorization').split(' ')[1]; // Get the JWT token from the request
+    const user = await this.authService.getUser(req.user.id); // Get the user from the tokeno
+    if (!user) {
+      throw new UnauthorizedException('Unauthorized'); // Throw an exception if the user is not found
+    }
+    user.accessToken = userToken; // Add the token to the user object
+    return user // Return the current user
   }
 }
